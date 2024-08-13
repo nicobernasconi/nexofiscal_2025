@@ -1,0 +1,46 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+# Hacer que los archivos .php sean accesibles sin la extensión
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# Reemplazar parámetros GET por la palabra clave "param" después de una barra
+RewriteRule ^agrupaciones/([^/]*)/?$ agrupaciones.php?param=$1 [NC,QSA,L]
+RewriteRule ^categorias/([^/]*)/?$ categorias.php?param=$1 [NC,QSA,L]
+RewriteRule ^categorias_iibb/([^/]*)/?$ categorias_iibb.php?param=$1 [NC,QSA,L]
+RewriteRule ^cierres_cajas/([^/]*)/?$cierres_cajas.php?param=$1 [NC,QSA,L]
+RewriteRule ^clientes/([^/]*)/?$ clientes.php?param=$1 [NC,QSA,L]
+RewriteRule ^comprobantes/([^/]*)/?$ comprobantes.php?param=$1 [NC,QSA,L]
+RewriteRule ^condiciones_venta/([^/]*)/?$ condiciones_venta.php?param=$1 [NC,QSA,L]
+RewriteRule ^configuraciones/([^/]*)/?$ configuraciones.php?param=$1 [NC,QSA,L]
+RewriteRule ^empresas/([^/]*)/?$ empresas.php?param=$1 [NC,QSA,L]
+RewriteRule ^familias/([^/]*)/?$ familias.php?param=$1 [NC,QSA,L]
+RewriteRule ^formas_pagos/([^/]*)/?$ formas_pagos.php?param=$1 [NC,QSA,L]
+RewriteRule ^funciones/([^/]*)/?$ roles.php?param=$1 [NC,QSA,L]
+RewriteRule ^ganancias_proveedores/([^/]*)/?$ ganancias_proveedores.php?param=$1 [NC,QSA,L]
+RewriteRule ^gastos/([^/]*)/?$ gastos.php?param=$1 [NC,QSA,L]
+RewriteRule ^localidades/([^/]*)/?$ localidades.php?param=$1 [NC,QSA,L]
+RewriteRule ^marcas/([^/]*)/?$ marcas.php?param=$1 [NC,QSA,L]
+RewriteRule ^monedas/([^/]*)/?$ monedas.php?param=$1 [NC,QSA,L]
+RewriteRule ^operaciones_negocio/([^/]*)/?$ operaciones_negocio.php?param=$1 [NC,QSA,L]
+RewriteRule ^paises/([^/]*)/?$ paises.php?param=$1 [NC,QSA,L]
+RewriteRule ^productos/([^/]*)/?$ productos.php?param=$1 [NC,QSA,L]
+RewriteRule ^proveedores/([^/]*)/?$ proveedores.php?param=$1 [NC,QSA,L]
+RewriteRule ^provincias/([^/]*)/?$ provincias.php?param=$1 [NC,QSA,L]
+RewriteRule ^provincias_categorias_iibb/([^/]*)/?$ provincias_categorias_iibb.php?param=$1 [NC,QSA,L]
+RewriteRule ^provincias_iva_proveedores/([^/]*)/?$ provincias_iva_proveedores.php?param=$1 [NC,QSA,L]
+RewriteRule ^renglones_comprobantes/([^/]+)/([^/]*)/?$ renglones_comprobantes.php?comprobante_id=$1&renglon_id=$2 [NC,QSA,L]
+RewriteRule ^roles/([^/]*)/?$ roles.php?param=$1 [NC,QSA,L]
+RewriteRule ^subcategorias/([^/]*)/?$ subcategorias.php?param=$1 [NC,QSA,L]
+RewriteRule ^subfamilias/([^/]*)/?$ subfamilias.php?param=$1 [NC,QSA,L]
+RewriteRule ^tipos/([^/]*)/?$ tipos.php?param=$1 [NC,QSA,L]
+RewriteRule ^tipos_comprobante/([^/]*)/?$ tipos_comprobante.php?param=$1 [NC,QSA,L]
+RewriteRule ^tipos_documento/([^/]*)/?$ tipos_documento.php?param=$1 [NC,QSA,L]
+RewriteRule ^tipos_iva/([^/]*)/?$ tipos_iva.php?param=$1 [NC,QSA,L]
+RewriteRule ^vendedores/([^/]*)/?$ vendedores.php?param=$1 [NC,QSA,L]
+RewriteRule ^unidades/([^/]*)/?$ unidades.php?param=$1 [NC,QSA,L]
+
+
+

@@ -1,0 +1,1903 @@
+<div id="mensaje-modal" class="custom-modal" style="z-index: 10000!important;">
+    <div class="custom-modal-content-s">
+        <span class="custom-modal-close">&times;</span>
+        <h2>Notificacion</h2>
+        <div class="row" id="mensajeModal">
+        </div>
+        <div id="botonesMensaje">
+        </div>
+
+        <button class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+
+    </div>
+</div>
+
+<?php if (in_array('modificar', $permisos_asignados['productos'])) { ?>
+    <div id="editar-producto-modal" class="custom-modal">
+        <p id="mensajeAlertaEditarProducto" style="color: red; display: none; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i>Error.</p>
+        <form id="editar-producto-form">
+            <input type="hidden" name="id" id="id">
+            <div class="custom-modal-content">
+                <span class="custom-modal-close">&times;</span>
+
+                <div class="row">
+
+                    <h2>Editar Producto</h2>
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label for="tipo_id">Tipo:</label>
+                            <select class="form-control" id="tipo_id" name="tipo_id" required>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="codigo">Código/PLU:</label>
+                            <input class="form-control" type="text" id="codigo" name="codigo" required >
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="activo" name="activo" value='1'>
+                            <label for="activo">Activo</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="favorito" name="favorito" value='1'>
+                            <label for="favorito">Favorito</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="fraccionado" name="fraccionado" value='1'>
+                            <label for="fraccionado">Es Fraccionado</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="publicado_web" name="publicado_web" value='1'>
+                            <label for="publicado_web">Publicar en web</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="oferta" name="oferta" value='1'>
+                            <label for="oferta">Oferta</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="rg5329_23" name="rg5329_23" value='1'>
+                            <label for="rg5329_23">RG 5329/23</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="producto_balanza" name="producto_balanza" value='1'>
+                            <label for="producto_balanza">Es balanza</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="agrupacion_id">Agrupar Por:</label>
+                            <select class="form-control" type="text" id="agrupacion_id" name="agrupacion_id" required></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stock">Cantidad:</label>
+                            <input class="form-control" type="number" id="stock" name="stock" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unidad_id">Unidad:</label>
+                            <select class="form-control" id="unidad_id" name="unidad_id" required>
+                                <!-- Opciones de unidad aquí -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <input class="form-control" type="text" id="descripcion" name="descripcion" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="familia_id">Familia:</label>
+                            <select class="form-control" type="text" id="familia_id" name="familia_id" required></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="proveedor_id">Proveedor:</label>
+                            <select class="form-control" type="text" id="proveedor_id" name="proveedor_id"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tasa_iva_id">Condición de IVA %:</label>
+                            <select class="form-control" id="tasa_iva_id" name="tasa_iva_id" required></select>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div style="width:50%;float:left;">
+                                <label for="tipo_impuesto_interno">Tipo impuesto interno:</label>
+                                <select class="form-control" type="text" id="tipo_impuesto_interno" name="tipo_impuesto_interno">
+                                    <option value="1">PORCENTAJE</option>
+                                    <option value="2">FIJO</option>
+                                </select>
+                            </div>
+                            <div style="width:50%;float:right;">
+                                <label for="impuesto_interno">Impuesto Interno $:</label>
+                                <input class="form-control" type="number" id="impuesto_interno" name="impuesto_interno" step="any">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="codigo_barra">Código de barras:</label>
+                            <input class="form-control" type="text" id="codigo_barra" name="codigo_barra" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="codigo_barra2">Código de barras2:</label>
+                            <input class="form-control" type="text" id="codigo_barra2" name="codigo_barra2" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="iibb">Impuesto IIBB %:</label>
+                            <input class="form-control" type="number" id="iibb" name="iibb" step="any">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precio_costo">Costo:</label>
+                            <input class="form-control" type="number" id="precio_costo" name="precio_costo" step="any" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="margen_ganancia">Margen de Ganancia %:</label>
+                            <input class="form-control" type="number" id="margen_ganancia" name="margen_ganancia" step="any" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precio1">Precio 1:</label>
+                            <input class="form-control" type="number" id="precio1" name="precio1" step="any" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precio2">Precio 2:</label>
+                            <input class="form-control" type="number" id="precio2" name="precio2" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label for="precio3">Precio 3:</label>
+                            <input class="form-control" type="number" id="precio3" name="precio3" step="any">
+                        </div>
+                    </div>
+
+                </div>
+                <button id="btn-guardar-producto" class="btn-guardar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+                <button id="btn-editar-producto" class="btn-guardar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+                <a class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</a>
+            </div>
+        </form>
+    </div>
+<?php } ?>
+<!-- Modal -->
+<?php if (in_array('listar', $permisos_asignados['clientes'])) { ?>
+    <div id="buscar-cliente-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Buscar Cliente</h2>
+            <div class="row">
+                <select class="form-select select2" id="searchCliente" style="width:100%;"></select>
+            </div>
+            <button id="btnSeleccionCliente" class="btn-guardar"><i class="fa-solid fa-users"></i>&nbsp;Elegir</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+            <p id="mensajeAlerta" style="color: red; display: none; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> Debe seleccionar un Cliente.</p>
+
+        </div>
+    </div>
+<?php } ?>
+<?php if (in_array('listar', $permisos_asignados['productos'])) { ?>
+    <div id="lista-precio-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de precio</h2>
+            <!-- Nuevo cuadro de texto para búsqueda -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-input" class="custom-search-input" placeholder="Buscar producto...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaProductosPrecios" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Codigo de barras</th>
+                                <th>Nombre de Producto</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('listar', $permisos_asignados['vendedores'])) { ?>
+    <div id="lista-vendedores-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de vendedores</h2>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaVendedores" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+<?php if (in_array('listar', $permisos_asignados['promociones'])) { ?>
+    <div id="lista-promociones-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de promociones</h2>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablapromociones" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['productos'])) { ?>
+    <div id="lista-productos-editar-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de precio</h2>
+            <!-- Nuevo cuadro de texto para búsqueda -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-productos-input" class="custom-search-input" placeholder="Buscar producto...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarProductos" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Codigo de barras</th>
+                                <th>Nombre de Producto</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                                <th>Accion</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('listar', $permisos_asignados['productos'])) { ?>
+    <div id="lista-productos-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de precio</h2>
+            <!-- Nuevo cuadro de texto para búsqueda -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-productos-input" class="custom-search-input" placeholder="Buscar producto...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaProductos" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Codigo de barras</th>
+                                <th>Nombre de Producto</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                                <th>Accion</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+<?php if (in_array('listar', $permisos_asignados['clientes'])) { ?>
+    <div id="lista-clientes-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de Clientes</h2>
+            <!-- Nuevo cuadro de texto para búsqueda -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-clientes-input" class="custom-search-input" placeholder="Buscar producto...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaClientes" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Nombre</th>
+                                <th>Direccion</th>
+                                <th>Localidad</th>
+                                <th>CUIT</th>
+                                <th>Tipo IVA</th>
+                                <th>Accion</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+<?php if (in_array('crear', $permisos_asignados['comprobantes'])) { ?>
+    <div id="cobrar-modal" class="custom-modal">
+
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Cobrar</h2>
+            <p id="mensajeAlertaCobrar" style="color: red; display: none; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> El monto pagado es menor al monto a pagar.</p>
+            <input type="hidden" name="tipo_comprobante_id" id="tipo_comprobante_id">
+            <label for="formas_pago">Forma de Pago:</label>
+            <input type="hidden" id="formaPago" name="formaPago" required>
+            <select id="formas_pago" class="form-select select2 form-control" style="width:90%; height: 80px!important;  display: inline-block; vertical-align: middle; font-family: Arial, sans-serif;font-size: 20px;">
+
+            </select>
+            <label for="montoPagar" style="font-family: Arial, sans-serif;">Monto a Pagar:</label>
+            <div class="montoPagar" id="montoPagar"></div>
+
+            <label for="montoPagar" style="font-family: Arial, sans-serif;display:none;"></label>
+            <div class="montoPagar" id="vuelto"></div>
+
+            <label for="montoPagado" style="font-family: Arial, sans-serif;">Monto Pagado:</label>
+            <input type="number" id="montoPagado" class="form-control" style="height: 50px; width: 150px; display: inline-block; vertical-align: middle; font-family: Arial, sans-serif;font-size: 30px;">
+            <p></p>
+
+            <a id="btnImprimirComprobante" class="btn-guardar"><i class="fa-solid fa-print"></i>&nbsp;Imprimir comprobante</a>
+            <button class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+
+    </div>
+<?php } ?>
+
+
+<?php if (in_array('modificar', $permisos_asignados['clientes'])) { ?>
+    <div id="modificar-cliente-modal" class="custom-modal">
+        <p id="mensajeAlertaCliente" style="color: red; display: none; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i>Error.</p>
+
+        <input type="hidden" name="id" id="id">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <form id="modificar-cliente-form">
+                <div class="row">
+                    <h2>Modificar Cliente</h2>
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input class="form-control" type="text" id="nombre" name="nombre" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_documento_id">Tipo de Documento:</label>
+                            <select class="form-control select2" id="tipo_documento_id" name="tipo_documento_id" required>
+                                <!-- Opciones generadas dinámicamente desde el backend -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="numero_documento">Número de Documento:</label>
+                            <input class="form-control" type="text" id="numero_documento" name="numero_documento" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cuit">CUIT:</label>
+                            <input class="form-control" type="text" id="cuit" name="cuit" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_iva_id">Condicion IVA:</label>
+                            <select class="form-control select2" id="tipo_iva_id" name="tipo_iva_id">
+                                <!-- Opciones generadas dinámicamente desde el backend -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="direccion_comercial">Dirección Comercial:</label>
+                            <input class="form-control" type="text" id="direccion_comercial" name="direccion_comercial" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="direccion_entrega">Dirección de Entrega:</label>
+                            <input class="form-control" type="text" id="direccion_entrega" name="direccion_entrega">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="localidad_id">Localidad:</label>
+                            <select class="form-control select2" id="localidad_id" name="localidad_id" required>
+                                <!-- Opciones generadas dinámicamente desde el backend -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono">Teléfono:</label>
+                            <input class="form-control" type="text" id="telefono" name="telefono">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="celular">Celular:</label>
+                            <input class="form-control" type="text" id="celular" name="celular">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input class="form-control" type="text" id="email" name="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contacto">Contacto:</label>
+                            <input class="form-control" type="text" id="contacto" name="contacto">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono_contacto">Teléfono de Contacto:</label>
+                            <input class="form-control" type="text" id="telefono_contacto" name="telefono_contacto">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoria_id">Categoría:</label>
+                            <select class="form-control select2" id="categoria_id" name="categoria_id">
+                                <!-- Opciones generadas dinámicamente desde el backend -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="porcentaje_descuento">Porcentaje de Descuento:</label>
+                            <input class="form-control" type="number" id="porcentaje_descuento" name="porcentaje_descuento" value='0' required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="limite_credito">Límite de Crédito:</label>
+                            <input class="form-control" type="number" id="limite_credito" name="limite_credito" value='0' required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="saldo_inicial">Saldo Inicial:</label>
+                            <input class="form-control" type="number" id="saldo_inicial" name="saldo_inicial" value='0' required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="percepcion_iibb">Percepción Ingresos Brutos:</label>
+                            <input class="form-control" type="number" id="percepcion_iibb" name="percepcion_iibb" value='0' required>
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+            <button id="btn-editar-cliente" class="btn-guardar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+            <button id="btn-guardar-cliente" class="btn-guardar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+            <a class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</a>
+        </div>
+
+    </div>
+<?php } ?>
+
+<?php if (in_array('listar', $permisos_asignados['cierre_cajas'])) { ?>
+    <div id="lista-cierre-caja-modal" class="custom-modal">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de Cierre de Caja</h2>
+            <!-- Boton Nuevo Tipo de documento -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-cierre_caja-input" class="custom-search-input" placeholder="Buscar tipo documento...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaCerrarCaja" class="display" style="width:100%">
+                        <thead>
+                            <td>#</td>
+                            <td>Usuario</td>
+                            <td>Fecha</td>
+                            <td>Efectivo Inicial</td>
+                            <td>Total Venta</td>
+                            <td>Total Gastos</td>
+                            <td>Efectivo Final</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+<?php if (in_array('crear', $permisos_asignados['cierre_cajas'])) { ?>
+    <div id="cierre-caja-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Cierre de Caja</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Campo para mostrar el monto de efectivo final en caja -->
+                    <input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo $_SESSION['usuario_id']; ?>">
+                    <label for="efectivo_inicial">Efectivo Inicia:</label>
+                    <input class="form-control" type="number" id="efectivo_inicial" name="efectivo_inicial" step="0.01" min="0">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Campo para ingresar otros ingresos adicionales -->
+                    <label for="efectivo_final">Efectivo final:</label>
+                    <input class="form-control" type="number" id="efectivo_final" name="efectivo_final" step="0.01" min="0">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Campo para ingresar comentarios adicionales -->
+                    <label for="comentarios">Comentarios:</label>
+                    <textarea class="form-control" id="comentarios" name="comentarios" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!-- Botón para realizar el cierre de caja -->
+
+
+            <button id="btn-realizar-cierre-caja" class="btn-guardar">Realizar Cierre</button>
+
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+
+        </div>
+    </div>
+<?php } ?>
+
+
+<!-- tipos de documentos -->
+
+<?php if (in_array('listar', $permisos_asignados['tipo_documento'])) { ?>
+    <div id="lista-tipo-documentos-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de tipos de documentos</h2>
+            <!-- Boton Nuevo Tipo de documento -->
+            <?php if (in_array('crear', $permisos_asignados['tipo_documento'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-tipo-documento" class="btn-guardar">Nuevo Tipo de Documento</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-tipo-documento-input" class="custom-search-input" placeholder="Buscar tipo documento...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarTipoDocumento" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 70%;">Nombre</th>
+                                <th style="width: 30%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['tipo_documento'])) { ?>
+    <div id="editar-tipo-documentos-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar de tipo de documento</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="hidden" id="id" name="id">
+                        <input class="form-control" type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                </div>
+            </div>
+            <button id="btn-crear-tipo-documento" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-tipo-documento" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+
+<!--tipo iva-->
+<?php if (in_array('listar', $permisos_asignados['tipo_iva'])) { ?>
+    <div id="lista-tipos-iva-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de tipos de iva</h2>
+            <!-- Boton Nuevo Tipo de iva -->
+            <?php if (in_array('crear', $permisos_asignados['tipo_iva'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-tipos-iva" class="btn-guardar">Nuevo Tipo de iva</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-tipos-iva-input" class="custom-search-input" placeholder="Buscar tipo iva...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarTipoIva" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;text-align: center;">Nombre</th>
+                                <th style="width: 10%;">Letra</th>
+                                <th style="width: 40%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['tipo_iva'])) { ?>
+    <div id="editar-tipos-iva-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar de tipo de iva</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class=>
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="hidden" id="id" name="id">
+                        <input class="form-control" type="text" id="nombre" name="nombre" required>
+                        <label for="nombre">Letra Factura:</label>
+                        <input class="form-control" type="text" id="letra_factura" name="letra_factura" maxlength="1" required>
+                    </div>
+
+                </div>
+            </div>
+            <button id="btn-crear-tipos-iva" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-tipos-iva" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+
+<!--unidad-->
+
+<?php if (in_array('listar', $permisos_asignados['unidad'])) { ?>
+    <div id="lista-unidad-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de Unidades</h2>
+            <!-- Boton Nuevo Tipo de documento -->
+            <?php if (in_array('crear', $permisos_asignados['unidad'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-unidad" class="btn-guardar">Nueva Unidad</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-unidad-input" class="custom-search-input" placeholder="Buscar unidad...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarUnidad" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Nombre</th>
+                                <th style="width: 10%;">Simbolo</th>
+                                <th style="width: 30%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['unidad'])) { ?>
+    <div id="editar-unidad-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar Unidad</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="">
+                    <div class="form-group">
+
+                        <input type="hidden" id="id" name="id">
+                        <label for="nombre">Nombre:</label>
+                        <input class="form-control" type="text" id="nombre" name="nombre" required>
+                        <label for="nombre">Simbolo:</label>
+                        <input class="form-control" type="text" id="simbolo" name="simbolo" required>
+                    </div>
+
+                </div>
+            </div>
+            <button id="btn-crear-unidad" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-unidad" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+
+
+<!--familia-->
+
+<?php if (in_array('listar', $permisos_asignados['familias'])) { ?>
+    <div id="lista-familia-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de familia</h2>
+            <?php if (in_array('crear', $permisos_asignados['familias'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-familia" class="btn-guardar">Nueva familia</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-familia-input" class="custom-search-input" placeholder="Buscar familia...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarFamilia" class="display" style="width:100%" a>
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Numero</th>
+                                <th style="width: 50%;">Familia</th>
+                                <th style="width: 30%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['familias'])) { ?>
+    <div id="editar-familia-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar familia</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="">
+                    <div class="form-group">
+
+                        <input type="hidden" id="id" name="id">
+                        <label for="nombre">Numero:</label>
+                        <input class="form-control" type="number" id="numero" name="numero" required>
+                        <label for="nombre">Nombre:</label>
+                        <input class="form-control" type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                </div>
+            </div>
+            <button id="btn-crear-familia" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-familia" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+
+
+<!--AGRUPACION-->
+
+<?php if (in_array('listar', $permisos_asignados['agrupaciones'])) { ?>
+    <div id="lista-agrupacion-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de agrupacion</h2>
+            <?php if (in_array('crear', $permisos_asignados['agrupaciones'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-agrupacion" class="btn-guardar">Nueva agrupacion</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-agrupacion-input" class="custom-search-input" placeholder="Buscar agrupacion...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarAgrupacion" class="display" style="width:100%" a>
+                        <thead>
+                            <tr>
+                                <th style="width: 70%;">Nombre</th>
+                                <th style="width: 30%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['agrupaciones'])) { ?>
+    <div id="editar-agrupacion-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar agrupacion</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="form-group">
+
+                    <input type="hidden" id="id" name="id">
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" name="nombre" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="">
+                    <label for="position-bottom-left">Color</label>
+                    <input type="text" id="color" name="color" class="minicolors-input seleccionarColor" data-inline="true" value="#0088cc">
+                </div>
+            </div>
+            <button id="btn-crear-agrupacion" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-agrupacion" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+
+<?php } ?>
+
+
+<!--Tipos-->
+
+<?php if (in_array('listar', $permisos_asignados['tipo'])) { ?>
+    <div id="lista-tipo-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de tipo</h2>
+            <?php if (in_array('crear', $permisos_asignados['tipo'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-tipo" class="btn-guardar">Nueva tipo</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-tipo-input" class="custom-search-input" placeholder="Buscar tipo...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarTipo" class="display" style="width:100%" a>
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Numero</th>
+                                <th style="width: 50%;">Nombre</th>
+                                <th style="width: 40%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['tipo'])) { ?>
+    <div id="editar-tipo-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar tipo</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="">
+                    <div class="form-group">
+
+                        <input type="hidden" id="id" name="id">
+                        <label for="nombre">Numero:</label>
+                        <input class="form-control" type="number" id="numero" name="numero" required>
+                        <label for="nombre">Nombre:</label>
+                        <input class="form-control" type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                </div>
+            </div>
+            <button id="btn-crear-tipo" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-tipo" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+
+<!--Formas pagos-->
+
+<?php if (in_array('listar', $permisos_asignados['formas_pago'])) { ?>
+    <div id="lista-forma-pago-editar-modal" class="custom-modal">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de forma-pago</h2>
+            <?php if (in_array('crear', $permisos_asignados['formas_pago'])) { ?>
+                <div class="row">
+                    <button id="btn-nuevo-forma-pago" class="btn-guardar">Nueva forma de pago</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-forma-pago-input" class="custom-search-input" placeholder="Buscar forma-pago...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaEditarFormaPago" class="display" style="width:100%" a>
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Nombre</th>
+                                <th style="width: 10%;">Porcentaje</th>
+                                <th style="width: 50%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['formas_pago'])) { ?>
+    <div id="editar-forma-pago-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Editar forma de pago</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="">
+                    <div class="form-group">
+
+                        <input type="hidden" id="id" name="id">
+                        <label for="nombre">Nombre:</label>
+                        <input class="form-control" type="text" id="nombre" name="nombre" required>
+                        <label for="nombre">Porcentaje:</label>
+                        <input class="form-control" type="number" id="porcentaje" name="porcentaje" required>
+                    </div>
+
+                </div>
+            </div>
+            <button id="btn-editar-forma-pago" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('crear', $permisos_asignados['formas_pago'])) { ?>
+    <div id="crear-forma-pago-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Crear forma-pago</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input class="form-control" type="text" id="nombre" name="nombre" required>
+                            <label for="nombre">Porcentaje:</label>
+                            <input class="form-control" type="number" id="porcentaje" name="porcentaje" required>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <button id="btn-crear-forma-pago" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('crear', $permisos_asignados['gastos'])) { ?>
+    <div id="crear-gasto-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Crear Gasto</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="form-group">
+                            <input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo $_SESSION['usuario_id']; ?>">
+                            <label for="nombre">Descripcion:</label>
+                            <textarea class="form-control" type="text" id="descripcion" name="descripcion" required></textarea>
+                            <label for="nombre">Monto:</label>
+                            <input class="form-control" type="number" id="monto" name="monto" required>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <button id="btn-crear-gasto" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+<!--Ventas-->
+
+<?php if (in_array('listar', $permisos_asignados['tipo'])) { ?>
+    <div id="lista-ventas-modal" class="custom-modal">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de ventas</h2>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-venta-input" class="custom-search-input" placeholder="Buscar tipo...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaVentas" class="display" style="width:100%" a>
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 20%;">Tipo</th>
+                                <th style="width: 20%;">N° Factura</th>
+                                <th style="width: 30%;">Cliente</th>
+                                <th style="width: 10%;">Fecha</th>
+                                <th style="width: 10%;">Total</th>
+                                <th style="width: 5%;">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<!--usuarios-->
+<?php if (in_array('listar', $permisos_asignados['usuarios'])) { ?>
+    <div id="listar-usuarios-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de precio</h2>
+
+            <!-- Boton nuevo usuario-->
+            <?php if (in_array('crear', $permisos_asignados['usuarios'])) { ?>
+                <div class="row">
+                    <button id="btn-agregar-usuario" class="btn-guardar">Nuevo Usuario</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-usuarios-input" class="custom-search-input" placeholder="Buscar usuario...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaUsuarios" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Nombre de usuario</th>
+                                <th>Nombre completo</th>
+                                <th>Rol</th>
+                                <th>Activo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+<?php if (in_array('modificar', $permisos_asignados['usuarios'])) { ?>
+    <div id="editar-usuario-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Crear Usuario</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <p id="mensajeAlertaEditarUsuario" style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="form-group">
+                            <input type="hidden" id="id" name="id">
+                            <label for="nombre_usuario">Nombre Usuario(email):</label>
+                            <input class="form-control" type="text" id="nombre_usuario" name="nombre_usuario" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre_completo">Nombre Completo :</label>
+                            <input class="form-control" type="text" id="nombre_completo" name="nombre_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rol_id">Rol:</label>
+                            <select class="form-control" id="rol_id" name="rol_id" required>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <button id="btn-crear-usuario" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-usuario" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<!-- Compras -->
+
+<?php if (in_array('crear', $permisos_asignados['compras'])) { ?>
+    <div id="crear-compra-modal" class="custom-modal">
+        <input type="hidden" id="sucursal_id" name="sucursal_id" value="<?php echo $_SESSION['sucursal_id']; ?>">
+        <div class="custom-modal-content-l">
+            <span class="custom-modal-close">&times;</span>
+            <h2 id="titulo_modal_compra">Registrar Compra</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <p id="mensajeAlertaCrearCompra" style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> </p>
+            <!-- Leyenda: Los valores de cantidad modifican el stock del producto en esta sucursal -->
+            <p id="leyenda_ajuste_stock" style="font-size: 12px; color: gray;">Los valores de cantidad modifican el stock del producto en esta sucursal</p>
+            <div class="row">
+
+                <div class="form-group" style="width: 20%" id="fecha_div">
+                    <label for="fecha">Fecha de ingreso:</label>
+                    <input class="form-control" type="date" id="fecha" name="fecha" required>
+                </div>
+                <div class="form-group" style="width: 70%" id="nro_factura_div">
+                    <label for="nro_factura">N° Factura:</label>
+                    <input class="form-control" type="text" id="nro_factura" name="nro_factura" required>
+                </div>
+
+                <div class="form-group" style="width: 70%" id="proveedor_id_div">
+                    <label for="proveedor_id">Proveedor:</label>
+                    <select class="form-control" id="proveedor_id" name="proveedor_id"></select>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <label for="custom-search-crear-compra-input">Producto:</label>
+                        <input type="text" id="custom-search-crear-compra-input" class="custom-search-input" placeholder="Buscar producto">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+
+                    <table id="tablaCompra" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <button id="btn-crear-compra" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-cancelar-compra" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cancelar</button>
+
+        </div>
+
+    </div>
+<?php } ?>
+
+<!--Provvedores-->
+<?php if (in_array('listar', $permisos_asignados['proveedores'])) { ?>
+    <div id="listar-proveedores-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de Proveedores</h2>
+
+            <!-- Boton nuevo proveedor-->
+            <?php if (in_array('listar', $permisos_asignados['proveedores'])) { ?>
+                <div class="row">
+                    <button id="btn-agregar-proveedor" class="btn-guardar">Nuevo Proveedor</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-proveedores-input" class="custom-search-input" placeholder="Buscar proveedor...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaProveedores" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Nombre de proveedor</th>
+                                <th>CUIT</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Direccion</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['proveedores'])) { ?>
+    <div id="crear-proveedor-modal" class="custom-modal">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Crear Proveedor</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <p id="mensajeAlertaCrearProveedor" style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="form-group">
+                            <label for="nombre">Razon social:</label>
+                            <input class="form-control" type="text" id="razon_social" name="razon_social" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="cuit">CUIT:</label>
+                            <input class="form-control" type="text" id="cuit" name="cuit" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="email">Email:</label>
+                            <input class="form-control" type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="telefono">Telefono:</label>
+                            <input class="form-control" type="text" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="direccion">Direccion:</label>
+                            <input class="form-control" type="text" id="direccion" name="direccion" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-crear-proveedor" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (in_array('modificar', $permisos_asignados['proveedores'])) { ?>
+    <div id="editar-proveedor-modal" class="custom-modal">
+        <input type="hidden" id="id" name="id">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Crear Proveedor</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <p id="mensajeAlertaEditarProveedor" style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="form-group">
+                            <label for="nombre">Razon social:</label>
+                            <input class="form-control" type="text" id="razon_social" name="razon_social" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="cuit">CUIT:</label>
+                            <input class="form-control" type="text" id="cuit" name="cuit" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="email">Email:</label>
+                            <input class="form-control" type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="telefono">Telefono:</label>
+                            <input class="form-control" type="text" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="direccion">Direccion:</label>
+                            <input class="form-control" type="text" id="direccion" name="direccion" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-editar-proveedor" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+<!--Promociones-->
+<?php if (in_array('listar', $permisos_asignados['promociones'])) { ?>
+    <div id="listar-promociones-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Lista de Promociones</h2>
+
+            <!-- Boton nuevo promocion-->
+            <?php if (in_array('listar', $permisos_asignados['promociones'])) { ?>
+                <div class="row">
+                    <button id="btn-agregar-promocion" class="btn-guardar">Nuevo Promocion</button>
+                </div>
+                <!-- Separador -->
+                <hr>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-search-container">
+                        <input type="text" id="custom-search-editar-promociones-input" class="custom-search-input" placeholder="Buscar promocion...">
+                        <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí se mostrará el DataTable -->
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tablaPromociones" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>porcentaje</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+<?php } ?>
+
+
+
+<?php if (in_array('modificar', $permisos_asignados['promociones'])) { ?>
+    <div id="editar-promocion-modal" class="custom-modal">
+        <input type="hidden" id="id" name="id">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Crear Promocion</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <p id="mensajeAlertaEditarPromocion" style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;"><i class="fas fa-exclamation-circle"></i> </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="form-group" style="width: 50%">
+                            <label for="nombre">Nombre:</label>
+                            <input class="form-control" type="text" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group" style="width: 50%">
+                            <label for="porcentaje">Porcentaje:</label>
+                            <input class="form-control" type="number" id="porcentaje" name="porcentaje" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-crear-promocion" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="btn-editar-promocion" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+
+<?php } ?>
+
+<?php if (in_array('listar', $permisos_asignados['usuarios'])) { ?>
+    <div id="asignar-punto-venta-modal" class="custom-modal">
+        <input type="hidden" id="id" name="id">
+        <div class="custom-modal-content-s">
+            <span class="custom-modal-close">&times;</span>
+            <h2>Asignar un punto de venta</h2>
+            <!-- Aquí se mostrará el DataTable -->
+            <p id="mensajeAlertaAsignarPuntoVenta" style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px; background-color: #ffe5e5;display: none;"><i class="fas fa-exclamation-circle"></i> </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo $_SESSION['usuario_id']; ?>">
+
+                    <div class="form-group">
+                        <label for="punto_venta_asignado">Punto de venta asignado: <?php echo $_SESSION['punto_venta']; ?></label>
+                        <div class="form-group">
+                            <select class="form-control" id="punto_venta_id" name="punto_venta_id" required>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-asignar-punto-venta" class="btn btn-guardar"><i class="fa-solid fa-times"></i>&nbsp;Guardar</button>
+            <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+        </div>
+    </div>
+
+<?php } ?>
+
+
+
+
+<div id="informe-ventas-modal" class="custom-modal">
+    <div class="custom-modal-content-xl">
+        <span class="custom-modal-close">&times;</span>
+        <h2>Ventas</h2>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="custom-search-container">
+
+                    <div class="column">
+                        <!-- Selector de tipo de comprobante -->
+                        <label for="tipo-comprobante">Tipo de comprobante:</label>
+                        <select id="tipo-comprobante">
+                            <option value="">Selecciona tipo de comprobante</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+
+                        <!-- Selector de clientes -->
+                        <label for="clientes">Cliente:</label>
+                        <select id="clientes">
+                            <option value="">Selecciona cliente</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+                    </div>
+                    <div class="column">
+                        <!-- Selector de vendedores -->
+                        <label for="vendedores">Vendedor:</label>
+                        <select id="vendedores">
+                            <option value="">Selecciona vendedor</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+
+                        <!-- Selector de sucursales -->
+                        <label for="sucursales">Sucursal:</label>
+                        <select id="sucursales">
+                            <option value="">Selecciona sucursal</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+                    </div>
+                    <div class="column">
+                        <!-- Selector de fechas -->
+                        <label for="fecha-inicio">Desde:</label>
+                        <input type="date" id="fecha-inicio">
+
+                        <label for="fecha-fin">Hasta:</label>
+                        <input type="date" id="fecha-fin">
+                    </div>
+
+                    <!-- Botón de búsqueda -->
+                    <button id="btn-buscar-informe-ventas" class="custom-search-button">Buscar</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- Aquí se mostrará el DataTable -->
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tablaInformeVentas" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>N° Comp.</th>
+                            <th>Tipo Comprobante</th>
+                            <th>Cliente</th>
+                            <th>Tipo IVA</th>
+                            <th>Cuit</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Total</th>
+                            <th>Importe IVA</th>
+                            <th>Vendedor</th>
+                            <th>Sucursal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente aquí -->
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+    </div>
+</div>
+
+
+<div id="informe-compras-modal" class="custom-modal">
+    <div class="custom-modal-content-xl">
+        <span class="custom-modal-close">&times;</span>
+        <h2>Ventas</h2>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="custom-search-container">
+
+
+                    <div class="column">
+                        <!-- Selector de vendedores -->
+                        <label for="proveedores">Proveedor:</label>
+                        <select id="proveedores">
+                            <option value="">Selecciona proveedor</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+
+                        <!-- Selector de sucursales -->
+                        <label for="sucursales2">Sucursal:</label>
+                        <select id="sucursales2">
+                            <option value="">Selecciona sucursal</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+                    </div>
+                    <div class="column">
+                        <!-- Selector de fechas -->
+                        <label for="fecha-inicio">Desde:</label>
+                        <input type="date" id="fecha-inicio2">
+
+                        <label for="fecha-fin">Hasta:</label>
+                        <input type="date" id="fecha-fin2">
+                    </div>
+
+                    <!-- Botón de búsqueda -->
+                    <button id="btn-buscar-informe-compras" class="custom-search-button">Buscar</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- Aquí se mostrará el DataTable -->
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tablaInformeCompras" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente aquí -->
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+    </div>
+</div>
+
+
+<div id="informe-stock-modal" class="custom-modal">
+    <div class="custom-modal-content-xl">
+        <span class="custom-modal-close">&times;</span>
+        <h2>Ventas</h2>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="custom-search-container">
+
+
+                    <div class="column">
+                        <!-- Selector de vendedores -->
+                        <label for="codigo2">Codigo:</label>
+                        <input type="text" id="codigo2" name="codigo2" required>
+                        <!-- Selector de sucursales -->
+                        <label for="sucursales3">Sucursal:</label>
+                        <select id="sucursales3">
+                            <option value="">Selecciona sucursal</option>
+                            <!-- Añade tus opciones aquí -->
+                        </select>
+                    </div>
+
+                    <!-- Botón de búsqueda -->
+                    <button id="btn-buscar-informe-stock" class="custom-search-button">Buscar</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- Aquí se mostrará el DataTable -->
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tablaInformeStock" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente aquí -->
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+    </div>
+</div>
+
+<div id="informe-libro-iva-ventas-modal" class="custom-modal">
+    <div class="custom-modal-content-xl">
+        <span class="custom-modal-close">&times;</span>
+        <h2>Libro IVA Ventas</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="custom-search-container">
+                    <div class="column">
+                        <label for="anio">Año:</label>
+                        <input type="text" id="anio" name="anio" required>
+                        <label for="mes">Mes:</label>
+                        <select id="mes">
+                            <option value="">Selecciona mes</option>
+                            <option value="01">Enero</option>
+                            <option value="02">Febrero</option>
+                            <option value="03">Marzo</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Mayo</option>
+                            <option value="06">Junio</option>
+                            <option value="07">Julio</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                    <!-- Botón de búsqueda -->
+                    <button  id="btn-buscar-informe-libro-iva-ventas" class="custom-search-button"><i class="fas fa-search"></i> Buscar</button>
+                    <button style="background-color: #4CAF50;" id="btn-imprimir-informe-libro-iva-ventas" class="custom-search-button"><i class="fas fa-print"></i> Imprimir</button>
+                    <button style="background-color: #1D5204;" id="btn-digital-informe-libro-iva-ventas" class="custom-search-button"><i class="fas fa-file-excel"></i> Exportar<br>Excel</button>
+                </div>
+
+                
+
+            </div>
+        </div>
+        <!-- Aquí se mostrará el DataTable -->
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tablaInformeLibroIvaVentas" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente aquí -->
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <button id="custom-modal-close-btn" class="custom-modal-close-btn"><i class="fa-solid fa-times"></i>&nbsp;Cerrar</button>
+    </div>
+</div>
+
+

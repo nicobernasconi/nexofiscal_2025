@@ -1,0 +1,1079 @@
+/* Estilos generales */
+
+
+/* Configuración básica del documento */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    position: relative;
+}
+
+
+/* Estilos de los elementos HTML */
+
+header,
+nav,
+section,
+footer {
+    margin: 0;
+}
+
+img {
+    width: 100%;
+}
+
+button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#btn-menu {
+    color: #fff;
+    /* Color del texto */
+    background-color: #333;
+    /* Color de fondo */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    text-decoration: none;
+    /* Eliminar subrayado */
+    font-size: 1.2em;
+    /* Tamaño del texto */
+    display: inline-block;
+    /* Para aplicar padding */
+    transition: background-color 0.3s;
+    /* Transición suave del color de fondo */
+    width: 30px!important;
+}
+
+#btn-menu:hover {
+    background-color: #666;
+    /* Color de fondo al pasar el mouse */
+}
+
+#btn-menu i {
+    margin-right: 5px;
+    /* Espacio a la derecha del ícono */
+}
+
+
+/* Estilos específicos para el clima */
+
+.clima {
+    width: 45%;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+}
+
+#time {
+    font-size: 40px;
+    /* Tamaño más grande para la hora */
+    font-weight: bold;
+    /* Opcional: hace la hora más prominente */
+}
+
+#date {
+    font-size: 18px;
+    /* Tamaño más pequeño para la fecha */
+}
+
+
+/* Estilos de la navegación */
+
+
+/* Cabecera */
+
+header {
+    background: #0098DA;
+    width: 100%;
+    min-height: 70px;
+    position: relative;
+}
+
+
+/* Barra de navegación */
+
+nav {
+    display: inline-block;
+    width: 60%;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    text-align: right;
+}
+
+
+/* Lista de elementos de la barra de navegación */
+
+nav ul {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+
+/* Elementos de la barra de navegación */
+
+nav ul li {
+    margin-right: 5px;
+    display: inline-block;
+}
+
+
+/* Enlaces de los elementos de la barra de navegación */
+
+nav ul li a {
+    text-align: center;
+    width: 120px;
+    text-decoration: none;
+    display: inline-block;
+    color: #000;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #91D8F7;
+}
+
+
+/* Estilos al pasar el ratón sobre los enlaces */
+
+nav ul li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background-color: #0877a7;
+}
+
+
+/* Logo Nexofiscal */
+
+.logoinicio {
+    float: left;
+    width: 350px;
+    background-image: linear-gradient(to right, black, transparent);
+    height: 70px;
+    padding: 0px 10px;
+}
+
+.logoinicio img {
+    float: left;
+    width: 75%;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+
+/* Datos del contribuyente */
+
+.datoscontribuyente {
+    width: calc(100% - 490px);
+    text-align: right;
+    height: 32vh;
+    min-height: 200px;
+    background: rgb(221, 220, 220);
+    padding: 1px 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 450px;
+}
+
+.datoscontribuyente h1 {
+    font-size: 35px;
+    font-weight: 700;
+    line-height: .5;
+}
+
+.datoscontribuyente p {
+    font-size: 14px;
+    margin-top: 0px;
+    line-height: 0;
+}
+
+
+/* Datos del cliente */
+
+.datoscliente {
+    position: fixed;
+    top: 100px;
+    left: 30px;
+}
+
+#titdc {
+    font-size: 12px;
+    line-height: .8;
+}
+
+#clientedc {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: .5;
+}
+
+#cuitdc {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: .5;
+}
+
+#domiciliodc {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: .5;
+}
+
+.btncliente {
+    display: inline-block;
+    background: #0877a7;
+    color: #fff;
+    width: 180px;
+    height: 40px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+    white-space: normal;
+    overflow: hidden;
+    padding: 0;
+    text-decoration: none;
+}
+
+.btncliente:hover {
+    color: #fff;
+    background-color: #91D8F7;
+}
+
+
+/* Búsqueda de producto */
+
+.busquedaproducto {
+    display: inline-block;
+    position: fixed;
+    top: 250px;
+    left: 25px;
+    width: 100%;
+    vertical-align: center;
+}
+
+.busquedaproducto form {
+    display: inline-block;
+    width: calc(100% - 680px);
+}
+
+input[type="search"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: -10px;
+    display: inline-block;
+    width: calc(100% - 680px);
+}
+
+.busquedaproducto select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: -10px;
+    display: inline-block;
+    width: calc(100% - 680px);
+}
+
+
+/* Botonera de productos */
+
+.btnproduct {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.btnproduct ul {
+    display: inline-block;
+}
+
+.btnproduct ul li {
+    display: inline-block;
+}
+
+.btnproduct ul li a {
+    display: inline-block;
+    background: #0877a7;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+    white-space: normal;
+    overflow: hidden;
+    padding: 0;
+    text-decoration: none;
+}
+
+.btnproduct ul li a:hover {
+    color: #fff;
+    background-color: #91D8F7;
+}
+
+
+/* Totales */
+
+.total {
+    position: fixed;
+    bottom: 70px;
+    left: 50px;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.totaltotal {
+    position: fixed;
+    bottom: 70px;
+    right: 480px;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.montoPagar {
+    bottom: 70px;
+    right: 480px;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+
+/* Sidebar derecho */
+
+.sidebar {
+    position: absolute;
+    top: 80px;
+    right: 0px;
+    width: 450px;
+    border: 1px solid #000;
+    height: 85vh;
+    overflow-y: auto;
+}
+
+.controlessidebar {
+    text-decoration: none;
+    background: rgb(218, 216, 216);
+    min-width: 100%;
+}
+
+.controlessidebar a {
+    display: inline-block;
+    text-decoration: none;
+    min-width: 28%;
+    text-align: center;
+    padding: 10px;
+    color: #000;
+}
+
+.activo {
+    text-decoration: none;
+    color: #fff !important;
+    min-width: 150px;
+    background: rgb(129, 129, 129);
+}
+
+.pludirectos {
+    text-align: center;
+    display: inline-block;
+    overflow-y: scroll;
+    margin: 10px 0px;
+    min-height: 80vh;
+    min-width: 100%;
+    vertical-align: middle;
+}
+
+.pludirectosbtn {
+    display: inline-block;
+    justify-content: center;
+    /* Centrar horizontalmente */
+    align-items: center;
+    /* Centrar verticalmente */
+    width: 90px;
+    height: 70px;
+    color: #fff;
+    background: #0098DA;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: center;
+    font-size: 14px;
+    white-space: normal;
+    overflow: hidden;
+    padding: 0;
+    text-decoration: none;
+}
+
+.pludirectosbtn:hover {
+    color: #fff;
+    background-color: #91D8F7;
+}
+
+
+/* Botonera del pie */
+
+.botoneradown {
+    display: inline-block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    min-width: 100%;
+    height: 60px;
+    background: rgba(204, 204, 204, 0.623);
+}
+
+.botoneradown ul {
+    display: inline-block;
+    width: 100%;
+}
+
+.botoneradown ul li {
+    display: inline-block;
+    min-width: 11.5%;
+    margin-left: .3%;
+}
+
+.botoneradownbtn {
+    display: inline-block;
+    height: 45px;
+    color: #fff;
+    width: 100%;
+    background: #0098DA;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 45px;
+    font-size: 14px;
+    white-space: normal;
+    overflow: hidden;
+    padding: 0;
+    text-decoration: none;
+    margin-top: -8px;
+}
+
+.botoneradownbtn:hover {
+    color: #fff;
+    background-color: #91D8F7;
+}
+
+
+/* Otro modal */
+
+.custom-modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    position: relative;
+    border-radius: 5px;
+}
+
+.custom-modal-content-s {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    position: relative;
+    border-radius: 5px;
+}
+
+.custom-modal-content-l {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    position: relative;
+    border-radius: 5px;
+}
+
+.custom-modal-content-xl {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 95%;
+    position: relative;
+    border-radius: 5px;
+}
+
+.custom-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.custom-modal-close:hover,
+.custom-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.custom-modal-close-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.custom-modal-close-btn:hover {
+    background-color: #d32f2f;
+}
+
+
+/* Tabla de productos */
+
+.tablaProductos {
+    width: 70%;
+}
+
+.table-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-productos {
+    flex: 8;
+}
+
+.table-promociones {
+    flex: 2;
+    margin-left: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+@media (max-width: 1800px){
+    .tablaProductos {
+        width: 60%;
+    }
+    .table-productos{
+        max-width: 100% !important;
+    }
+    .table-productos div{
+        max-width: 100% !important;
+    }
+    .table-productos table{
+        max-width: 100% !important;
+    }
+    .table-promociones{
+        max-width: 140px !important;
+    }
+    .table-promociones table{
+        max-width: 100% !important;
+    }
+    body{
+        font-size: 0.9em !important;
+    }
+}
+@media (max-width: 1300px){
+    .table-productos table{
+        max-width: 700px !important;
+    }
+    .tablaProductos {
+        width: 60%;
+        padding-left:10px ;
+    }
+    .table-promociones{
+        max-width: 120px !important;
+    }
+    body{
+        font-size: 0.8em !important;
+    }
+    .botoneradownbtn {
+        font-size: 12px !important;
+    }
+    .table-productos input[type="number"] {
+        font-size: 12px !important;
+    }
+}
+
+/*los input dentro de la tabla, deben tener fuente 15 y el cuadro de texto debe ocupat el 100% de kla columna*/
+
+.table-productos input[type="number"] {
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+/* Contenedor del formulario */
+
+.form-container {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+
+/* Grupo de elementos del formulario */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+}
+
+
+/* Entradas de texto del formulario */
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+/* Acciones del formulario */
+
+.form-actions {
+    text-align: center;
+}
+
+.btn-guardar,
+.btn-cancelar {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/* Estilos del botón "Guardar" */
+
+.btn-guardar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+/* Estilos del botón "Cancelar" */
+
+.btn-cancelar {
+    background-color: #f44336;
+    color: white;
+}
+
+
+/* Distribución de elementos en el formulario */
+
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex-basis: calc(33.33% - 20px);
+    margin-bottom: 20px;
+}
+
+
+/* Limpiar flotantes cada tres elementos */
+
+.form-group:nth-child(3n+1) {
+    clear: left;
+}
+
+.form-control {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+
+/* Etiquetas de los campos del formulario */
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+/* Estilos para paneles */
+
+.panel {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.panel-heading {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 15px;
+}
+
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+
+/* Estilos para radios */
+
+.radio-panel {
+    padding-left: 20px;
+}
+
+.radio-panel input[type="radio"] {
+    margin-right: 10px;
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+}
+
+.is-invalid::placeholder {
+    color: #721c24 !important;
+}
+
+.centrado {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+/* Estilo para el contenedor del input de búsqueda */
+
+.custom-search-container {
+    position: relative;
+}
+
+
+/* Estilo para el input de búsqueda */
+
+.custom-search-input {
+    width: 100%;
+    padding: 10px 40px 10px 20px;
+    /* Ajusta el padding para dejar espacio para el icono */
+    font-size: 16px;
+    border: 2px solid #ccc;
+    /* Borde gris */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    box-sizing: border-box;
+    /* Incluye el padding y el borde en el ancho total */
+    outline: none;
+    /* Quita el contorno al enfocar */
+}
+
+
+/* Estilo para el icono */
+
+.custom-search-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #888;
+    /* Color del icono */
+}
+
+.indicadorCarga {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 87%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.stock-minimo-alcanzado {
+    background-color: #ffcccc;
+}
+
+.estado-badge {
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.estado-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.estado-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.estado-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-vendedor {
+    background-color: #0098DA;
+    /* Verde */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    width: 70%;
+}
+
+.btn-vendedor:hover {
+    background-color: #94cae0;
+}
+
+.btn-promocion {
+    background-color: #4d664b;
+    /* Verde */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    width: 70%;
+}
+
+.btn-promocion:hover {
+    background-color: #94ac92;
+}
+
+#tablaVendedores {
+    text-align: center;
+}
+
+.custom-modal ul {
+    list-style-type: none;
+    /* Eliminar marcadores de lista */
+    padding: 0;
+    /* Eliminar padding */
+}
+
+.custom-modal ul li {
+    margin-bottom: 10px;
+    /* Espacio debajo de cada elemento de la lista */
+}
+
+.custom-modal ul li a {
+    color: #333;
+    /* Color del texto */
+    text-decoration: none;
+    /* Eliminar subrayado */
+    font-size: 1.2em;
+    /* Tamaño del texto */
+    display: flex;
+    /* Para alinear el ícono y el texto */
+    align-items: center;
+    /* Alinear verticalmente el ícono y el texto */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    background-color: #f2f2f2;
+    /* Color de fondo */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra */
+    transition: background-color 0.3s;
+    /* Transición suave del color de fondo */
+}
+
+.custom-modal ul li a:hover {
+    background-color: #e6e6e6;
+    /* Color de fondo al pasar el mouse */
+}
+
+.custom-modal ul li a i {
+    margin-right: auto;
+    margin-left: auto;
+    /* Espacio a la derecha del ícono */
+}
+
+#custom-modal-close-btn {
+    color: #fff;
+    /* Color del texto */
+    background-color: #333;
+    /* Color de fondo */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    border: none;
+    /* Eliminar borde */
+    cursor: pointer;
+    /* Cambiar el cursor al pasar el mouse */
+    transition: background-color 0.3s;
+    /* Transición suave del color de fondo */
+}
+
+#custom-modal-close-btn:hover {
+    background-color: #666;
+    /* Color de fondo al pasar el mouse */
+}
+
+#custom-modal-close-btn i {
+    margin-right: 5px;
+    /* Espacio a la derecha del ícono */
+}
+
+.btn-cerrar {
+    color: #fff;
+    /* Color del texto */
+    background-color: #333;
+    /* Color de fondo */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    border: none;
+    /* Eliminar borde */
+    cursor: pointer;
+    /* Cambiar el cursor al pasar el mouse */
+    transition: background-color 0.3s;
+    /* Transición suave del color de fondo */
+}
+
+.btn-cerrar:hover {
+    background-color: #666;
+    /* Color de fondo al pasar el mouse */
+}
+
+.btn-cerrar i {
+    margin-right: 5px;
+    /* Espacio a la derecha del ícono */
+}
+
+.custom-search-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.custom-search-container .column {
+    flex: 1 0 20%;
+    /* crece, no se encoge, base 20% */
+    padding: 5px;
+}
+
+.custom-search-container select,
+.custom-search-container input[type="date"],
+.custom-search-container input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.custom-search-container label {
+    margin-bottom: 5px;
+    display: block;
+}
+
+.custom-search-icon {
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.custom-search-button {
+    background-color: #007bff;
+    /* Color de fondo del botón */
+    color: #fff;
+    /* Color del texto del botón */
+    border: none;
+    /* Quita el borde del botón */
+    padding: 10px 20px;
+    /* Espaciado interno del botón */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+    border-radius: 5px;
+    /* Borde redondeado del botón */
+    margin-left: 30px;
+    /* Espacio superior del botón */
+    transition: background-color 0.3s;
+}
+
+.custom-search-button:hover {
+    background-color: #0056b3;
+    /* Cambia el color de fondo al pasar el cursor sobre el botón */
+}
+
+.select2 {
+    width: 80%!important;
+}

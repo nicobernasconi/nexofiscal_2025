@@ -1,0 +1,72 @@
+<?php
+// Iniciar la sesión si no está iniciada
+include("../../includes/config.php");
+// Iniciar la sesión si no está iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+
+// Importar la clase GuzzleHttp\Client
+require '../../vendor/autoload.php';
+
+use GuzzleHttp\Client;
+
+// URL de la API
+$url = $ruta.'api/clientes';
+
+// Parámetros de la solicitud
+$params = ['headers' => [
+            'Content-Type' => 'application/json',
+            // Obtener el token de seguridad de las variables de sesión
+            'Authorization' => 'Bearer ' . $_SESSION['token']
+        ],'query'=>
+        [
+            'nombre' => isset($_GET['q']) ? $_GET['q'] : '',
+            'nro_cliente' => isset($_GET['q']) ? $_GET['q'] : '',
+            'cuit' => isset($_GET['q']) ? $_GET['q'] : ''
+
+        ]
+    
+];
+
+// Crear una instancia del cliente Guzzle
+$client = new Client();
+
+try {
+    // Enviar la solicitud GET
+    $response = $client->request('GET', $url, $params);
+
+    // Obtener el cuerpo de la respuesta en formato JSON
+    $body = $response->getBody()->getContents();
+
+   // Decodificar el JSON en un array asociativo
+    $data = json_decode($body, true);
+    // Transformar los datos según el nuevo formato requerido
+    $formattedData = array_map(function($item) {
+        return [
+            'id' => $item['id'],
+            'text' => 'Cliente N°'.$item['nro_cliente'].' - '.$item['nombre'].' - CUIL/CUIT: '.$item['cuit'],
+            'nombre' => $item['nombre'],
+            'nro_cliente' => $item['nro_cliente'],
+            'direccion'=> $item['direccion_comercial'],
+            'telefono'=> $item['telefono'],
+            'email'=> $item['email'],
+            'cuit'=> $item['cuit'],
+            'localidad'=>$item['localidad']['nombre'],
+            'tipo_iva_nombre'=>$item['tipo_iva']['nombre'],
+
+        ];
+    }, $data);
+    
+    // Establecer la cabecera de respuesta como JSON
+    header('Content-Type: application/json');
+
+    // Devolver los datos en formato JSON
+    echo json_encode($formattedData);
+} catch (Exception $e) {
+    // Manejar cualquier excepción que ocurra durante la solicitud
+    echo "Error: " . $e->getMessage();
+}
+
