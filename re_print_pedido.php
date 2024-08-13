@@ -27,11 +27,19 @@ try {
 			'Content-Type' => 'application/json',
 			// Obtener el token de seguridad de las variables de sesión
 			'Authorization' => 'Bearer ' . $_SESSION['token']
+		],
+		'query' => [
+			'sucursal_id' => $_SESSION['sucursal_id']
 		]
 	]);
 
 	$bodyContents = $response->getBody()->getContents();
 	$comprobante = json_decode($bodyContents, true)[0] ?? [];
+
+		$total_con_descuento = $comprobante['total'];
+
+
+		
 
 	// Datos de la factura
 
@@ -61,6 +69,7 @@ try {
 	]);
 
 	$bodyContents = $response->getBody()->getContents();
+
 
 
 	$productos = json_decode($bodyContents, true);
@@ -184,7 +193,8 @@ try {
 		'productos' => $productos,
 		'total_iva' => $importe_iva,
 		'iva' => $iva,
-		'total' => $importe_gravado,
+		//'total' => $importe_gravado,
+		'total' => $total_con_descuento,
 		'vencimiento_cae' => $comprobante['fecha_vencimiento'],
 		'destinatario' => $comprobante['cliente']['direccion_comercial'],
 		'cliente_nombre' => $cliente_nombre,
