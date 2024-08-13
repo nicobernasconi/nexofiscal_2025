@@ -60,11 +60,11 @@
 
          <?php if (in_array('crear', $permisos_asignados['cierre_cajas'])) { ?>
              <li>
-                 <a class="botoneradownbtn" id="btncierredecaja" href="#"><i class="fas fa-book"></i> CERRAR CAJA (F3)</a>
+                 <a class="botoneradownbtn" id="btncierredecaja" href="#"><i class="fas fa-book"></i> CERRAR CAJA (F9)</a>
              </li>
          <?php } else { ?>
              <li>
-                 <a class="botoneradownbtn" href="#" style="pointer-events: none; cursor: default;background-color: #c2c2c2;"><i class="fas fa-book"></i> CERRAR CAJA (F3)</a>
+                 <a class="botoneradownbtn" href="#" style="pointer-events: none; cursor: default;background-color: #c2c2c2;"><i class="fas fa-book"></i> CERRAR CAJA (F9)</a>
              </li>
          <?php } ?>
      </ul>

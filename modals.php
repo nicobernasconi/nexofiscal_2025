@@ -359,7 +359,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="custom-search-container">
-                        <input type="text" id="custom-search-clientes-input" class="custom-search-input" placeholder="Buscar producto...">
+                        <input type="text" id="custom-search-clientes-input" class="custom-search-input" placeholder="Buscar cliente...">
                         <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
                     </div>
                 </div>

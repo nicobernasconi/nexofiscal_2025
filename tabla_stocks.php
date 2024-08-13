@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="custom-search-container">
-                <input type="text" id="custom-search-comprobantes-input" class="custom-search-input" placeholder="Buscar comprobante...">
+                <input type="text" id="custom-search-comprobantes-input" class="custom-search-input" placeholder="Buscar poducto...">
                 <i class="fas fa-search custom-search-icon"></i>
             </div>
         </div>

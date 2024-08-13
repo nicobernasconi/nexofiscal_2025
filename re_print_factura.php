@@ -29,10 +29,14 @@ try {
 			'Content-Type' => 'application/json',
 			// Obtener el token de seguridad de las variables de sesión
 			'Authorization' => 'Bearer ' . $_SESSION['token']
+		],
+		'query' => [
+			'sucursal_id' => $_SESSION['sucursal_id']
 		]
 	]);
 
 	$bodyContents = $response->getBody()->getContents();
+
 	$comprobante = json_decode($bodyContents, true)[0] ?? [];
 
 	// Datos de la factura
@@ -235,7 +239,7 @@ try {
 	// Opciones para el archivo
 	if ($tipo_template_archivo == 'tickets') {
 		$options = array(
-			"width" => 1.7, // Ancho de la página en pulgadas (típico para ticket)
+			"width" => 3.1, // Ancho de la página en pulgadas (típico para ticket)
 			"height" => 5.5, // Alto de la página en pulgadas (típico para ticket)
 			"marginLeft" => 0.1, // Margen izquierdo en pulgadas (típico para ticket)
 			"marginRight" => 0.1, // Margen derecho en pulgadas (típico para ticket)

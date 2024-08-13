@@ -33,6 +33,8 @@ $params = [
         'nombre' => isset($searchValue) ? $searchValue :null,
         'cuit' => isset($searchValue) ? $searchValue :null,
         'nro_cliente' => isset($searchValue) ? $searchValue :null,
+        'order_by' => $columnName,
+        'sort_order' => $columnSortOrder,
         'limit'=>$rowperpage,
         'offset'=>$row 
 

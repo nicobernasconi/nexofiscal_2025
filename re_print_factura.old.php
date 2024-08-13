@@ -7,7 +7,7 @@ include("includes/session_parameters.php");
 
 $id = $_POST['id'];
 $tipo_template_archivo = $_POST['tipo_template'] ?? 'tickets';
-
+$tipo_template_path = ($_POST['tipo_comprobante'] == 'NC') ? 'nota_credito' : $tipo_template_archivo;
 
 
 // URL de la API
@@ -16,6 +16,8 @@ $url = $ruta . 'api/comprobantes/' . $id;
 // Importar la clase GuzzleHTTP\Client
 
 use GuzzleHttp\Client;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 // Crear una instancia del cliente Guzzle
 $client = new Client();
 
@@ -48,6 +50,9 @@ try {
 	$cliente_nombre = $comprobante['cliente']['nombre'];
 	$direccion_cliente = $comprobante['cliente']['direccion_comercial'];
 
+	if ($_POST['tipo_comprobante'] == 'NC') {
+		$id = $comprobante['comprobante_id_baja'];
+	}
 
 	$url_renglones = $ruta . 'api/renglones_comprobantes/' . $id . '/';
 	$client = new Client();
@@ -61,8 +66,6 @@ try {
 	]);
 
 	$bodyContents = $response->getBody()->getContents();
-
-
 	$productos = json_decode($bodyContents, true);
 
 
@@ -94,7 +97,7 @@ try {
 		foreach ($productos as $producto) {
 			if ($producto['tasa_iva'] == $tasa) {
 				$importe_gravado += ($producto['total_linea']);
-				$importe_iva += ($producto['total_linea']-($producto['total_linea'] / (1 + ($producto['tasa_iva']))));
+				$importe_iva += ($producto['total_linea'] * ($producto['tasa_iva']));
 				$importe_sin_iva += ($producto['total_linea'] / (1 + ($producto['tasa_iva'])));
 			}
 		}
@@ -165,6 +168,17 @@ try {
 	));
 
 
+	$options = new QROptions;
+	$options->quality = 90;
+	$options->scale = 1;
+	// Crear una instancia de la clase QRCode
+	$qrcode = new QRCode($options);
+
+
+	// Generar el código QR y guardarlo en un archivo temporal
+	$ruta_temporal_imagen = 'comprobantes/qrcode.png';
+	$image = $qrcode->render($comprobante['qr']);
+
 
 
 	$template_data = array(
@@ -178,15 +192,17 @@ try {
 		'tipo_factura' => $comprobante['tipo_factura'],
 		'codigo' => $comprobante['tipo_factura'],
 		'punto_venta' => $comprobante['punto_venta'],
-		'numero' => $comprobante['numero']??0,
+		'numero' => $comprobante['numero_factura'],
 		'fecha' => $comprobante['fecha'],
 		'concepto' => $comprobante['concepto'],
 		'productos' => $productos,
 		'total_iva' => $importe_iva,
 		'iva' => $iva,
 		'total' => $importe_gravado,
+		'cae' => $comprobante['cae'],
 		'vencimiento_cae' => $comprobante['fecha_vencimiento'],
 		'destinatario' => $comprobante['cliente']['direccion_comercial'],
+		'codigo_qr' => $image,
 		'cliente_nombre' => $cliente_nombre,
 		'direccion_cliente' => $direccion_cliente,
 		'cliente_cuit' => $comprobante['cliente']['cuit'],
@@ -200,7 +216,7 @@ try {
 	$query_string = http_build_query($template_data);
 
 	// Construye la URL completa del template
-	$template_url = $ruta . "/templates/pedidos/{$tipo_template_archivo}.php";
+	$template_url = $ruta . "/templates/{$tipo_template_path}/{$tipo_template_archivo}.php";
 
 
 	// Realiza la solicitud POST al template
@@ -214,7 +230,7 @@ try {
 
 
 	// Nombre para el archivo (sin .pdf)
-	$name = "comprobante_cae_{$comprobante['numero']}";
+	$name = "comprobante_cae_{$comprobante['cae']}";
 
 	// Opciones para el archivo
 	if ($tipo_template_archivo == 'tickets') {

@@ -102,7 +102,10 @@
                     <table>
                         <?php
                         $productos = $_POST['productos'];
-                        foreach ($productos as $producto) : ?>
+                        $total_iva = 0;
+                        foreach ($productos as $producto) : 
+                            $total_iva += round(($producto['total_linea'])-(($producto['total_linea']) /(1+($producto['tasa_iva']))), 2);
+                        ?>
                             <tr>
                                 <td><?php echo $producto['cantidad']; ?></td>
                                 <td><?php echo $producto['descripcion']; ?></td>
@@ -116,31 +119,37 @@
         </tr>
         <tr>
 
-                <td class="border-top padding-t-3 padding-b-3">
-                    <div>
-                        <table>
-                            <?php
-                            $iva = $_POST['iva'];
-                            foreach ($iva as $value) : ?>
-                                <tr>
-                                    <td>TOTAL NETO SIN IVA</td>
-                                    <td>$<?php echo $value['BaseImp'] - $value['Importe'];  ?></td>
-                                </tr>
-                                <tr>
-                                    <td>IVA <?php echo ($value['Id'] == 5) ? '21%' : (($value['Id'] == 4) ? '10.5%' : '0%'); ?></td>
-                                    <td>$<?php echo $value['Importe']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </div>
-                </td>
+            <td class="border-top padding-t-3 padding-b-3">
+                <div>
+                    <table>
+                        <?php
+                        $iva = $_POST['iva'];
+                        $total = $_POST['total'] - $total_iva;
+                        foreach ($iva as $value) :
+                            
+
+                        ?>
+                            <tr>
+                                <td>IVA <?php echo ($value['Id'] == 5) ? '21%' : (($value['Id'] == 4) ? '10.5%' : '0%'); ?></td>
+                                <td>$<?php echo $value['Importe']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </td>
 
         </tr>
         <tr>
             <td class="border-top padding-t-3 padding-b-3">
                 <div>
                     <table>
+                    <tr>
+                            <td>SUBTOTAL</td>
+                            <td>$<?php echo $total; ?></td>    
+
+                        </tr>
                         <tr>
+
                             <td>TOTAL</td>
                             <td>$<?php echo $_POST['total']; ?></td>
                         </tr>
@@ -149,7 +158,7 @@
             </td>
         </tr>
         <tr>
-            
+
         </tr>
         <tr class="text-center">
             <td>

@@ -943,7 +943,14 @@ $(document).ready(function() {
                         copy: "Copiar",
                         colvis: "Visibilidad",
                     },
+
+
                 },
+                //no ordenar por la columna 3 y 5
+                columnDefs: [{
+                    orderable: false,
+                    targets: [3, 5],
+                }, ],
                 lengthChange: false,
                 //searching: false,
                 pageLength: 10, // Establecer la cantidad de productos por página predeterminada
@@ -1664,7 +1671,7 @@ $(document).ready(function() {
         // Verifica si hay productos agregados
 
         if (products[selectedVendedor].length > 0) {
-            if ($('#venta_tipo').val() == '1') {
+            if (venta_rapida == "0") {
                 $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                 $("#tipo_comprobante_id").val(3);
             } else {
@@ -3119,27 +3126,11 @@ $(document).ready(function() {
         // Verificar si se presiona la tecla Control (Ctrl)
         if (event.ctrlKey) {
             switch (event.which) {
-                case 112: // Tecla F1
-                    console.log("Se ha presionado la combinación Ctrl + F1");
-                    break;
-                case 115: // Tecla F4
-                    clearProductList();
-                    break;
-                case 116: // Tecla F5
-                    console.log("Se ha presionado la combinación Ctrl + F5");
-                    break;
-                case 117: // Tecla F6
-                    console.log("Se ha presionado la combinación Ctrl + F6");
-                    break;
-                case 118: // Tecla F7
-                    break;
-                case 119: // Tecla F8
-                    console.log("Se ha presionado la combinación Ctrl + F8");
-                    break;
+
                 case 121: // Tecla F10
 
                     if (products[selectedVendedor].length > 0) {
-                        if (venta_rapida != "1") {
+                        if (venta_rapida == "0") {
 
                             $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                             $("#tipo_comprobante_id").val(3);
@@ -3163,14 +3154,11 @@ $(document).ready(function() {
                 case 27: // Tecla de Escape
                     $(".custom-modal").fadeOut();
                     break;
-                case 112: // Tecla F1
-                    console.log("Se ha presionado la tecla F1");
+                case 113: // Tecla F2
+                    $("#crear-gasto-modal").fadeIn().css("z-index", z_index++);
                     break;
                 case 115: // Tecla F4
                     clearProductList();
-                    break;
-                case 116: // Tecla F5
-                    console.log("Se ha presionado la tecla F5");
                     break;
                 case 117:
                     // Tecla F6
@@ -3239,8 +3227,68 @@ $(document).ready(function() {
                     $("#tablaProductosPrecios").DataTable().search("").draw();
                     break;
                 case 119: // Tecla F8
-                    console.log("Se ha presionado la tecla F8");
+
+
+                    // Cargar los valores en la tabla tablaVendedores
+                    $.ajax({
+                        url: "ajax/vendedores/list_select.php",
+                        dataType: "json",
+                        success: function(data) {
+                            var tablaVendedores = $("#tablaVendedores tbody");
+                            tablaVendedores.empty();
+
+                            // Recorrer los datos y agregar filas a la tabla
+                            data.forEach(function(vendedor) {
+                                var fila = $("<tr>");
+                                var boton = $("<button>")
+                                    .text(vendedor.text)
+                                    .attr("data-id", vendedor.id)
+                                    .addClass("btn-vendedor");
+
+                                var columnaBoton = $("<td>").append(boton);
+                                fila.append(columnaBoton);
+
+                                tablaVendedores.append(fila);
+                            });
+
+                            //destroy datatable if exist
+                            if ($.fn.DataTable.isDataTable("#tablaVendedores")) {
+                                $("#tablaVendedores").DataTable().destroy();
+                            }
+                            //crear datatable de vendedores , no se puede buscar es una pagina, tiene scroll verticat  y no tiene paginacion
+                            $("#tablaVendedores").DataTable({
+                                paging: false,
+                                searching: false,
+                                info: false,
+                                scrollY: "600px",
+                                scrollCollapse: true,
+                            });
+
+                            // Agregar evento click a los botones de vendedor
+                            $(".btn-vendedor").click(function() {
+                                var id = $(this).attr("data-id");
+                                var text = $(this).text();
+                                $("#vendedor_nombre").html(text);
+                                selectedVendedor = id;
+                                updateProductList(); // Actualizar la tabla de productos
+                                updatePromotionList(); // Actualizar la lista de promociones
+                                calculateSubtotal();
+
+                                // Cerrar el modal de lista de vendedores
+                                $("#lista-vendedores-modal").fadeOut();
+                            });
+                            $("#lista-vendedores-modal").fadeIn().css("z-index", z_index++);
+                        },
+                        error: function() {
+                            console.log("Error al cargar los vendedores");
+                        },
+                    });
                     break;
+
+                case 120: // Tecla F9
+                    $("#cierre-caja-modal").fadeIn().css("z-index", z_index++);
+                    break;
+
                 case 121: // Tecla F10
                     if (tipo_iva_id != 4) {
                         if (products[selectedVendedor].length > 0) {
