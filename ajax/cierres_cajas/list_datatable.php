@@ -61,6 +61,7 @@ try {
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
 
+
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
 
@@ -75,7 +76,7 @@ try {
             'efectivo_inicial' => $item['efectivo_inicial'] ,
             'efectivo_final' => $item['efectivo_final'] ,
             'usuario_id'=> $item['usuario']['id'],
-            'usuario_nombre'=> $item['usuario']['nombre'],
+            'usuario_nombre_completo'=> $item['usuario']['nombre'],
             'fecha'=> $item['fecha'],
 
             

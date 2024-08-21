@@ -1,28 +1,22 @@
 try {
-    var ditribuidir_id = $("#distribuidor_id").val();
     $("#tablaEmpresas").DataTable({
         processing: true,
         serverSide: true,
         searching: true,
         ajax: {
-            url: "ajax/empresas/list_datatable.php?distribuidor_id=" + ditribuidir_id,
+            url: "ajax/distribuidores/list_datatable.php",
             type: "POST",
         },
-        columns: [{
-                //checkbox id="check-all" class="flat"
+        columns: [
 
-                data: null,
-                render: function(data, type, row) {
-                    return `<input type="checkbox" name="chkEmpresa" id="check-all" class="flat" value="${row.id}">`;
-                },
+            {
+                data: "nombre",
+                "title": "Nombre"
             },
-
-            { data: "nombre", "title": "Nombre" },
-            { data: "email", "title": "Email" },
-            { data: "cuit", "title": "CUIT" },
             { data: "telefono", "title": "Telefono" },
-            { data: "tipo_iva", "title": "Tipo IVA" },
-            { data: "inicio_actividad", "title": "Inicio Actividad" },
+            { data: "responsable", "title": "Responsable" },
+            { data: "email", "title": "Email" },
+            { data: "empresas", "title": " Cantidad de Empresas" },
             { data: "acciones", "title": "Acciones" },
         ],
 
@@ -112,7 +106,7 @@ $('#btn-agregar-empresa').on('click', function() {
 
 });
 
-$("#btn-guardar-empresa").on("click", function() {
+$("#btn-guardar-grupo-empresa").on("click", function() {
     //validar campos
 
     let camposVacios = $('#empresaForm input[required], #empresaForm textarea[required], #empresaForm select[required]').filter(function() {
@@ -130,12 +124,12 @@ $("#btn-guardar-empresa").on("click", function() {
     }
 
     $.blockUI({
-        message: '<h1>Guardando empresa...</h1>',
+        message: '<h1>Guardando...</h1>',
     });
     $.ajax({
         type: "POST",
-        url: "ajax/empresas/add.php",
-        data: $("#empresaForm").serialize(),
+        url: "ajax/distribuidores/add.php",
+        data: $("#grupoEmpresaForm").serialize(),
         success: function(response) {
             var data = JSON.parse(response);
 
@@ -147,7 +141,7 @@ $("#btn-guardar-empresa").on("click", function() {
                     styling: 'bootstrap3'
                 });
                 $("#tablaEmpresas").DataTable().ajax.reload();
-                $("#empresaForm")[0].reset();
+                $("#grupoEmpresaForm")[0].reset();
             } else {
                 new PNotify({
                     title: 'Error',

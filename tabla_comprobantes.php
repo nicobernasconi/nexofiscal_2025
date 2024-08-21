@@ -7,7 +7,7 @@ if (in_array('listar', $permisos_asignados['comprobantes'])) { ?>
         <div class="row">
             <div class="col-md-8">
                 <div class="custom-search-container">
-                    <input type="text" id="custom-search-comprobantes-input" class="custom-search-input" placeholder="Buscar por Nro. de comprobante...">
+                    <input type="number" min="0" step="1" id="custom-search-comprobantes-input" class="custom-search-input" placeholder="Buscar por Nro. de comprobante...">
                     <i class="fas fa-search custom-search-icon"></i>
                 </div>
             </div>

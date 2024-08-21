@@ -35,6 +35,8 @@ $params = [
         'nombre' => isset($searchValue) ? $searchValue :null,
         'numero' => isset($searchValue) ? $searchValue :null,
         'limit'=>$rowperpage,
+        'order_by' => $columnName,
+        'sort_order' => $columnSortOrder,
         'offset'=>$row 
 
     ],

@@ -265,7 +265,7 @@ $template_data = array(
                 <div>
                     <div class="row">
                         <p class="col-4 margin-b-0">
-                            <strong>CUIL/CUIT: </strong><?php echo $template_data['cliente_cuit']; ?>
+                            <strong>CUIL/CUIT: </strong><?php echo $template_data['cliente_cuit']??'1'; ?>
                         </p>
                         <p class="col-8 margin-b-0">
                             <strong>Apellido y Nombre / Razón social: </strong><?php echo $template_data['cliente_nombre']; ?>
@@ -273,7 +273,7 @@ $template_data = array(
                     </div>
                     <div class="row">
                         <p class="col-6 margin-b-0">
-                            <strong>Condición Frente al IVA: </strong><?php echo $template_data['cliente_condicion_iva']; ?>
+                            <strong>Condición Frente al IVA: </strong><?php echo $template_data['cliente_condicion_iva']??'CONSUMIDOR FINAL'; ?>
                         </p>
                         <p class="col-6 margin-b-0">
                             <strong>Domicilio: </strong><?php echo $template_data['cliente_direccion']; ?>

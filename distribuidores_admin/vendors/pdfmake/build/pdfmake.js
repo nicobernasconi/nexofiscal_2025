@@ -2064,7 +2064,7 @@
 	 * var docDefinition = {
 	 * 	info: {
 	 *		title: 'awesome Document',
-	 *		author: '<?php echo $_SESSION['nombre_distribuidor']; ?>',
+	 *		author: 'john doe',
 	 *		subject: 'subject of document',
 	 *		keywords: 'keywords for document',
 	 * 	},

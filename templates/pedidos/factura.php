@@ -19,8 +19,8 @@ $template_data = array(
 
     'cliente_nombre' => $_POST['cliente_nombre'],
     'cliente_direccion' => $_POST['direccion_cliente'],
-    'cliente_cuit' => $_POST['cliente_cuit'],
-    'cliente_condicion_iva' => $_POST['cliente_condicion_iva'],
+    'cliente_cuit' => $_POST['cliente_cuit']??'1',
+    'cliente_condicion_iva' => $_POST['cliente_condicion_iva']??'CONSUMIDOR FINAL',
 );
 ?>
 

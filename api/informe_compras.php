@@ -90,7 +90,7 @@ try {
         $limit = $_GET['limit'] ?? 255;
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
-        $query_product = $query_product . " ORDER BY   compras.$order_by  $sort_order  LIMIT $limit OFFSET $offset";
+        $query_product = $query_product . " ORDER BY   $order_by  $sort_order  LIMIT $limit OFFSET $offset";
 
 
 

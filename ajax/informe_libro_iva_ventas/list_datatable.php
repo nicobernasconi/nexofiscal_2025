@@ -62,11 +62,11 @@ try {
 
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
-print_r($body);
-exit();
+
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true)['data'];
     $resumen= json_decode($body, true)['resumen'];
+    $tolta_sql = json_decode($body, true)['total_sql'];
 
     // Transformar los datos según el nuevo formato requerido
     $formattedData = [];
@@ -98,7 +98,8 @@ exit();
         "iTotalDisplayRecords" => $xTotalCount,
         "aaData" => $formattedData,
         "resumen" => $resumen,
-        "url" => $url
+        "url" => $url,
+
 
 
     );

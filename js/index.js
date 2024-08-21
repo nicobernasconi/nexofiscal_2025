@@ -1424,7 +1424,7 @@ $(document).ready(function() {
                             },
                         });
                     } catch (error) {
-                        console.error(error);
+                        mostrarNotificacion("Buscar Cliente", "error", "No se encontraron datos.<br>Compruebe que el CUIT sea correcto.<br>Y que el servicio de AFIP este habilitado.");
                         $.unblockUI();
 
                     }
@@ -1449,54 +1449,57 @@ $(document).ready(function() {
                                 "dni": dni,
                             },
                             success: function(response) {
+                                try {
 
-                                if (response != "null") {
-                                    var responseObject = JSON.parse(response);
-                                    if (responseObject.errorConstancia != undefined) {
-                                        $.unblockUI();
-                                        return;
-                                    }
 
-                                    console.log(responseObject);
-                                    //si es perona fisica
-                                    if (responseObject.datosGenerales.tipoPersona == "FISICA") {
-                                        var apellido_nombre = responseObject.datosGenerales.apellido + " " + responseObject.datosGenerales.nombre;
-                                        var cuit = responseObject.datosGenerales.idPersona;
-                                    }
-                                    var direccion = responseObject.datosGenerales.domicilioFiscal.direccion + " - " + responseObject.datosGenerales.domicilioFiscal.localidad + " - " + responseObject.datosGenerales.domicilioFiscal.descripcionProvincia;
-                                    //obtengo el tipo de inpiesto del contribuyente
-                                    //sino existe responseObject.datosRegimenGeneral.impuesto es porque no tiene impuestos activos
-                                    if (responseObject.datosRegimenGeneral != undefined) {
-                                        var impuestos_contribuyentes = responseObject.datosRegimenGeneral.impuesto;
-                                    } else {
-                                        var impuestos_contribuyentes = [];
-                                    }
-                                    //recorro los impuestos del contribuyente y guardo idImpuesto en un arreglo
-                                    var impuestos = [];
-                                    for (var i = 0; i < impuestos_contribuyentes.length; i++) {
-                                        impuestos.push(impuestos_contribuyentes[i].idImpuesto);
-                                    }
-                                    //si impuestos contiene 30 es responsable inscripto, si contiene 5095, 20, 21,22,23 o 24 es monotributista,
-                                    if (impuestos.includes(30)) {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "INSCRIPTO");
-                                    } else
-                                    if (impuestos.includes(32)) {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "EXENTO");
-                                    } else
+                                    if (response != "null") {
+                                        var responseObject = JSON.parse(response);
+                                        if (responseObject.errorConstancia != undefined) {
+                                            $.unblockUI();
+                                            return;
+                                        }
 
-                                    if (impuestos.includes(5095) || impuestos.includes(20) || impuestos.includes(21) || impuestos.includes(22) || impuestos.includes(23) || impuestos.includes(24)) {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "MONOTRIBUTO");
-                                    } else {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "CONSUMIDOR FINAL");
-                                    }
+                                        console.log(responseObject);
+                                        //si es perona fisica
+                                        if (responseObject.datosGenerales.tipoPersona == "FISICA") {
+                                            var apellido_nombre = responseObject.datosGenerales.apellido + " " + responseObject.datosGenerales.nombre;
+                                            var cuit = responseObject.datosGenerales.idPersona;
+                                        }
+                                        var direccion = responseObject.datosGenerales.domicilioFiscal.direccion + " - " + responseObject.datosGenerales.domicilioFiscal.localidad + " - " + responseObject.datosGenerales.domicilioFiscal.descripcionProvincia;
+                                        //obtengo el tipo de inpiesto del contribuyente
+                                        //sino existe responseObject.datosRegimenGeneral.impuesto es porque no tiene impuestos activos
+                                        if (responseObject.datosRegimenGeneral != undefined) {
+                                            var impuestos_contribuyentes = responseObject.datosRegimenGeneral.impuesto;
+                                        } else {
+                                            var impuestos_contribuyentes = [];
+                                        }
+                                        //recorro los impuestos del contribuyente y guardo idImpuesto en un arreglo
+                                        var impuestos = [];
+                                        for (var i = 0; i < impuestos_contribuyentes.length; i++) {
+                                            impuestos.push(impuestos_contribuyentes[i].idImpuesto);
+                                        }
+                                        //si impuestos contiene 30 es responsable inscripto, si contiene 5095, 20, 21,22,23 o 24 es monotributista,
+                                        if (impuestos.includes(30)) {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "INSCRIPTO");
+                                        } else
+                                        if (impuestos.includes(32)) {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "EXENTO");
+                                        } else
 
-                                    $("#modificar-cliente-modal #nombre").val(apellido_nombre);
-                                    $("#modificar-cliente-modal #direccion_comercial").val(direccion);
-                                    $("#modificar-cliente-modal #cuit").val(cuit);
+                                        if (impuestos.includes(5095) || impuestos.includes(20) || impuestos.includes(21) || impuestos.includes(22) || impuestos.includes(23) || impuestos.includes(24)) {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "MONOTRIBUTO");
+                                        } else {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "CONSUMIDOR FINAL");
+                                        }
+                                        $("#modificar-cliente-modal #nombre").val(apellido_nombre);
+                                        $("#modificar-cliente-modal #direccion_comercial").val(direccion);
+                                        $("#modificar-cliente-modal #cuit").val(cuit);
+                                    }
+                                    $.unblockUI();
+                                } catch (error) {
+                                    mostrarNotificacion("Buscar Cliente", "error", "No se encontraron datos.<br>Compruebe que el DNI sea correcto.<br>Y que el servicio de AFIP este habilitado.");
+                                    $.unblockUI();
                                 }
-
-
-                                $.unblockUI();
                             },
                             error: function(xhr, status, error) {
                                 console.error(error);
@@ -1942,7 +1945,7 @@ $(document).ready(function() {
                 },
                 columns: [
                     { data: "id" },
-                    { data: "usuario_nombre" },
+                    { data: "usuario_nombre_completo" },
                     { data: "fecha" },
                     { data: "efectivo_inicial" },
                     { data: "total_ventas" },
@@ -5172,6 +5175,7 @@ $(document).ready(function() {
             order: [
                 [0, "desc"]
             ],
+            columnDefs: [{ orderable: false, targets: [1] }],
             columns: [
                 { data: "id" },
                 { data: "tipo_comprobante" },
@@ -5229,6 +5233,7 @@ $(document).ready(function() {
                     colvis: "Visibilidad",
                 },
             },
+
             lengthChange: false,
             //searching: false,
             pageLength: 10, // Establecer la cantidad de productos por página predeterminada
@@ -6377,7 +6382,7 @@ $(document).ready(function() {
                 columns: [
                     { data: "nro_factura", title: "N° Factura" },
                     { data: "fecha", title: "Fecha" },
-                    { data: "producto_codigo", title: "Producto" },
+                    { data: "codigo", title: "Producto" },
                     { data: "costo", title: "Costo" },
                     { data: "cantidad", title: "Cantidad" },
                     { data: "proveedor_id", title: "Proveedor" },
@@ -6574,6 +6579,7 @@ $(document).ready(function() {
                 serverSide: true,
                 paging: true,
                 autoWidth: true,
+
                 ajax: {
                     url: "./ajax/informe_libro_iva_ventas/list_datatable.php?" + data_get,
                     type: "POST",
@@ -6595,9 +6601,18 @@ $(document).ready(function() {
                 ],
                 //establecer alineacion para las columnas numericas
                 columnDefs: [{
-                    targets: [4, 5, 6, 7, 8, 9, 10, 11, 12],
-                    className: 'dt-body-right'
-                }],
+                        orderable: false,
+                        targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    },
+
+                    {
+                        targets: [4, 5, 6, 7, 8, 9, 10, 11, 12],
+                        className: 'dt-body-right'
+                    }
+                    //quitar todas las columnas dle orden
+
+
+                ],
                 //establecer 2,3,4 como moneda
                 createdRow: function(row, data, dataIndex) {
                     $(row).find('td:eq(4)').html('$' + data.ng21);

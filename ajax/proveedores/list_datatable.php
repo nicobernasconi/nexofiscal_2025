@@ -34,6 +34,8 @@ $params = [
     ], "query" => [
         'razon_social' => isset($searchValue) ? $searchValue :null,
         'limit'=>$rowperpage,
+        'order_by' => $columnName,
+        'sort_order' => $columnSortOrder,
         'offset'=>$row 
 
     ],
