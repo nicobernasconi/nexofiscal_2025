@@ -79,8 +79,11 @@ try {
                 }
 
                 //si no retorna un id, tomar el primer tipo_iva_id de la empresa_id
+                $precio1 = $value[2] ?? 0;
+                $precio2 = $value[3] ?? $precio1;
+                $precio3 = $value[4] ?? $precio1;
 
-                $values[] = "($empresa_id, '{$value[0]}', '{$value[1]}', {$value[2]}, {$value[3]}, {$value[4]}, $tipo_iva_id)";
+                $values[] = "($empresa_id, '{$value[0]}', '{$value[1]}', $precio1, $precio2, $precio3, $tipo_iva_id)";
             }
         }
         $query .= implode(",", $values);
@@ -94,9 +97,9 @@ try {
         //borrar el archivo temporal
         unlink($tempName);
         //establecer el campo tipo en, C para los productos que no existen en la tabla productos y U para los que existen
-        $query = "UPDATE importar_productos SET tipo = 'C' WHERE empresa_id=$empresa_id AND codigo NOT IN (SELECT codigo FROM productos WHERE empresa_id=$empresa_id)";
+        $query = "UPDATE importar_productos SET tipo = 'C' WHERE empresa_id=$empresa_id AND codigo NOT IN (SELECT codigo FROM productos WHERE empresa_id=$empresa_id and not codigo is NULL)";
         $con->exec($query);
-        $query = "UPDATE importar_productos SET tipo = 'U' WHERE empresa_id=$empresa_id AND codigo IN (SELECT codigo FROM productos WHERE empresa_id=$empresa_id)";
+        $query = "UPDATE importar_productos SET tipo = 'U' WHERE empresa_id=$empresa_id AND codigo IN (SELECT codigo FROM productos WHERE empresa_id=$empresa_id and not codigo is NULL)";
         $con->exec($query);
         //devolver cualtos productos se van a insertar y cuantos se van a actualizar
         $query = "SELECT count(*) as count_insertar FROM importar_productos WHERE empresa_id=$empresa_id AND tipo='C'";
@@ -117,7 +120,7 @@ try {
     exit();
 } catch (Exception $e) {
     $error_msg = $errores_mysql[$e->getCode()] ?? "Error desconocido";
-    $response = array("status" => 500, "status_message" => "$query {$error_msg}{$e->getMessage()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

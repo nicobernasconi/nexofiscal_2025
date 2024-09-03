@@ -24,29 +24,17 @@
   });
 
 
-
   var optionSet1 = {
       startDate: moment().startOf('month'),
       endDate: moment().endOf('month'),
       minDate: '01/01/2012',
       maxDate: '31/12/2050',
       showDropdowns: true,
-      showWeekNumbers: true,
       timePicker: false,
-      timePickerIncrement: 1,
-      timePicker12Hour: true,
-      ranges: {
-          'Este mes': [moment().startOf('month'), moment().endOf('month')],
-          'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-      },
-      opens: 'right',
-      buttonClasses: ['btn btn-default'],
-      applyClass: 'btn-small btn-primary',
-      cancelClass: 'btn-small',
-      format: 'DD/MM/YYYY',
-      separator: ' hasta ',
+      singleDatePicker: true, // Solo permite una selección de fecha
+      format: 'MM/YYYY',
       locale: {
-          format: 'DD/MM/YYYY',
+          format: 'MM/YYYY',
           applyLabel: 'Aceptar',
           cancelLabel: 'Limpiar',
           fromLabel: 'Desde',
@@ -55,13 +43,32 @@
           daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
           monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
           firstDay: 1
+      },
+      isInvalidDate: function(date) {
+          // Desactivar todos los días excepto el primero del mes
+          return date.date() !== 1;
       }
   };
-  $('#periodo').daterangepicker(optionSet1, function(start, end, label) {});
-  $('#periodo').on('apply.daterangepicker', function(ev, picker) {
-      $('#fecha_inicio').val(picker.startDate.format('YYYY-MM-DD'));
-      $('#fecha_fin').val(picker.endDate.format('YYYY-MM-DD'));
+
+  $('#periodo').daterangepicker(optionSet1, function(start, end, label) {
+      // Obtener el primer día del mes seleccionado
+      var startOfMonth = start.startOf('month').format('YYYY-MM-DD');
+      // Obtener el último día del mes seleccionado
+      var endOfMonth = start.endOf('month').format('YYYY-MM-DD');
+
+      // Establecer las fechas en los campos correspondientes
+      $('#fecha_inicio').val(startOfMonth);
+      $('#fecha_fin').val(endOfMonth);
   });
+
+  $('#periodo').on('apply.daterangepicker', function(ev, picker) {
+      var startOfMonth = picker.startDate.startOf('month').format('YYYY-MM-DD');
+      var endOfMonth = picker.startDate.endOf('month').format('YYYY-MM-DD');
+
+      $('#fecha_inicio').val(startOfMonth);
+      $('#fecha_fin').val(endOfMonth);
+  });
+
   $('#periodo').on('cancel.daterangepicker', function(ev, picker) {
       $('#fecha_inicio').val('');
       $('#fecha_fin').val('');
@@ -235,140 +242,140 @@
 
 
   $("#btn-exportar-excel").click(function(event) {
-    event.preventDefault();
-     $.blockUI({
-      message: '<h1>Exportando Informe a Excel. <br>Espere por favor...</h1>',
-      css: {
-        border: 'none',
-        padding: '15px',
-        backgroundColor: '#000',
-        '-webkit-border-radius': '10px',
-        '-moz-border-radius': '10px',
-        opacity: .5,
-        color: '#fff'
-      }
-    });
+      event.preventDefault();
+      $.blockUI({
+          message: '<h1>Exportando Informe a Excel. <br>Espere por favor...</h1>',
+          css: {
+              border: 'none',
+              padding: '15px',
+              backgroundColor: '#000',
+              '-webkit-border-radius': '10px',
+              '-moz-border-radius': '10px',
+              opacity: .5,
+              color: '#fff'
+          }
+      });
 
-    var fecha_inicio = $("#fecha_inicio").val();
-    var fecha_fin = $("#fecha_fin").val();
-    var tipo_comprobante = $("#tipo-comprobante").val() ?? '';
-    var vendedor = $("#vendedores").val() ?? '';
-    var sucursal = $("#sucursales").val() ?? '';
-    var empresa = $("#empresa").val() ?? '';
-    //crear un string para la consulta get
-    var data_get = "";
+      var fecha_inicio = $("#fecha_inicio").val();
+      var fecha_fin = $("#fecha_fin").val();
+      var tipo_comprobante = $("#tipo-comprobante").val() || '';
+      var vendedor = $("#vendedores").val() || '';
+      var sucursal = $("#sucursales").val() || '';
+      var empresa = $("#empresa").val() || '';
+      //crear un string para la consulta get
+      var data_get = "";
 
-    if (tipo_comprobante != "") {
-      data_get += "tipo_comprobante_id=" + tipo_comprobante + "&";
+      if (tipo_comprobante != "") {
+          data_get += "tipo_comprobante_id=" + tipo_comprobante + "&";
 
-    }
-
-    if (vendedor != "") {
-      data_get += "vendedor_id=" + vendedor + "&";
-    }
-    if (sucursal != "") {
-      data_get += "sucursal_id=" + sucursal + "&";
-    }
-    if (fecha_inicio != "") {
-      data_get += "fecha_inicio=" + fecha_inicio + "&";
-    }
-    if (fecha_fin != "") {
-      data_get += "fecha_fin=" + fecha_fin + "&";
-    }
-
-    if (empresa != "") {
-      data_get += "empresa_id=" + empresa + "&";
-    }
-    data_get += "&type=excel";
-    $.ajax({
-
-      url: "./ajax/informe_libro_iva_ventas/export.php?" + data_get,
-      type: "GET",
-      success: function(response) {
-        $.unblockUI();
-        var data = JSON.parse(response);
-        if (data.status == 200) {
-          //descargar archivo en una pantalla nueva
-          var url = data.url;
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = url.split('/').pop();
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-
-        }
       }
 
-    });
+      if (vendedor != "") {
+          data_get += "vendedor_id=" + vendedor + "&";
+      }
+      if (sucursal != "") {
+          data_get += "sucursal_id=" + sucursal + "&";
+      }
+      if (fecha_inicio != "") {
+          data_get += "fecha_inicio=" + fecha_inicio + "&";
+      }
+      if (fecha_fin != "") {
+          data_get += "fecha_fin=" + fecha_fin + "&";
+      }
+
+      if (empresa != "") {
+          data_get += "empresa_id=" + empresa + "&";
+      }
+      data_get += "&type=excel";
+      $.ajax({
+
+          url: "./ajax/informe_libro_iva_ventas/export.php?" + data_get,
+          type: "GET",
+          success: function(response) {
+              $.unblockUI();
+              var data = JSON.parse(response);
+              if (data.status == 200) {
+                  //descargar archivo en una pantalla nueva
+                  var url = data.url;
+                  var a = document.createElement('a');
+                  a.href = url;
+                  a.download = url.split('/').pop();
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+
+              }
+          }
+
+      });
   });
 
 
   $("#btn-exportar-pdf").click(function(event) {
-    event.preventDefault();
-     $.blockUI({
-      message: '<h1>Exportando Informe a PDF. <br>Espere por favor...</h1>',
-      css: {
-        border: 'none',
-        padding: '15px',
-        backgroundColor: '#000',
-        '-webkit-border-radius': '10px',
-        '-moz-border-radius': '10px',
-        opacity: .5,
-        color: '#fff'
-      }
-    });
-    var fecha_inicio = $("#fecha_inicio").val();
-    var fecha_fin = $("#fecha_fin").val();
-    var tipo_comprobante = $("#tipo-comprobante").val() ?? '';
-    var vendedor = $("#vendedores").val() ?? '';
-    var sucursal = $("#sucursales").val() ?? '';
-    var empresa = $("#empresa").val() ?? '';
-    //crear un string para la consulta get
-    var data_get = "";
+      event.preventDefault();
+      $.blockUI({
+          message: '<h1>Exportando Informe a PDF. <br>Espere por favor...</h1>',
+          css: {
+              border: 'none',
+              padding: '15px',
+              backgroundColor: '#000',
+              '-webkit-border-radius': '10px',
+              '-moz-border-radius': '10px',
+              opacity: .5,
+              color: '#fff'
+          }
+      });
+      var fecha_inicio = $("#fecha_inicio").val();
+      var fecha_fin = $("#fecha_fin").val();
+      var tipo_comprobante = $("#tipo-comprobante").val() || '';
+      var vendedor = $("#vendedores").val() || '';
+      var sucursal = $("#sucursales").val() || '';
+      var empresa = $("#empresa").val() || '';
+      //crear un string para la consulta get
+      var data_get = "";
 
-    if (tipo_comprobante != "") {
-      data_get += "tipo_comprobante_id=" + tipo_comprobante + "&";
+      if (tipo_comprobante != "") {
+          data_get += "tipo_comprobante_id=" + tipo_comprobante + "&";
 
-    }
-
-    if (vendedor != "") {
-      data_get += "vendedor_id=" + vendedor + "&";
-    }
-    if (sucursal != "") {
-      data_get += "sucursal_id=" + sucursal + "&";
-    }
-    if (fecha_inicio != "") {
-      data_get += "fecha_inicio=" + fecha_inicio + "&";
-    }
-    if (fecha_fin != "") {
-      data_get += "fecha_fin=" + fecha_fin + "&";
-    }
-
-    if (empresa != "") {
-      data_get += "empresa_id=" + empresa + "&";
-    }
-
-    data_get += "&type=pdf";
-    $.ajax({
-
-      url: "./ajax/informe_libro_iva_ventas/export.php?" + data_get,
-      type: "GET",
-      success: function(response) {
-        $.unblockUI();
-        var data = JSON.parse(response);
-        if (data.status == 200) {
-          //descargar archivo en una pantalla nueva
-          var url = data.url;
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = url.split('/').pop();
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-
-        }
       }
 
-    });
+      if (vendedor != "") {
+          data_get += "vendedor_id=" + vendedor + "&";
+      }
+      if (sucursal != "") {
+          data_get += "sucursal_id=" + sucursal + "&";
+      }
+      if (fecha_inicio != "") {
+          data_get += "fecha_inicio=" + fecha_inicio + "&";
+      }
+      if (fecha_fin != "") {
+          data_get += "fecha_fin=" + fecha_fin + "&";
+      }
+
+      if (empresa != "") {
+          data_get += "empresa_id=" + empresa + "&";
+      }
+
+      data_get += "&type=pdf";
+      $.ajax({
+
+          url: "./ajax/informe_libro_iva_ventas/export.php?" + data_get,
+          type: "GET",
+          success: function(response) {
+              $.unblockUI();
+              var data = JSON.parse(response);
+              if (data.status == 200) {
+                  //descargar archivo en una pantalla nueva
+                  var url = data.url;
+                  var a = document.createElement('a');
+                  a.href = url;
+                  a.download = url.split('/').pop();
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+
+              }
+          }
+
+      });
   });

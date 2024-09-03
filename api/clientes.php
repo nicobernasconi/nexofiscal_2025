@@ -459,6 +459,8 @@ try {
         if ($data['numero_documento'] == '') {
             $data['numero_documento'] = null;
         }
+        //eliminar por key que el valor sea vacio
+        $data = array_filter($data);
 
 
         foreach ($data as $key => $value) {

@@ -18,7 +18,7 @@ try {
 
         if (isset($_GET['empresa_id'])) {
             $empresa_id = sanitizeInput($_GET['empresa_id']);
-            array_push($query_param, "comprobantes.empresa_id=$empresa_id");
+            array_push($query_param, "productos.empresa_id=$empresa_id");
         }
 
         if (isset($_GET['familia_id'])) {
@@ -56,7 +56,7 @@ try {
         if (isset($_GET['order_by'])) {
             $order_by = sanitizeInput($_GET['order_by']);
         } else {
-            $order_by = 'id';
+            $order_by = 'productos.id';
         }
         if (isset($_GET['sort_order'])) {
             $sort_order = sanitizeInput($_GET['sort_order']);
@@ -78,7 +78,7 @@ try {
         $offset = $_GET['offset'] ?? 0;
 
         $query_product = $query_product . " ORDER BY  " . $order_by . "  " . $sort_order . " OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
-
+   
         //header con la informacion de la paginacion
         header("X-Total-Count: $total");
         header("Access-Control-Expose-Headers: X-Total-Count");

@@ -70,7 +70,7 @@ try {
         }
 
          //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM comprobantes WHERE (comprobantes.tipo_comprobante_id = 1 OR comprobantes.tipo_comprobante_id = 4)AND comprobantes.empresa_id = $empresa_id";
+        $query_total = "SELECT COUNT(*) AS total FROM  ($query_product) t";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;

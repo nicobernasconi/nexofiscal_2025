@@ -419,7 +419,7 @@
             title: "Usuario ID"
           },
           {
-            data: "usuario_nombre",
+            data: "usuario_nombre_completo",
             title: "Usuario Nombre"
           },
           {

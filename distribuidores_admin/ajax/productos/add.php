@@ -10,6 +10,7 @@ session_start();
 // Obtener los datos del arreglo $_POST
 $post_data = $_POST;
 
+
 // Eliminar comillas simples de los valores numéricos
 foreach ($post_data as $key => $value) {
     if (is_numeric($value)) {

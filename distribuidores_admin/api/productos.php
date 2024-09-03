@@ -13,25 +13,21 @@ try {
         $query_product = "SELECT
                             p.id,
                             p. codigo,
-                            p.descripcion,
+                            p.descripcion ,
                             p.descripcion_ampliada,
                             p.stock,
-                            p.familia_id,
-                            p.subfamilia_id,
-                            p.agrupacion_id,
+ 
                             p.marca_id,
                             p.codigo_barra,
                             p.proveedor_id,
                             p.fecha_alta,
                             p.fecha_actualizacion,
                             p.articulo_activado,
-                            p.tipo_id,
                             p.producto_balanza,
                             p.precio1,
                             p.precio2,
                             p.precio3,
-                            p.moneda_id,
-                            p.tasa_iva,
+                            p.tasa_iva_id,
                             p.incluye_iva,
                             p.impuesto_interno,
                             p.unidad_id,
@@ -123,7 +119,7 @@ try {
                         LEFT JOIN 
                             codigos_barras cb ON p.empresa_id = cb.empresa_id
                         LEFT JOIN 
-                            tasa_iva ti2 ON p.tasa_iva_id = ti2.id ";
+                            tasa_iva ti2 ON p.tasa_iva_id = ti2.id  ";
 
         $query_param = array();
         if (isset($_GET['order_by'])) {
@@ -335,13 +331,13 @@ try {
 
 
         if (count($query_param) > 0) {
-            $query_product = $query_product . " WHERE (" . implode(" AND ", $query_param) . ") AND p.empresa_id=" . $empresa_id;
+            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ")and codigo <>'' AND p.empresa_id=" . $empresa_id;
         } else {
-            $query_product = $query_product . " WHERE p.empresa_id=" . $empresa_id;
+            $query_product = $query_product . " WHERE p.empresa_id= $empresa_id  and codigo <>'' ";
         }
 
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM productos WHERE productos.empresa_id=" . $empresa_id;
+        $query_total = "SELECT COUNT(*) AS total FROM (" . $query_product . ") t";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;

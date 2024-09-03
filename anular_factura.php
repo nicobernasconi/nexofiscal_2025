@@ -33,6 +33,8 @@ try {
 			'Content-Type' => 'application/json',
 			// Obtener el token de seguridad de las variables de sesión
 			'Authorization' => 'Bearer ' . $_SESSION['token']
+		],'query' => [
+			'sucursal_id' => $_SESSION['sucursal_id']
 		]
 	]);
 
@@ -61,7 +63,8 @@ try {
 			'Content-Type' => 'application/json',
 			// Obtener el token de seguridad de las variables de sesión
 			'Authorization' => 'Bearer ' . $_SESSION['token']
-		]
+		],
+		
 	]);
 
 	$bodyContents = $response->getBody()->getContents();
@@ -161,6 +164,7 @@ try {
 		'access_token' =>$apiSDKAfip ,
     	'production' => $apiSDKAfipProd
 	));
+	
 
 
 	$punto_de_venta = $comprobante['punto_venta'];
@@ -175,6 +179,7 @@ try {
 	$numero_de_nota = $last_voucher + 1;
 	$fecha = date('Y-m-d');
 	$hora = date('H:i:s');
+
 
 	if ($concepto === 2 || $concepto === 3) {
 		$fecha_servicio_desde = intval(date('Ymd'));
@@ -219,10 +224,13 @@ try {
 
 
 
-
 	$res = $afip->ElectronicBilling->CreateVoucher($data);
+
+	
 	$cae = $res['CAE'];
 	$fecha_vencimiento = $res['CAEFchVto'];
+
+
 
 
 	//generacion del QR
@@ -432,5 +440,5 @@ try {
 
 	echo json_encode(['status' => 201, 'pdfUrl' =>  $res['file']]);
 } catch (Exception $e) {
-	echo json_encode(['status' => 500, 'mensaje' => 'Error al obtener el template: ' . $e->getMessage()]);
+	echo json_encode(['status' => 500, 'mensaje' => 'Error al obtener el template: ' . $e->getMessage().' linea:'.$e->getLine()]);
 }

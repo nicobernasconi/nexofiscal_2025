@@ -1419,7 +1419,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="custom-search-container">
-                        <input type="text" id="custom-search-editar-proveedores-input" class="custom-search-input" placeholder="Buscar proveedor...">
+                        <input type="text" id="custom-search-proveedores-input" class="custom-search-input" placeholder="Buscar proveedor...">
                         <i class="fas fa-search custom-search-icon"></i> <!-- Icono de búsqueda (debes incluir la librería de íconos que estés utilizando) -->
                     </div>
                 </div>

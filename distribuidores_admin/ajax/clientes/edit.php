@@ -16,6 +16,8 @@ foreach ($post_data as $key => $value) {
         $post_data[$key] = (float)$value; // Convertir a número en formato float
     }
 }
+//eliminar todos los valores vacios
+$post_data = array_filter($post_data);
 
 // Convertir los datos a formato JSON
 $post_json = json_encode($post_data);

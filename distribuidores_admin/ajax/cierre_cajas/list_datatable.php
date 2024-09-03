@@ -24,7 +24,8 @@ use GuzzleHttp\Client;
 
 // URL de la API
 $url = $ruta . 'distribuidores_admin/api/cierres_cajas/';
-
+$fecha_inicio = $_GET['fecha_inicio'];
+$fecha_fin = $_GET['fecha_fin'];
 // Parámetros de la solicitud
 $params = [
     'headers' => [
@@ -34,7 +35,11 @@ $params = [
     ], "query" => [
         'usuario_id' => isset($searchValue) ? $searchValue :null,
         'distribuidor_id' => $_SESSION['distribuidor_id'],
-'limit'=>$rowperpage,
+        'fecha_inicio' => $fecha_inicio,
+        'fecha_fin' => $fecha_fin,
+        'order_by'=>$columnName,
+        'sort_order'=>$columnSortOrder,
+        'limit'=>$rowperpage,
         'offset'=>$row 
 
     ],
@@ -73,7 +78,7 @@ try {
             'efectivo_inicial' => $item['efectivo_inicial'] ,
             'efectivo_final' => $item['efectivo_final'] ,
             'usuario_id'=> $item['usuario']['id'],
-            'usuario_nombre'=> $item['usuario']['nombre'],
+            'usuario_nombre_completo'=> $item['usuario']['nombre'],
             'fecha'=> $item['fecha'],
 
             

@@ -83,6 +83,14 @@ if (isset($_GET['sort_order'])) {
             $distribuidor_id = sanitizeInput($_GET['distribuidor_id']);
             array_push($query_param, "distribuidores_empresas.distribuidor_id = $distribuidor_id");
         }
+        if(isset($_GET['fecha_inicio'])){
+            $fecha_inicio = sanitizeInput($_GET['fecha_inicio']);
+            array_push($query_param, "fecha >= '$fecha_inicio'");
+        }
+        if(isset($_GET['fecha_fin'])){
+            $fecha_fin = sanitizeInput($_GET['fecha_fin']);
+            array_push($query_param, "fecha <= '$fecha_fin'");
+        }
 
 
        
@@ -92,10 +100,11 @@ if (isset($_GET['sort_order'])) {
         }else{
             $query_product = $query_product . " ";
         }
+        
 
 
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM cierres_cajas LEFT JOIN distribuidores_empresas ON distribuidores_empresas.empresa_id=cierres_cajas.empresa_id WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id";
+        $query_total = "SELECT COUNT(*) AS total FROM ($query_product) t";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;
@@ -104,7 +113,7 @@ if (isset($_GET['sort_order'])) {
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
 
-        $query_product = $query_product . " ORDER BY cierres_cajas. ".$order_by."  ".$sort_order." OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
+        $query_product = $query_product . " ORDER BY  ".$order_by."  ".$sort_order." OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
 
         //header con la informacion de la paginacion
         header("X-Total-Count: $total");

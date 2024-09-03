@@ -820,6 +820,11 @@ $(document).ready(function() {
         $("#clientedc").text("1 / Ocacional");
         $("#cuitdc").text("CUIT: / Ocacional");
         $("#domiciliodc").text("Domicilio: / Ocacional");
+        $("#cliente_id").val(1);
+
+
+
+
 
         // Limpiar los inputs
         $("input[type='text']").val("");
@@ -1050,19 +1055,29 @@ $(document).ready(function() {
                         // Obtener el primer elemento del arreglo
                         $("#modificar-cliente-modal #id").val(cliente.id);
                         $("#modificar-cliente-modal #nombre").val(cliente.nombre);
-                        $("#modificar-cliente-modal #tipo_documento_id").val(cliente.tipo_documento_id).trigger("change");
+                        if (cliente.tipo_documento_id != null || cliente.tipo_documento_id != '') {
+                            $("#modificar-cliente-modal #tipo_documento_id").val(cliente.tipo_documento_id).trigger("change");
+                        }
+
                         $("#modificar-cliente-modal #numero_documento").val(cliente.numero_documento);
                         $("#modificar-cliente-modal #cuit").val(cliente.cuit);
-                        $("#modificar-cliente-modal #tipo_iva_id").val(cliente.tipo_iva_id).trigger("change");
+                        if (cliente.tipo_iva_id != null || cliente.tipo_iva_id != '') {
+                            $("#modificar-cliente-modal #tipo_iva_id").val(cliente.tipo_iva_id).trigger("change");
+                        }
                         $("#modificar-cliente-modal #direccion_comercial").val(cliente.direccion_comercial);
                         $("#modificar-cliente-modal #direccion_entrega").val(cliente.direccion_entrega);
-                        $("#modificar-cliente-modal #localidad_id").val(cliente.localidad_id).trigger("change");
+                        if (cliente.localidad_id != null || cliente.localidad_id != '') {
+                            $("#modificar-cliente-modal #localidad_id").val(cliente.localidad_id).trigger("change");
+                        }
                         $("#modificar-cliente-modal #telefono").val(cliente.telefono);
                         $("#modificar-cliente-modal #celular").val(cliente.celular);
                         $("#modificar-cliente-modal #email").val(cliente.email);
                         $("#modificar-cliente-modal #contacto").val(cliente.contacto);
                         $("#modificar-cliente-modal #telefono_contacto").val(cliente.telefono_contacto);
-                        $("#modificar-cliente-modal #categoria_id").val(cliente.categoria_id).trigger("change");
+                        if (cliente.categoria_id != null || cliente.categoria_id != '') {
+                            $("#modificar-cliente-modal #categoria_id").val(cliente.categoria_id).trigger("change");
+                        }
+
                         $("#modificar-cliente-modal #porcentaje_descuento").val(cliente.porcentaje_descuento);
                         $("#modificar-cliente-modal #limite_credito").val(cliente.limite_credito);
                         $("#modificar-cliente-modal #saldo_inicial").val(cliente.saldo_inicial);
@@ -1658,6 +1673,8 @@ $(document).ready(function() {
             if (products[selectedVendedor].length > 0) {
                 $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                 $("#tipo_comprobante_id").val(1);
+                $("#vuelto").hide();
+
             } else {
                 // Mostrar notificación si no hay productos agregados
                 mostrarNotificacion(
@@ -1677,6 +1694,7 @@ $(document).ready(function() {
             if (venta_rapida == "0") {
                 $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                 $("#tipo_comprobante_id").val(3);
+                $("#vuelto").hide();
             } else {
                 ventaRapidaPedido();
             }
@@ -1727,6 +1745,7 @@ $(document).ready(function() {
                 ],
                 columnDefs: [
                     { targets: [0, 1, 3], className: "text-right" },
+                    { orderable: false, targets: [3] },
                     {
                         targets: -1,
 
@@ -2519,7 +2538,7 @@ $(document).ready(function() {
 
     // Manejar el evento keyup en el campo de monto pagado
     $("#montoPagado").keyup(function() {
-        var montoPagado = parseFloat($(this).val());
+        var montoPagado = parseFloat($(this).val()) || 0;
         var montoPagar = parseFloat($("#montoPagar").text().substring(1)); // Obtiene el monto a pagar eliminando el símbolo de $
         var vuelto = montoPagado - montoPagar;
 
@@ -3064,9 +3083,11 @@ $(document).ready(function() {
                 url: "ajax/promociones/list.php",
                 dataType: "json",
                 success: function(data) {
-                    var tablapromociones = $("#tablapromociones tbody");
-                    tablapromociones.html("");
-
+                    //destroy datatable if exist
+                    if ($.fn.DataTable.isDataTable("#tablapromociones")) {
+                        $("#tablapromociones").DataTable().destroy();
+                    }
+                    $("#tablapromociones tbody").empty();
                     // Recorrer los datos y agregar filas a la tabla
                     data.forEach(function(promo) {
                         var fila = $("<tr>");
@@ -3081,13 +3102,10 @@ $(document).ready(function() {
                         );
                         fila.append(columnaBoton);
 
-                        tablapromociones.append(fila);
+                        $("#tablapromociones tbody").append(fila);
                     });
 
-                    //destroy datatable if exist
-                    if ($.fn.DataTable.isDataTable("#tablapromociones")) {
-                        $("#tablapromociones").DataTable().destroy();
-                    }
+
                     //crear datatable de promociones , no se puede buscar es una pagina, tiene scroll verticat  y no tiene paginacion
                     $("#tablapromociones").DataTable({
                         paging: false,
@@ -3134,9 +3152,9 @@ $(document).ready(function() {
 
                     if (products[selectedVendedor].length > 0) {
                         if (venta_rapida == "0") {
-
                             $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                             $("#tipo_comprobante_id").val(3);
+                            $("#vuelto").hide();
                         } else {
                             ventaRapidaPedido();
                         }
@@ -3224,6 +3242,95 @@ $(document).ready(function() {
                     }
                     break;
                 case 118: // Tecla F7
+                    //Tabla  Mostrar precios de productos
+                    try {
+                        if ($.fn.DataTable.isDataTable("#tablaProductosPrecios")) {
+                            $("#tablaProductosPrecios").DataTable().destroy();
+                        }
+                        $("#tablaProductosPrecios").DataTable({
+                            processing: true,
+                            serverSide: true,
+                            ajax: {
+                                url: "./ajax/productos/list_datatable.php",
+                                timeout: 15000,
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    if (textStatus === "timeout") {
+                                        // Aquí puedes manejar el error de timeout como prefieras
+                                        // Por ejemplo, mostrando un mensaje en la consola:
+                                        $("#tablaProductosPrecios_processing").hide();
+                                        $('#tablaProductosPrecios').closest('.dataTables_wrapper').find('.alert').remove();
+                                        $('#tablaProductosPrecios').closest('.dataTables_wrapper').append('<div class="alert alert-warning" role="alert">....</div>');
+                                        // Elimina mensajes previos
+                                    }
+                                },
+
+                                type: "POST",
+                            },
+                            columns: [
+                                { data: "codigo" },
+                                { data: "codigo_barra" },
+                                { data: "descripcion" },
+                                { data: "stock" },
+                                { data: "precio1" },
+
+                                // Agrega más columnas según la estructura de tus datos
+                            ],
+                            columnDefs: [
+                                { targets: [0, 1, 3], className: "text-right" },
+                                {
+                                    targets: -1,
+
+                                    className: "text-right", // Última columna (precio)
+                                    render: function(data, type, row, meta) {
+                                        // Aplicar estilos personalizados
+                                        return (
+                                            '<span style="font-size: 16px; font-weight: bold; color: green;">$' +
+                                            data +
+                                            "</span>"
+                                        );
+                                    },
+                                },
+                            ],
+                            language: {
+                                search: "", // Eliminar el texto de búsqueda predeterminado
+                                searchPlaceholder: "Buscar producto...", // Placeholder para el nuevo cuadro de búsqueda
+                                sProcessing: "Procesando...",
+                                sLengthMenu: "Mostrar _MENU_ registros",
+                                sZeroRecords: "No se encontraron resultados",
+                                sEmptyTable: "Ningún dato disponible en esta tabla",
+                                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                                sInfoPostFix: "",
+                                sSearch: "Busar:", // Cambiado a la izquierda
+                                sUrl: "",
+                                sInfoThousands: ",",
+                                sLoadingRecords: "Cargando...",
+                                oPaginate: {
+                                    sFirst: "Primero",
+                                    sLast: "Último",
+                                    sNext: "Siguiente",
+                                    sPrevious: "Anterior",
+                                },
+                                oAria: {
+                                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                                },
+                                buttons: {
+                                    copy: "Copiar",
+                                    colvis: "Visibilidad",
+                                },
+                            },
+                            lengthChange: false,
+                            //searching: false,
+                            pageLength: 15, // Establecer la cantidad de productos por página predeterminada
+                        });
+                        // Configurar el evento de búsqueda para el nuevo cuadro de búsqueda
+                        $("#custom-search-input").on("change", function() {
+                            $("#tablaProductosPrecios").DataTable().search($(this).val()).draw();
+                        });
+                        $("#tablaProductosPrecios_filter").hide();
+                    } catch (error) {}
                     $("#lista-precio-modal").fadeIn().css("z-index", z_index++);
                     $("#custom-search-input").val("");
                     $("#custom-search-input").focus();
@@ -3297,6 +3404,7 @@ $(document).ready(function() {
                         if (products[selectedVendedor].length > 0) {
                             $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                             $("#tipo_comprobante_id").val(1);
+                            $("#vuelto").hide();
                         } else {
                             mostrarNotificacion(
                                 "Cobrar",

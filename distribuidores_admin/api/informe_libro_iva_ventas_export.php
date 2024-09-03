@@ -261,7 +261,7 @@ try {
             $filename = 'iva_ventas' . $empresa_id. '.xlsx';
             $filepath = './../comprobantes/' . $filename;
             $writer->save($filepath);
-            $response = array("status" => 200, "status_message" => "Archivo generado", "url" => $filepath);
+            $response = array("status" => 200, "status_message" => "Archivo generado", "url" =>"$ruta_https/distribuidores_admin/comprobantes/$filename");
         } else {
          
             $filename = 'iva_ventas' .  $empresa_id . '.pdf';
@@ -316,7 +316,7 @@ try {
             $pdf->Cell(20, 10, $resumen['total'], 1, 1, 'C');
 
             $pdf->Output('F', $filepath);
-            $response = array("status" => 200, "status_message" => "Archivo generado", "url" => $filepath);
+            $response = array("status" => 200, "status_message" => "Archivo generado", "url" =>"$ruta_https/distribuidores_admin/comprobantes/$filename");
 
         }
     }

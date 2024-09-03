@@ -55,6 +55,7 @@ RewriteRule ^informe_compras/([^/]*)/?$ informe_compras.php?param=$1 [NC,QSA,L]
 RewriteRule ^informe_libro_iva_ventas/([^/]*)/?$ informe_libro_iva_ventas.php?param=$1 [NC,QSA,L]
 RewriteRule ^facturas/([^/]*)/?$ facturas.php?param=$1 [NC,QSA,L]
 RewriteRule ^pagos/([^/]*)/?$ pagos.php?param=$1 [NC,QSA,L]
+RewriteRule ^recuperar_informacion/([^/]*)/?$ recuperar_informacion.php?param=$1 [NC,QSA,L]
 
 
 

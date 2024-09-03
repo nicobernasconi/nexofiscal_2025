@@ -67,6 +67,7 @@ try {
 			// Obtener el token de seguridad de las variables de sesión
 			'Authorization' => 'Bearer ' . $_SESSION['token']
 		]
+		
 	]);
 
 	$bodyContents = $response->getBody()->getContents();
