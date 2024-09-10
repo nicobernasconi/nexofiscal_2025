@@ -113,7 +113,7 @@ $comprobante_id = sanitizeInput($_GET['comprobante_id']);
             $cont_pages = ceil($total / $limit);
             $offset = $_GET['offset'] ?? 0;
 
-            $query_product = $query_product . " ORDER BY renglones_comprobantes. " . $order_by . "  " . $sort_order . " OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
+            $query_product = $query_product . " ORDER BY renglones_comprobantes. " . $order_by . "  " . $sort_order . " LIMIT $limit OFFSET $offset";
             //header con la informacion de la paginacion
             header("X-Total-Count: $total");
             header("Access-Control-Expose-Headers: X-Total-Count");
