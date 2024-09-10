@@ -1,6 +1,7 @@
 <?php
 // Iniciar la sesión si no está iniciada
 include("../../includes/config.php");
+include("../../includes/database.php");
 // Iniciar la sesión si no está iniciada
 if (session_status() == PHP_SESSION_NONE) {
     
@@ -62,6 +63,7 @@ try {
 
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
+
 
 
     // Decodificar el JSON en un array asociativo

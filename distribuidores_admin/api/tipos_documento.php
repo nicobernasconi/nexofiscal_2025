@@ -30,6 +30,9 @@ if (isset($_GET['sort_order'])) {
         $sort_order=' ASC ';
     }
 
+    //quitar todos parametros GET que tienen valor vacio
+    $_GET = array_filter($_GET);
+
 
 
     //recibir todos los posibles parametros por GET
@@ -59,7 +62,7 @@ if (isset($_GET['sort_order'])) {
     $cont_pages = ceil($total / $limit);
     $offset = $_GET['offset'] ?? 0;
 
-    $query_product = $query_product . " ORDER BY tipo_documento. ".$order_by."  ".$sort_order." OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
+    $query_product = $query_product . " ORDER BY tipo_documento. ".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
 
     //header con la informacion de la paginacion
     header("X-Total-Count: $total");

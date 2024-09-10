@@ -119,7 +119,7 @@ try {
             'tipo_comprobante_id' => $item['tipo_comprobante']['nombre'],
             'cliente_id' => $item['cliente']['nombre'],
             'tipo_iva_id' => $item['cliente']['tipo_iva']['nombre'],
-            'cuit' => $item['cliente']['cuit'],
+            'cliente_cuit' => $item['cliente']['cuit'],
             'tipo_documento_id' => $item['cliente']['tipo_documento']['nombre'] ?? '',
             //formato fecha y hora dd/mm/yyyy hh:mm
             'fecha' => strtotime($item['fecha']) ? date('d-m-Y', strtotime($item['fecha'])) : '',
@@ -128,7 +128,7 @@ try {
             'importe_iva' => '$' . $item['importe_iva'],
             'vendedor_id' => $item['vendedor']['nombre'],
             'sucursal_id' => $item['sucursal']['nombre'],
-            'empresa_id' => $item['empresa']['nombre'],
+            'empresa_nombre' => $item['empresa']['nombre'],
 
         ];
         $formattedData[] = $formattedItem;

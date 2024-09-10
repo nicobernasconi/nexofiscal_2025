@@ -95,23 +95,12 @@ try {
         }
 
 
-
         //obtener el total de registros
         $query_total = "SELECT
                         COUNT(*) AS total
                         FROM
                             (
-                            SELECT
-                                COUNT( * ) AS total 
-                            FROM
-                                compras
-                                LEFT JOIN distribuidores_empresas ON compras.empresa_id = distribuidores_empresas.empresa_id 
-                            WHERE
-                                distribuidores_empresas.distribuidor_id = $distribuidor_id
-                            GROUP BY
-                                producto_id,
-                                fecha,
-                            nro_factura 
+                            $query_product 
                             ) AS subconsulta;";
 
         $result_total = $con->query($query_total);
@@ -138,6 +127,7 @@ try {
                                         ) AS subconsulta";
 
         $query_total_resumen = str_replace("##WHERE##", $where, $query_total_resumen);
+      
 
         $result_total_resumen = $con->query($query_total_resumen);
         $row_total = $result_total_resumen->fetch(PDO::FETCH_ASSOC);
@@ -149,7 +139,7 @@ try {
         $limit = $_GET['limit'] ?? 255;
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
-        $query_product = $query_product . " ORDER BY   compras.$order_by  $sort_order  LIMIT $limit OFFSET $offset";
+        $query_product = $query_product . " ORDER BY   $order_by  $sort_order  LIMIT $limit OFFSET $offset";
 
 
 

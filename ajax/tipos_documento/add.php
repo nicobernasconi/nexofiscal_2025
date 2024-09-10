@@ -1,6 +1,7 @@
 <?php
 // Iniciar la sesión si no está iniciada
 include("../../includes/config.php");
+include("../../includes/database.php");
 // Iniciar la sesión si no está iniciada
 if (session_status() == PHP_SESSION_NONE) {
     
@@ -38,7 +39,10 @@ try {
 
     // Obtener el cuerpo de la respuesta
     $body = $response->getBody()->getContents();
-
+        $id = json_decode($body)->id;
+    //quito la ruta para generar la url de la api
+    $url_remoto = str_replace($ruta,'',$url); 
+    insertUpdateRemoto($con, $post_json,'tipos_documento','add','POST',$id, $url_remoto, $_SESSION['token'], $local);
     // Mostrar la respuesta
     echo $body;
 } catch (RequestException $e) {

@@ -3,6 +3,7 @@
 
 // Iniciar la sesión si no está iniciada
 include("../../includes/config.php");
+include("../../includes/database.php");
 include("../../includes/session_parameters.php");
 
 // Iniciar la sesión si no está iniciada

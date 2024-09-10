@@ -32,6 +32,9 @@ if (isset($_GET['sort_order'])) {
         $sort_order=' ASC ';
     }
 
+    //quitar todos parametros GET que tienen valor vacio
+    $_GET = array_filter($_GET);
+
 
 
 

@@ -414,7 +414,7 @@
                 columns: [
                     { data: "nro_factura", title: "N° Factura" },
                     { data: "fecha", title: "Fecha" },
-                    { data: "producto_codigo", title: "Producto" },
+                    { data: "codigo", title: "Producto" },
                     { data: "costo", title: "Costo" },
                     { data: "cantidad", title: "Cantidad" },
                     { data: "proveedor_id", title: "Proveedor" },

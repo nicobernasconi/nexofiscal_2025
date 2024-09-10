@@ -43,6 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $nombre_usuario = $data['usuario'] ?? '';
     $password = $data['password'] ?? '';
+    //comprobar si la tabla usuario esta vacia
+    $query = "SELECT count(*) total FROM usuarios";
+    $result = $con->query($query);
+    $usuario = $result->fetch(PDO::FETCH_ASSOC) ?? false;
+    if ($usuario['total'] == 0) {
+        $response = array("status" => 400, "message" => "No hay usuarios en la base de datos.");
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
+    }
 
     if ($nombre_usuario && $password) {
         $token = login($nombre_usuario, $password, $key, $kid, $tiempo_expiracion, $con);
@@ -128,22 +138,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = $con->query($query);
             $usuario = $result->fetch(PDO::FETCH_ASSOC) ?? false;
 
-            $rol_id=$usuario['rol_id'];
-            $sql_rol="SELECT
+            $rol_id = $usuario['rol_id'];
+            $sql_rol = "SELECT
                         funciones_roles.rol_id,
-                        JSON_ARRAYAGG(
-                            JSON_OBJECT(
+                        GROUP_CONCAT(
+    CONCAT(
+        '{\"', funciones.nombre, '\":[',
+        IF(permite_ver = 1, '\"ver\"', NULL),
+        IF(permite_crear = 1, IF(permite_ver = 1, ',\"crear\"', '\"crear\"'), NULL),
+        IF(permite_modificar = 1, IF(permite_ver = 1 OR permite_crear = 1, ',\"modificar\"', '\"modificar\"'), NULL),
+        IF(permite_eliminar = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1, ',\"eliminar\"', '\"eliminar\"'), NULL),
+        IF(permite_imprimir = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1 OR permite_eliminar = 1, ',\"imprimir\"', '\"imprimir\"'), NULL),
+        IF(permite_listar = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1 OR permite_eliminar = 1 OR permite_imprimir = 1, ',\"listar\"', '\"listar\"'), NULL),
+        ']',
+        '}'
+    )
+    SEPARATOR ','
+) AS funciones_permisos_json
 
-                                funciones.nombre, JSON_ARRAY(
-                                    CASE WHEN permite_ver = 1 THEN 'ver' END,
-                                    CASE WHEN permite_crear = 1 THEN 'crear' END,
-                                    CASE WHEN permite_modificar = 1 THEN 'modificar' END,
-                                    CASE WHEN permite_eliminar = 1 THEN 'eliminar' END,
-                                    CASE WHEN permite_imprimir = 1 THEN 'imprimir' END,
-                                    CASE WHEN permite_listar = 1 THEN 'listar' END
-                                )
-                            )
-                        ) AS funciones_permisos_json
                     FROM
                         funciones_roles
                     LEFT JOIN funciones ON funciones_roles.funcion_id = funciones.id
@@ -153,8 +165,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                        ";
             $result_rol = $con->query($sql_rol);
             $rol = $result_rol->fetch(PDO::FETCH_ASSOC) ?? false;
-            $usuario['permisos']=json_decode($rol['funciones_permisos_json'],true);
-            
+
+
+            $usuario['permisos'] = $rol['funciones_permisos_json'];
+
+
             $empresa = array();
             $sucursal = array();
             $vendedor = array();
@@ -220,15 +235,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($usuario['punto_venta_id']);
             unset($usuario['punto_venta_numero']);
             unset($usuario['punto_venta_descripcion']);
-            
-            
-            
-            
 
-            
+
+
+
+
+
 
             $response = array("status" => 200, "token" => $token, "usuario_id" => $usuario_id, "usuario" => $usuario);
         } else {
+
             $response = array("status" => 401, "message" => "Nombre de usuario o contraseña incorrectos.");
         }
     } else {

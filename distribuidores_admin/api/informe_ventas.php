@@ -271,7 +271,7 @@ try {
         }
     
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM comprobantes WHERE fecha_baja IS NULL";
+        $query_total = "SELECT COUNT(*) AS total FROM ($query_product) t";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;

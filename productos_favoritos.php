@@ -96,5 +96,5 @@ if (in_array('listar', $permisos_asignados['productos'])) {
 
     }
     //imprimir la variable de sesion por consola
-    echo '<script>console.log('.json_encode($_SESSION).')</script>';
+
 }

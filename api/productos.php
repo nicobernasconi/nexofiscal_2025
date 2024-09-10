@@ -99,10 +99,12 @@ $lista_precios=$row_usuario['lista_precios']??1;
                             ti2.nombre AS tasa_iva_nombre,
                             ti2.tasa AS tasa_iva_tasa,
                              (
-                                SELECT JSON_OBJECTAGG(ps_inner.sucursal_id, ps_inner.stock_actual) 
-                                FROM productos_stock ps_inner 
-                                WHERE ps_inner.producto_id = p.id
-                            ) AS stock_actual
+    SELECT 
+        CONCAT('{', GROUP_CONCAT(CONCAT('\"', ps_inner.sucursal_id, '\":', ps_inner.stock_actual) SEPARATOR ','), '}') 
+    FROM productos_stock ps_inner 
+    WHERE ps_inner.producto_id = p.id
+) AS stock_actual
+
                         FROM
                             productos p
                         LEFT JOIN 
@@ -348,7 +350,7 @@ $lista_precios=$row_usuario['lista_precios']??1;
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
 
-        $query_product = $query_product . " ORDER BY  " . $order_by . "  " . $sort_order . " OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
+        $query_product = $query_product . " ORDER BY  " . $order_by . "  " . $sort_order . " LIMIT $limit OFFSET $offset";
 
 
         //header con la informacion de la paginacion

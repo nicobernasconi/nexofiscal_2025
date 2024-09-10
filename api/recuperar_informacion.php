@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         ];
                         if (in_array($tabla, $tabla_enteras)) {
                             if ($tabla == 'empresas') {
-                                $resultado = $con->query("SELECT * FROM $tabla WHERE id = 3");
+                                $resultado = $con->query("SELECT * FROM $tabla WHERE id = $empresa_id");
                             } else if ($tabla == 'renglones_comprobantes') {
                                 $resultado = $con->query("SELECT * FROM $tabla WHERE comprobante_id IN (" . implode(",", $ids_comprobantes) . ")");
                             } else {

@@ -820,11 +820,6 @@ $(document).ready(function() {
         $("#clientedc").text("1 / Ocacional");
         $("#cuitdc").text("CUIT: / Ocacional");
         $("#domiciliodc").text("Domicilio: / Ocacional");
-        $("#cliente_id").val(1);
-
-
-
-
 
         // Limpiar los inputs
         $("input[type='text']").val("");
@@ -1055,29 +1050,19 @@ $(document).ready(function() {
                         // Obtener el primer elemento del arreglo
                         $("#modificar-cliente-modal #id").val(cliente.id);
                         $("#modificar-cliente-modal #nombre").val(cliente.nombre);
-                        if (cliente.tipo_documento_id != null || cliente.tipo_documento_id != '') {
-                            $("#modificar-cliente-modal #tipo_documento_id").val(cliente.tipo_documento_id).trigger("change");
-                        }
-
+                        $("#modificar-cliente-modal #tipo_documento_id").val(cliente.tipo_documento_id).trigger("change");
                         $("#modificar-cliente-modal #numero_documento").val(cliente.numero_documento);
                         $("#modificar-cliente-modal #cuit").val(cliente.cuit);
-                        if (cliente.tipo_iva_id != null || cliente.tipo_iva_id != '') {
-                            $("#modificar-cliente-modal #tipo_iva_id").val(cliente.tipo_iva_id).trigger("change");
-                        }
+                        $("#modificar-cliente-modal #tipo_iva_id").val(cliente.tipo_iva_id).trigger("change");
                         $("#modificar-cliente-modal #direccion_comercial").val(cliente.direccion_comercial);
                         $("#modificar-cliente-modal #direccion_entrega").val(cliente.direccion_entrega);
-                        if (cliente.localidad_id != null || cliente.localidad_id != '') {
-                            $("#modificar-cliente-modal #localidad_id").val(cliente.localidad_id).trigger("change");
-                        }
+                        $("#modificar-cliente-modal #localidad_id").val(cliente.localidad_id).trigger("change");
                         $("#modificar-cliente-modal #telefono").val(cliente.telefono);
                         $("#modificar-cliente-modal #celular").val(cliente.celular);
                         $("#modificar-cliente-modal #email").val(cliente.email);
                         $("#modificar-cliente-modal #contacto").val(cliente.contacto);
                         $("#modificar-cliente-modal #telefono_contacto").val(cliente.telefono_contacto);
-                        if (cliente.categoria_id != null || cliente.categoria_id != '') {
-                            $("#modificar-cliente-modal #categoria_id").val(cliente.categoria_id).trigger("change");
-                        }
-
+                        $("#modificar-cliente-modal #categoria_id").val(cliente.categoria_id).trigger("change");
                         $("#modificar-cliente-modal #porcentaje_descuento").val(cliente.porcentaje_descuento);
                         $("#modificar-cliente-modal #limite_credito").val(cliente.limite_credito);
                         $("#modificar-cliente-modal #saldo_inicial").val(cliente.saldo_inicial);
@@ -1388,48 +1373,54 @@ $(document).ready(function() {
                             },
                             success: function(response) {
                                 if (response != "null") {
-                                    var responseObject = JSON.parse(response);
-                                    console.log(responseObject);
-                                    //si es perona fisica
-                                    if (responseObject.datosGenerales.tipoPersona == "FISICA") {
-                                        var apellido_nombre = responseObject.datosGenerales.apellido + " " + responseObject.datosGenerales.nombre;
-                                        var cuit = responseObject.datosGenerales.idPersona;
-                                        //obtener el dni en base al cuit
-                                        var cuitStr = cuit.toString(); // Convierte el número a cadena
-                                        var dni = cuitStr.substring(2, 10);
+                                    try {
 
-                                    } else {
-                                        var apellido_nombre = responseObject.datosGenerales.razonSocial;
-                                        var dni = 0;
+                                        var responseObject = JSON.parse(response);
+                                        console.log(responseObject);
+                                        //si es perona fisica
+                                        if (responseObject.datosGenerales.tipoPersona == "FISICA") {
+                                            var apellido_nombre = responseObject.datosGenerales.apellido + " " + responseObject.datosGenerales.nombre;
+                                            var cuit = responseObject.datosGenerales.idPersona;
+                                            //obtener el dni en base al cuit
+                                            var cuitStr = cuit.toString(); // Convierte el número a cadena
+                                            var dni = cuitStr.substring(2, 10);
+
+                                        } else {
+                                            var apellido_nombre = responseObject.datosGenerales.razonSocial;
+                                            var dni = 0;
+                                        }
+                                        var direccion = responseObject.datosGenerales.domicilioFiscal.direccion + " - " + responseObject.datosGenerales.domicilioFiscal.localidad + " - " + responseObject.datosGenerales.domicilioFiscal.descripcionProvincia;
+                                        //obtengo el tipo de inpiesto del contribuyente
+                                        var impuestos_contribuyentes = responseObject.datosRegimenGeneral.impuesto;
+                                        //recorro los impuestos del contribuyente y guardo idImpuesto en un arreglo
+                                        var impuestos = [];
+                                        for (var i = 0; i < impuestos_contribuyentes.length; i++) {
+                                            impuestos.push(impuestos_contribuyentes[i].idImpuesto);
+                                        }
+                                        //si impuestos contiene 30 es responsable inscripto, si contiene 5095, 20, 21,22,23 o 24 es monotributista,
+                                        if (impuestos.includes(30)) {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "INSCRIPTO");
+
+                                        }
+
+                                        if (impuestos.includes(32)) {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "EXENTO");
+
+                                        }
+
+                                        if (impuestos.includes(5095) || impuestos.includes(20) || impuestos.includes(21) || impuestos.includes(22) || impuestos.includes(23) || impuestos.includes(24)) {
+                                            seleccionarPorDescripcion("#tipo_iva_id", "MONOTRIBUTO");
+
+                                        }
+
+                                        $("#modificar-cliente-modal #nombre").val(apellido_nombre);
+                                        $("#modificar-cliente-modal #direccion_comercial").val(direccion);
+                                        $("#modificar-cliente-modal #numero_documento").val(dni);
+
+                                    } catch (error) {
+                                        mostrarNotificacion("Buscar Cliente", "error", "No se encontraron datos.<br>Compruebe que el CUIT sea correcto.<br>Y que el servicio de AFIP este habilitado.");
+                                        $.unblockUI();
                                     }
-                                    var direccion = responseObject.datosGenerales.domicilioFiscal.direccion + " - " + responseObject.datosGenerales.domicilioFiscal.localidad + " - " + responseObject.datosGenerales.domicilioFiscal.descripcionProvincia;
-                                    //obtengo el tipo de inpiesto del contribuyente
-                                    var impuestos_contribuyentes = responseObject.datosRegimenGeneral.impuesto;
-                                    //recorro los impuestos del contribuyente y guardo idImpuesto en un arreglo
-                                    var impuestos = [];
-                                    for (var i = 0; i < impuestos_contribuyentes.length; i++) {
-                                        impuestos.push(impuestos_contribuyentes[i].idImpuesto);
-                                    }
-                                    //si impuestos contiene 30 es responsable inscripto, si contiene 5095, 20, 21,22,23 o 24 es monotributista,
-                                    if (impuestos.includes(30)) {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "INSCRIPTO");
-
-                                    }
-
-                                    if (impuestos.includes(32)) {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "EXENTO");
-
-                                    }
-
-                                    if (impuestos.includes(5095) || impuestos.includes(20) || impuestos.includes(21) || impuestos.includes(22) || impuestos.includes(23) || impuestos.includes(24)) {
-                                        seleccionarPorDescripcion("#tipo_iva_id", "MONOTRIBUTO");
-
-                                    }
-
-                                    $("#modificar-cliente-modal #nombre").val(apellido_nombre);
-                                    $("#modificar-cliente-modal #direccion_comercial").val(direccion);
-                                    $("#modificar-cliente-modal #numero_documento").val(dni);
-
                                 }
                                 $.unblockUI();
                             },
@@ -1673,8 +1664,6 @@ $(document).ready(function() {
             if (products[selectedVendedor].length > 0) {
                 $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                 $("#tipo_comprobante_id").val(1);
-                $("#vuelto").hide();
-
             } else {
                 // Mostrar notificación si no hay productos agregados
                 mostrarNotificacion(
@@ -1694,7 +1683,6 @@ $(document).ready(function() {
             if (venta_rapida == "0") {
                 $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                 $("#tipo_comprobante_id").val(3);
-                $("#vuelto").hide();
             } else {
                 ventaRapidaPedido();
             }
@@ -1745,7 +1733,6 @@ $(document).ready(function() {
                 ],
                 columnDefs: [
                     { targets: [0, 1, 3], className: "text-right" },
-                    { orderable: false, targets: [3] },
                     {
                         targets: -1,
 
@@ -2538,7 +2525,7 @@ $(document).ready(function() {
 
     // Manejar el evento keyup en el campo de monto pagado
     $("#montoPagado").keyup(function() {
-        var montoPagado = parseFloat($(this).val()) || 0;
+        var montoPagado = parseFloat($(this).val());
         var montoPagar = parseFloat($("#montoPagar").text().substring(1)); // Obtiene el monto a pagar eliminando el símbolo de $
         var vuelto = montoPagado - montoPagar;
 
@@ -3083,11 +3070,9 @@ $(document).ready(function() {
                 url: "ajax/promociones/list.php",
                 dataType: "json",
                 success: function(data) {
-                    //destroy datatable if exist
-                    if ($.fn.DataTable.isDataTable("#tablapromociones")) {
-                        $("#tablapromociones").DataTable().destroy();
-                    }
-                    $("#tablapromociones tbody").empty();
+                    var tablapromociones = $("#tablapromociones tbody");
+                    tablapromociones.html("");
+
                     // Recorrer los datos y agregar filas a la tabla
                     data.forEach(function(promo) {
                         var fila = $("<tr>");
@@ -3102,10 +3087,13 @@ $(document).ready(function() {
                         );
                         fila.append(columnaBoton);
 
-                        $("#tablapromociones tbody").append(fila);
+                        tablapromociones.append(fila);
                     });
 
-
+                    //destroy datatable if exist
+                    if ($.fn.DataTable.isDataTable("#tablapromociones")) {
+                        $("#tablapromociones").DataTable().destroy();
+                    }
                     //crear datatable de promociones , no se puede buscar es una pagina, tiene scroll verticat  y no tiene paginacion
                     $("#tablapromociones").DataTable({
                         paging: false,
@@ -3152,9 +3140,9 @@ $(document).ready(function() {
 
                     if (products[selectedVendedor].length > 0) {
                         if (venta_rapida == "0") {
+
                             $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                             $("#tipo_comprobante_id").val(3);
-                            $("#vuelto").hide();
                         } else {
                             ventaRapidaPedido();
                         }
@@ -3242,95 +3230,6 @@ $(document).ready(function() {
                     }
                     break;
                 case 118: // Tecla F7
-                    //Tabla  Mostrar precios de productos
-                    try {
-                        if ($.fn.DataTable.isDataTable("#tablaProductosPrecios")) {
-                            $("#tablaProductosPrecios").DataTable().destroy();
-                        }
-                        $("#tablaProductosPrecios").DataTable({
-                            processing: true,
-                            serverSide: true,
-                            ajax: {
-                                url: "./ajax/productos/list_datatable.php",
-                                timeout: 15000,
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    if (textStatus === "timeout") {
-                                        // Aquí puedes manejar el error de timeout como prefieras
-                                        // Por ejemplo, mostrando un mensaje en la consola:
-                                        $("#tablaProductosPrecios_processing").hide();
-                                        $('#tablaProductosPrecios').closest('.dataTables_wrapper').find('.alert').remove();
-                                        $('#tablaProductosPrecios').closest('.dataTables_wrapper').append('<div class="alert alert-warning" role="alert">....</div>');
-                                        // Elimina mensajes previos
-                                    }
-                                },
-
-                                type: "POST",
-                            },
-                            columns: [
-                                { data: "codigo" },
-                                { data: "codigo_barra" },
-                                { data: "descripcion" },
-                                { data: "stock" },
-                                { data: "precio1" },
-
-                                // Agrega más columnas según la estructura de tus datos
-                            ],
-                            columnDefs: [
-                                { targets: [0, 1, 3], className: "text-right" },
-                                {
-                                    targets: -1,
-
-                                    className: "text-right", // Última columna (precio)
-                                    render: function(data, type, row, meta) {
-                                        // Aplicar estilos personalizados
-                                        return (
-                                            '<span style="font-size: 16px; font-weight: bold; color: green;">$' +
-                                            data +
-                                            "</span>"
-                                        );
-                                    },
-                                },
-                            ],
-                            language: {
-                                search: "", // Eliminar el texto de búsqueda predeterminado
-                                searchPlaceholder: "Buscar producto...", // Placeholder para el nuevo cuadro de búsqueda
-                                sProcessing: "Procesando...",
-                                sLengthMenu: "Mostrar _MENU_ registros",
-                                sZeroRecords: "No se encontraron resultados",
-                                sEmptyTable: "Ningún dato disponible en esta tabla",
-                                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-                                sInfoPostFix: "",
-                                sSearch: "Busar:", // Cambiado a la izquierda
-                                sUrl: "",
-                                sInfoThousands: ",",
-                                sLoadingRecords: "Cargando...",
-                                oPaginate: {
-                                    sFirst: "Primero",
-                                    sLast: "Último",
-                                    sNext: "Siguiente",
-                                    sPrevious: "Anterior",
-                                },
-                                oAria: {
-                                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
-                                },
-                                buttons: {
-                                    copy: "Copiar",
-                                    colvis: "Visibilidad",
-                                },
-                            },
-                            lengthChange: false,
-                            //searching: false,
-                            pageLength: 15, // Establecer la cantidad de productos por página predeterminada
-                        });
-                        // Configurar el evento de búsqueda para el nuevo cuadro de búsqueda
-                        $("#custom-search-input").on("change", function() {
-                            $("#tablaProductosPrecios").DataTable().search($(this).val()).draw();
-                        });
-                        $("#tablaProductosPrecios_filter").hide();
-                    } catch (error) {}
                     $("#lista-precio-modal").fadeIn().css("z-index", z_index++);
                     $("#custom-search-input").val("");
                     $("#custom-search-input").focus();
@@ -3404,7 +3303,6 @@ $(document).ready(function() {
                         if (products[selectedVendedor].length > 0) {
                             $("#cobrar-modal").fadeIn().css("z-index", z_index++);
                             $("#tipo_comprobante_id").val(1);
-                            $("#vuelto").hide();
                         } else {
                             mostrarNotificacion(
                                 "Cobrar",

@@ -84,7 +84,7 @@ try {
             "nro_factura" => $item['nro_factura']??'Sin Asignar',
             "sucursal_id" => $item['sucursal']['nombre'],
             "proveedor_id" => $item['proveedor']['razon_social'],
-            "producto_codigo" => $item['producto'],
+            "codigo" => $item['producto'],
             
         ];
         $formattedData[] = $formattedItem;

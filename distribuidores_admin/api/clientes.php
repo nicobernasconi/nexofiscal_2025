@@ -76,6 +76,10 @@ if (isset($_GET['sort_order'])) {
 
 
 
+    //quitar todos parametros GET que tienen valor vacio
+    $_GET = array_filter($_GET);
+
+
         //recibir todos los posibles parametros por GET
         if (isset($_GET['param'])) {
             $id = sanitizeInput($_GET['param']);
@@ -286,7 +290,7 @@ if (isset($_GET['sort_order'])) {
 
 
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM clientes  LEFT JOIN distribuidores_empresas ON clientes.empresa_id = distribuidores_empresas.empresa_id WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id";
+        $query_total = "SELECT COUNT(*) AS total FROM ($query_product) t ";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;
@@ -295,7 +299,7 @@ if (isset($_GET['sort_order'])) {
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
 
-        $query_product = $query_product . " ORDER BY clientes.".$order_by."  ".$sort_order." OFFSET $offset ROWS FETCH NEXT $limit ROWS ONLY";
+        $query_product = $query_product . " ORDER BY clientes.".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
 
 
         //header con la informacion de la paginacion

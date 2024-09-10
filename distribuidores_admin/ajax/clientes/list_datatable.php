@@ -58,7 +58,6 @@ try {
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
 
-
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
 

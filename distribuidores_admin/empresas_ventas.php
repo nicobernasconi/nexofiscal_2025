@@ -382,7 +382,7 @@
       minDate: '01/01/2012',
       maxDate: '31/12/2050',
       dateLimit: {
-        days: 60
+        days: 366
       },
       showDropdowns: true,
       showWeekNumbers: true,
@@ -496,7 +496,7 @@
             title: "Tipo IVA"
           },
           {
-            data: "cuit",
+            data: "cliente_cuit",
             title: "Cuit"
           },
           {
@@ -520,7 +520,7 @@
             title: "Vendedor"
           },
           {
-            data: "empresa_id",
+            data: "empresa_nombre",
             title: "Empresa"
           },
           {

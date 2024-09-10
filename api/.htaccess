@@ -1,5 +1,8 @@
 Options +FollowSymLinks
 RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
 
 # Hacer que los archivos .php sean accesibles sin la extensión
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -55,7 +58,10 @@ RewriteRule ^informe_compras/([^/]*)/?$ informe_compras.php?param=$1 [NC,QSA,L]
 RewriteRule ^informe_libro_iva_ventas/([^/]*)/?$ informe_libro_iva_ventas.php?param=$1 [NC,QSA,L]
 RewriteRule ^facturas/([^/]*)/?$ facturas.php?param=$1 [NC,QSA,L]
 RewriteRule ^pagos/([^/]*)/?$ pagos.php?param=$1 [NC,QSA,L]
+RewriteRule ^instalar/([^/]*)/?$ instalar.php?param=$1 [NC,QSA,L]
 RewriteRule ^recuperar_informacion/([^/]*)/?$ recuperar_informacion.php?param=$1 [NC,QSA,L]
+RewriteRule ^update/([^/]*)/?$ update.php?param=$1 [NC,QSA,L]
+RewriteRule ^recuperar_informacion_update/([^/]*)/?$ recuperar_informacion_update.php?param=$1 [NC,QSA,L]
 
 
 

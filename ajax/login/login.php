@@ -1,8 +1,8 @@
 <?php
 
-include("../../includes/config.php");
 // Iniciar la sesión si no está iniciada
 include("../../includes/config.php");
+include("../../includes/database.php");
 // Iniciar la sesión si no está iniciada
 // Verificar si la sesión ya está iniciada
 if (session_status() == PHP_SESSION_NONE) {

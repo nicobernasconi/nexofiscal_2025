@@ -367,7 +367,7 @@ try {
         'no_gravado_iva_105' => $comprobante['no_gravado_iva_105'],
         'no_gravado_iva_21' => $comprobante['no_gravado_iva_21'],
         'no_gravado_iva_0' => $comprobante['no_gravado_iva_0'],
-        'importe_impuesto_interno' => $comprobante['importe_impuesto_interno'],
+        'importe_impuesto_interno' => $comprobante['importe_impuesto_interno']??0,
 		
 
 
