@@ -31,10 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         LEFT JOIN tipo_iva_empresa ON empresas.tipo_iva = tipo_iva_empresa.id";
 
     $query_param = array();
-if (isset($_GET['order_by'])) {
+
+if (isset($_GET['order_by'])|| $_GET['sort_order']!=''){
         $order_by = sanitizeInput($_GET['order_by']);
     }else{
-        $order_by ='id';
+        $order_by ='empresas.id';
     }
 if (isset($_GET['sort_order'])) {
         $sort_order= sanitizeInput($_GET['sort_order']);
@@ -110,7 +111,7 @@ if (isset($_GET['sort_order'])) {
     }
 
     //obtener el total de registros
-    $query_total = "SELECT COUNT(*) AS total FROM empresas";
+    $query_total = "SELECT COUNT(*) AS total FROM ($query_product) t";
     $result_total = $con->query($query_total);
     $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
     $total = $row_total['total'] ?? 0;
@@ -119,7 +120,7 @@ if (isset($_GET['sort_order'])) {
     $cont_pages = ceil($total / $limit);
     $offset = $_GET['offset'] ?? 0;
 
-    $query_product = $query_product . " ORDER BY empresas. ".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
+    $query_product = $query_product . " ORDER BY  ".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
 
 
     //header con la informacion de la paginacion

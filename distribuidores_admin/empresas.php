@@ -76,9 +76,7 @@
                     <table class="table table-striped jambo_table bulk_action" id="tablaEmpresas">
                       <thead>
                         <tr class="headings">
-                          <th>
-                            <input type="checkbox" id="check-all" class="flat">
-                          </th>
+                          
                           <th class="column-title">Nombre </th>
                           <th class="column-title">Email </th>
                           <th class="column-title">Telefono </th>

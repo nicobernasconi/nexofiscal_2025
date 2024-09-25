@@ -36,11 +36,11 @@ try {
                         clientes.fecha_ultimo_pago,
                         clientes.percepcion_iibb,
                         clientes.desactivado,
+                        clientes.empresa_id,
                         tipo_iva.nombre AS tipo_iva_nombre,
                         tipo_iva.descripcion AS tipo_iva_descripcion,
                         tipo_iva.porcentaje AS tipo_iva_porcentaje,
                         tipo_iva.letra_factura AS tipo_iva_letra_factura,
-
                         tipo_documento.nombre AS tipo_documento_nombre,
                         localidad.nombre AS localidad_nombre,
                         localidad.provincia_id AS localidad_provincia_id,
@@ -51,7 +51,10 @@ try {
                         vendedores.direccion AS vendedor_direccion,
                         vendedores.telefono AS vendedor_telefono,
                         vendedores.porcentaje_comision AS vendedor_porcentaje_comision,
-                        vendedores.fecha_ingreso AS vendedor_fecha_ingreso
+                        vendedores.fecha_ingreso AS vendedor_fecha_ingreso,
+                        empresas.razon_social AS empresas_razon_social,
+                        empresas.cuit AS empresas_cuit,
+                        empresas.direccion AS empresas_direccion
 
                     FROM
                         clientes
@@ -60,6 +63,7 @@ try {
                     LEFT JOIN localidad ON clientes.localidad_id = localidad.id
                     LEFT JOIN categoria ON clientes.categoria_id = categoria.id
                     LEFT JOIN vendedores ON clientes.vendedor_id = vendedores.id
+                    LEFT JOIN empresas ON clientes.empresa_id = empresas.id
                     LEFT JOIN distribuidores_empresas ON clientes.empresa_id = distribuidores_empresas.empresa_id";
 
         $query_param = array();
@@ -277,12 +281,12 @@ if (isset($_GET['sort_order'])) {
 
         if(isset($_GET['distribuidor_id'])){
             $distribuidor_id = sanitizeInput($_GET['distribuidor_id']);
-            array_push($query_param, "distribuidores_empresas.distribuidor_id = $distribuidor_id");
+       
         }
 
 
         if (count($query_param) > 0) {
-            $query_product = $query_product . " WHERE (" . implode(" AND ", $query_param).") AND distribuidores_empresas.distribuidor_id = $distribuidor_id";
+            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param).") AND distribuidores_empresas.distribuidor_id = $distribuidor_id";
         }else{
             $query_product = $query_product . " WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id";
         }
@@ -299,7 +303,7 @@ if (isset($_GET['sort_order'])) {
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
 
-        $query_product = $query_product . " ORDER BY clientes.".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
+        $query_product = $query_product . " ORDER BY ".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
 
 
         //header con la informacion de la paginacion
@@ -322,6 +326,7 @@ if (isset($_GET['sort_order'])) {
         $vendedores = array();
         $tipo_iva = array();
         $response = array();
+        $empresa = array();
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $tipo_documento = array(
@@ -355,6 +360,15 @@ if (isset($_GET['sort_order'])) {
                 'letra_factura' => $row['tipo_iva_letra_factura'],
             );
 
+            $empresa = array(
+                'id' => $row['empresa_id'],
+                'razon_social' => $row['empresas_razon_social'],
+                'cuit' => $row['empresas_cuit'],
+                'direccion' => $row['empresas_direccion']
+            );
+
+                
+
             $clientes = array(
                 'id' => $row['id'],
                 'nro_cliente' => $row['nro_cliente'],
@@ -380,7 +394,8 @@ if (isset($_GET['sort_order'])) {
                 'fecha_ultimo_pago' => $row['fecha_ultimo_pago'],
                 'percepcion_iibb' => $row['percepcion_iibb'],
                 'desactivado' => $row['desactivado'],
-                'tipo_iva' => $tipo_iva
+                'tipo_iva' => $tipo_iva,
+                'empresa' => $empresa
 
             );
 

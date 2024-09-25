@@ -67,6 +67,7 @@ try {
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
 
+
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true)['data'];
     $resumen = json_decode($body, true)['resumen'];
@@ -81,10 +82,14 @@ try {
             "fecha" => date('d-m-Y', strtotime($item['fecha'])),
             "costo" => '$'.$item['costo'],
             "cantidad" => $item['cantidad'],
+            "costo_sin_iva" => '$' . $item['costo_sin_iva'],
+            "iva" => '$' . $item['iva'],
             "nro_factura" => $item['nro_factura']??'Sin Asignar',
             "sucursal_id" => $item['sucursal']['nombre'],
             "proveedor_id" => $item['proveedor']['razon_social'],
             "codigo" => $item['producto'],
+            'precio_costo_sin_iva' => $item['costo_sin_iva'],
+            'iva' => $item['iva'],
             
         ];
         $formattedData[] = $formattedItem;

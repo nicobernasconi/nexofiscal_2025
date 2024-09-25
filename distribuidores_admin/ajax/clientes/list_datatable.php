@@ -35,6 +35,8 @@ $params = [
         'nro_cliente' => isset($searchValue) ? $searchValue : null,
         'distribuidor_id' => $_SESSION['distribuidor_id'],
         'limit' => $rowperpage,
+        'order_by' => $columnName,
+        'sort_order' => $columnSortOrder,
         'offset' => $row
 
     ],
@@ -75,6 +77,7 @@ try {
             'localidad_nombre' => $item['localidad']['nombre'],
             'tipo_iva_nombre' => $item['tipo_iva']['nombre'],
             'saldo_actual' => $item['saldo_actual'],
+            'empresas_razon_social' => $item['empresa']['razon_social'],
             'acciones' => $boton_modificar . $boton_borrar
         ];
         $formattedData[] = $formattedItem;

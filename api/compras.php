@@ -22,10 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         productos.id,
                         productos.codigo AS producto_codigo,
                         productos.descripcion AS producto_descripcion,
-                        productos.codigo_barra AS producto_codigo_barra 
+                        productos.codigo_barra AS producto_codigo_barra,
+                        ROUND((compras.precio_costo-(compras.precio_costo/(1+(tasa_iva.tasa)))), 2)*compras.cantidad AS precio_costo_sin_iva,
+                        ROUND((compras.precio_costo/(1+(tasa_iva.tasa))), 2)*compras.cantidad AS iva
                       FROM
                         compras
-                        INNER JOIN productos ON compras.producto_id = productos.id";
+                        LEFT JOIN productos ON compras.producto_id = productos.id
+                        LEFT JOIN tasa_iva ON productos.tasa_iva_id = tasa_iva.id";
 
     $query_param = array();
 if (isset($_GET['order_by'])) {
@@ -130,6 +133,8 @@ if (isset($_GET['sort_order'])) {
             'proveedor_id' => $row['proveedor_id'],
             'sucursal_id' => $row['sucursal_id'],
             'productos' => $productos,
+            'precio_costo_sin_iva' => $row['precio_costo_sin_iva'],
+            'iva' => $row['iva']
 
         );
 

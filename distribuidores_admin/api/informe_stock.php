@@ -65,10 +65,10 @@ try {
         }
 
         if (count($query_param) > 0) {
-            $query_product = $query_product . " WHERE (" . implode(" AND ", $query_param) . ") AND productos.empresa_id = $empresa_id";
+            $query_product = $query_product . " WHERE (" . implode(" AND ", $query_param) . ") AND productos.empresa_id = $empresa_id AND productos.codigo <> ''";
             
         } else {
-            $query_product = $query_product . " WHERE productos.empresa_id = $empresa_id";
+            $query_product = $query_product . " WHERE productos.empresa_id = $empresa_id AND productos.codigo <> ''";
 
         }
 
@@ -76,7 +76,7 @@ try {
 
     
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM productos WHERE empresa_id = $empresa_id";
+        $query_total = "SELECT COUNT(*) AS total FROM productos WHERE empresa_id = $empresa_id AND productos.codigo <> ''";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;

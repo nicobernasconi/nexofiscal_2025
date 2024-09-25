@@ -18,6 +18,8 @@ try {
         $query_product = "SELECT
                             compras.fecha,
                             Sum( compras.cantidad * compras.precio_costo ) AS costo,
+                             ROUND(Sum( compras.cantidad * (compras.precio_costo/(1+tasa_iva.tasa)) ),2) AS iva,
+                            ROUND(Sum( compras.cantidad * (compras.precio_costo-(compras.precio_costo/(1+tasa_iva.tasa)))),2) AS costo_sin_iva,
                             Sum( compras.cantidad ) AS cantidad,
                             compras.nro_factura,
                             Min( compras.sucursal_id ) AS sucursal_id,
@@ -31,6 +33,7 @@ try {
                             LEFT JOIN proveedores ON compras.proveedor_id = proveedores.id
                             LEFT JOIN sucursales ON compras.sucursal_id = sucursales.id
                             LEFT JOIN productos ON productos.id = compras.producto_id 
+                            LEFT JOIN tasa_iva ON tasa_iva.id = productos.tasa_iva_id
                             LEFT JOIN distribuidores_empresas ON compras.empresa_id = distribuidores_empresas.empresa_id
 
                          ##WHERE## 
@@ -169,6 +172,8 @@ try {
             $compra['producto'] = $row['producto'];
             $compra['fecha'] = $row['fecha'];
             $compra['costo'] = $row['costo'];
+            $compra['costo_sin_iva'] = $row['costo_sin_iva'];
+            $compra['iva'] = $row['iva'];
             $compra['cantidad'] = $row['cantidad'];
             $compra['nro_factura'] = $row['nro_factura'];
             $compra['sucursal'] = $sucursal;
@@ -184,6 +189,8 @@ try {
                 "fecha" => date('d-m-Y', strtotime($item['fecha'])),
                 "costo" => '$' . $item['costo'],
                 "cantidad" => $item['cantidad'],
+                "costo_sin_iva" => '$' . $item['costo_sin_iva'],
+                "iva" => '$' . $item['iva'],
                 "nro_factura" => $item['nro_factura'] ?? 'Sin Asignar',
                 "sucursal_id" => $item['sucursal']['nombre'],
                 "proveedor_id" => $item['proveedor']['razon_social'],
@@ -198,22 +205,26 @@ try {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setCellValue('A1', 'Fecha');
-            $sheet->setCellValue('D1', 'Nro Factura');
-            $sheet->setCellValue('G1', 'Producto');
-            $sheet->setCellValue('B1', 'Costo');
-            $sheet->setCellValue('C1', 'Cantidad');
-            $sheet->setCellValue('E1', 'Sucursal');
-            $sheet->setCellValue('F1', 'Proveedor');
+            $sheet->setCellValue('B1', 'Nro Factura');
+            $sheet->setCellValue('C1', 'Producto');
+            $sheet->setCellValue('D1', 'Total Sin Iva');
+            $sheet->setCellValue('E1', 'Iva');
+            $sheet->setCellValue('F1', 'Total');
+            $sheet->setCellValue('G1', 'Sucursal');
+            $sheet->setCellValue('H1', 'Proveedor');
             $i = 2;
 
             foreach ($compras_ as $compra) {
                 $sheet->setCellValue('A' . $i, $compra['fecha']);
-                $sheet->setCellValue('B' . $i, $compra['costo']);
-                $sheet->setCellValue('C' . $i, $compra['cantidad']);
-                $sheet->setCellValue('D' . $i, $compra['nro_factura']);
-                $sheet->setCellValue('E' . $i, $compra['sucursal_id']);
-                $sheet->setCellValue('F' . $i, $compra['proveedor_id']);
-                $sheet->setCellValue('G' . $i, $compra['producto_codigo']);
+                $sheet->setCellValue('B' . $i, $compra['nro_factura']);
+                $sheet->setCellValue('C' . $i, $compra['producto_codigo']);
+                $sheet->setCellValue('D' . $i, $compra['costo_sin_iva']);
+                $sheet->setCellValue('E' . $i, $compra['iva']);
+                $sheet->setCellValue('F' . $i, $compra['costo']);
+                $sheet->setCellValue('G' . $i, $compra['sucursal_id']);
+                $sheet->setCellValue('H' . $i, $compra['proveedor_id']);
+
+               
                 $i++;
             }
             //totales
@@ -221,17 +232,17 @@ try {
             $sheet->setCellValue('B' . $i, $resumen['costo']);
             $sheet->setCellValue('C' . $i, $resumen['cantidad']);
             $sheet->getStyle('A' . $i . ':G' . $i)->getFont()->setBold(true);
-            $sheet->getStyle('A1:G1')->getFont()->setBold(true);
-            $sheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFA0A0A0');
-            $sheet->getStyle('A' . $i . ':G' . $i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFA0A0A0');
+            $sheet->getStyle('A1:H1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFA0A0A0');
+            $sheet->getStyle('A' . $i . ':H' . $i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFA0A0A0');
 
             //asignar bordes
-            $sheet->getStyle('A1:G' . $i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $sheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            $sheet->getStyle('A1:G1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('A1:H' . $i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('A1:H1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
             //autoajustar columnas
-            foreach (range('A', 'G') as $columnID) {
+            foreach (range('A', 'H') as $columnID) {
                 $sheet->getColumnDimension($columnID)->setAutoSize(true);
             }
 
@@ -258,6 +269,7 @@ try {
             $pdf->Cell(30, 10, 'Fecha', 1, 0, 'C');
             $pdf->Cell(30, 10, 'Costo', 1, 0, 'C');
             $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C');
+            
             $pdf->Cell(40, 10, 'Nro Factura', 1, 0, 'C');
             $pdf->Cell(50, 10, 'Sucursal', 1, 0, 'C');
             $pdf->Cell(50, 10, 'Proveedor', 1, 0, 'C');

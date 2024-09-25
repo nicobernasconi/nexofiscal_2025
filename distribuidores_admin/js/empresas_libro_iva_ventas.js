@@ -107,9 +107,11 @@
       $("#tablaInformeLibroIvaVentas").show();
       $("#tablaInformeLibroIvaVentas").DataTable({
           processing: true,
+          searching: false,
           serverSide: true,
           paging: true,
           autoWidth: true,
+          orderable: false,
           ajax: {
               url: "./ajax/informe_libro_iva_ventas/list_datatable.php?" + data_get,
               type: "POST",
@@ -167,10 +169,12 @@
                   title: "Total"
               },
           ],
-          //establecer alineacion para las columnas numericas
+          //establecer alineacion para las columnas numericas y anular ordenar
           columnDefs: [{
               targets: [4, 5, 6, 7, 8, 9, 10, 11, 12],
-              className: 'dt-body-right'
+              className: 'dt-body-right',
+
+
           }],
           //establecer 2,3,4 como moneda
           createdRow: function(row, data, dataIndex) {
@@ -211,6 +215,8 @@
               },
 
           },
+          //anular ordenar
+
           fnDrawCallback: function(settings) {
               var api = this.api();
               var resumen = api.ajax.json().resumen;

@@ -62,6 +62,7 @@ try {
             'email' => $item['email'],
             'cuit' => $item['cuit'],
             'saldo_actual' => $item['saldo_actual'],
+            'empresa_id' => $item['empresa']['nombre'],
             'acciones' => $boton_modificar . $boton_borrar
         ];
         $formattedData[] = $formattedItem;

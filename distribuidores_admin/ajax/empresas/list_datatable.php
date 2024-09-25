@@ -34,6 +34,8 @@ $params = [
     ], "query" => [
         'nombre' => isset($searchValue) ? $searchValue : null,
         'distribuidor_id' => $_SESSION['distribuidor_id'],
+        'order_by' => $columnName,
+        'sort_order' => $columnSortOrder,
         'limit' => $rowperpage,
         'offset' => $row
 
@@ -58,6 +60,7 @@ try {
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
 
+
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
     // Transformar los datos según el nuevo formato requerido
@@ -65,12 +68,11 @@ try {
     foreach ($data as $item) {
         $boton_borrar = '';
         $boton_modificar = '';
-
         $boton_modificar_datos  = '<button class="btn btn-success btn-seleccionar-empresa" data-toggle="modal" data-target=".bs-empresa-editar-modal-lg" data-id="' . $item['id'] . '" ><i class="fa fa-pencil"></i></button>';
         $boton_modificar_certificados = '<button class="btn btn-info btn-editar-empresa-certificado" data-toggle="modal" data-target=".bs-empresa-certificado-editar-modal-lg" data-id="' . $item['id'] . '" ><i class="fa fa-certificate"></i></button>';
         $boton_sucursales = '<a href="sucursales.php?id=' . $item['id'] . '" class="btn btn-warning" ><i class="fa fa-building"></i></a>';
-        $boton_roles = '<a href="roles.php?id=' . $item['id'] . '" class="btn btn-dark" ><i class="fa fa-eye"></i></a>';
         $boton_puntos_ventas = '<a href="puntos_ventas.php?id=' . $item['id'] . '" class="btn btn-primary" ><i class="fa fa-money"></i></a>';
+        $boton_licencias = '<a href="licencias.php?id=' . $item['id'] . '" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Licencias"><i class="fa fa-key"></i></a>';
         $formattedItem = [
             'id' => $item['id'],
             'nombre' => $item['nombre'],
@@ -79,7 +81,7 @@ try {
             'cuit' => $item['cuit'],
             'tipo_iva' => $item['tipo_iva_nombre'],
             'inicio_actividad' => $item['fecha_inicio_actividades'],
-            'acciones' => $boton_modificar_datos . $boton_modificar_certificados . $boton_sucursales . $boton_roles. $boton_puntos_ventas
+            'acciones' => $boton_modificar_datos . $boton_modificar_certificados . $boton_sucursales . $boton_puntos_ventas. $boton_licencias
         ];
         $formattedData[] = $formattedItem;
     }

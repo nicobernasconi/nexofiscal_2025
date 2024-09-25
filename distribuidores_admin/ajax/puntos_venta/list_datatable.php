@@ -32,7 +32,8 @@ $params = [
         // Obtener el token de seguridad de las variables de sesión
         'Authorization' => 'Bearer ' . $_SESSION['token']
     ], "query" => [
-        'nombre' => isset($searchValue) ? $searchValue :null,
+        'numero' => isset($searchValue) ? $searchValue :null,
+        'descripcion' => isset($searchValue) ? $searchValue :null,
         'distribuidor_id' => $_SESSION['distribuidor_id'],
         'empresa_id' => $_GET['empresa_id'],
         'limit'=>$rowperpage,

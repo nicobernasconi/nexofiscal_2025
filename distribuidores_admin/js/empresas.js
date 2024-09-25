@@ -1,21 +1,13 @@
 try {
-    var ditribuidir_id = $("#distribuidor_id").val();
     $("#tablaEmpresas").DataTable({
         processing: true,
         serverSide: true,
         searching: true,
         ajax: {
-            url: "ajax/empresas/list_datatable.php?distribuidor_id=" + ditribuidir_id,
+            url: "ajax/empresas/list_datatable.php",
             type: "POST",
         },
-        columns: [{
-                //checkbox id="check-all" class="flat"
-
-                data: null,
-                render: function(data, type, row) {
-                    return `<input type="checkbox" name="chkEmpresa" id="check-all" class="flat" value="${row.id}">`;
-                },
-            },
+        columns: [
 
             { data: "nombre", "title": "Nombre" },
             { data: "email", "title": "Email" },
@@ -71,6 +63,7 @@ try {
     $('#tablaEmpresas_filter').hide();
 
 } catch (error) {}
+
 
 $('#btn-agregar-empresa').on('click', function() {
     $('#empresaForm')[0].reset();

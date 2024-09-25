@@ -13,6 +13,8 @@ try {
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $query_product = "SELECT
                             compras.fecha,
+                            ROUND(Sum( compras.cantidad * (compras.precio_costo/(1+tasa_iva.tasa)) ),2) AS iva,
+                            ROUND(Sum( compras.cantidad * (compras.precio_costo-(compras.precio_costo/(1+tasa_iva.tasa)))),2) AS costo_sin_iva,
                             Sum( compras.cantidad * compras.precio_costo ) AS costo,
                             Sum( compras.cantidad ) AS cantidad,
                             compras.nro_factura,
@@ -25,7 +27,9 @@ try {
                             compras
                             LEFT JOIN proveedores ON compras.proveedor_id = proveedores.id
                             LEFT JOIN sucursales ON compras.sucursal_id = sucursales.id
-                            INNER JOIN productos ON productos.id = compras.producto_id 
+                            LEFT JOIN productos ON productos.id = compras.producto_id 
+                            LEFT JOIN tasa_iva ON productos.tasa_iva_id = tasa_iva.id
+
                          ##WHERE## 
                         GROUP BY
                             compras.fecha,
@@ -120,9 +124,13 @@ try {
             $compra['fecha'] = $row['fecha'];
             $compra['costo'] = $row['costo'];
             $compra['cantidad'] = $row['cantidad'];
+            $compra['costo_sin_iva'] = $row['costo_sin_iva'];
+            $compra['iva'] = $row['iva'];
+
             $compra['nro_factura'] = $row['nro_factura'];
             $compra['sucursal'] = $sucursal;
             $compra['proveedor'] = $proveedor;
+
             array_push($compras, $compra);
         }
 

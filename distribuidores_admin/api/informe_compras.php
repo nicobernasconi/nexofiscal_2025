@@ -14,6 +14,8 @@ try {
         $query_product = "SELECT
                             compras.fecha,
                             Sum( compras.cantidad * compras.precio_costo ) AS costo,
+                             ROUND(Sum( compras.cantidad * (compras.precio_costo/(1+tasa_iva.tasa)) ),2) AS iva,
+                            ROUND(Sum( compras.cantidad * (compras.precio_costo-(compras.precio_costo/(1+tasa_iva.tasa)))),2) AS costo_sin_iva,
                             Sum( compras.cantidad ) AS cantidad,
                             compras.nro_factura,
                             Min( compras.sucursal_id ) AS sucursal_id,
@@ -27,6 +29,7 @@ try {
                             LEFT JOIN proveedores ON compras.proveedor_id = proveedores.id
                             LEFT JOIN sucursales ON compras.sucursal_id = sucursales.id
                             LEFT JOIN productos ON productos.id = compras.producto_id 
+                            LEFT JOIN tasa_iva ON tasa_iva.id = productos.tasa_iva_id
                             LEFT JOIN distribuidores_empresas ON compras.empresa_id = distribuidores_empresas.empresa_id
 
                          ##WHERE## 
@@ -115,10 +118,17 @@ try {
                                         SELECT
                                             COUNT( * ) AS total ,
                                             SUM( compras.cantidad * compras.precio_costo ) AS costo,
-                                            SUM( compras.cantidad ) AS cantidad
+                                            SUM( compras.cantidad ) AS cantidad,
+                                            ROUND(Sum( compras.cantidad * (compras.precio_costo/(1+tasa_iva.tasa)) ),2) AS iva,
+                                            ROUND(Sum( compras.cantidad * (compras.precio_costo-(compras.precio_costo/(1+tasa_iva.tasa)))),2) AS costo_sin_iva
                                         FROM
                                             compras
                                             LEFT JOIN distribuidores_empresas ON compras.empresa_id = distribuidores_empresas.empresa_id 
+                                             LEFT JOIN proveedores ON compras.proveedor_id = proveedores.id
+                                                LEFT JOIN sucursales ON compras.sucursal_id = sucursales.id
+                                                LEFT JOIN productos ON productos.id = compras.producto_id 
+                                                LEFT JOIN tasa_iva ON tasa_iva.id = productos.tasa_iva_id
+
                                          ##WHERE## 
                                         GROUP BY
                                             producto_id,
@@ -127,14 +137,16 @@ try {
                                         ) AS subconsulta";
 
         $query_total_resumen = str_replace("##WHERE##", $where, $query_total_resumen);
-      
+
 
         $result_total_resumen = $con->query($query_total_resumen);
         $row_total = $result_total_resumen->fetch(PDO::FETCH_ASSOC);
 
         $costo = $row_total['costo'] ?? 0;
         $cantidad = $row_total['cantidad'] ?? 0;
-        $resumen = array("costo" => $costo, "cantidad" => $cantidad);
+        $iva = $row_total['iva'] ?? 0;
+        $costo_sin_iva = $row_total['costo_sin_iva'] ?? 0;
+        $resumen = array("costo" => $costo, "cantidad" => $cantidad, "iva" => $iva, "costo_sin_iva" => $costo_sin_iva);
         //limites de la paginacion
         $limit = $_GET['limit'] ?? 255;
         $cont_pages = ceil($total / $limit);
@@ -168,7 +180,11 @@ try {
             $compra['producto'] = $row['producto'];
             $compra['fecha'] = $row['fecha'];
             $compra['costo'] = $row['costo'];
+            $compra['costo_sin_iva'] = $row['costo_sin_iva'];
+            $compra['iva'] = $row['iva'];
             $compra['cantidad'] = $row['cantidad'];
+            $compra['costo_sin_iva'] = $row['costo_sin_iva'];
+            $compra['iva'] = $row['iva'];
             $compra['nro_factura'] = $row['nro_factura'];
             $compra['sucursal'] = $sucursal;
             $compra['proveedor'] = $proveedor;
@@ -183,7 +199,7 @@ try {
     exit();
 } catch (PDOException $th) {
     $error_msg = $errores_mysql[$th->getCode()] ?? "Error desconocido";
-    $response = array("status" => 500, "status_message" => "{$error_msg}{$th->getMessage()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}{$th->getMessage()}{$th->getLine()}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

@@ -50,6 +50,7 @@ try {
     $response = $client->request('GET', $url, $params);
     // Obtener los headers de respuesta
 
+
     $xTotalCount = $response->getHeaderLine('X-Total-Count') ?? 0;
     $XPerPage = $response->getHeaderLine('X-Per-Page') ?? 0;
 
@@ -57,8 +58,7 @@ try {
 
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
-
-
+   
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
     // Transformar los datos según el nuevo formato requerido

@@ -339,13 +339,13 @@ try {
 
 
         if (count($query_param) > 0) {
-            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ") AND p.empresa_id=" . $empresa_id;
+            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ") AND p.empresa_id=" . $empresa_id." AND p.codigo <> ''";
         } else {
-            $query_product = $query_product . " WHERE p.empresa_id=" . $empresa_id;
+            $query_product = $query_product . " WHERE p.empresa_id=" . $empresa_id." AND p.codigo <> ''";
         }
 
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM productos WHERE productos.empresa_id=" . $empresa_id;
+        $query_total = "SELECT COUNT(*) AS total FROM productos WHERE productos.empresa_id=" . $empresa_id." AND productos.codigo <> ''";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;
@@ -600,7 +600,7 @@ try {
             $pdf->Ln();
             foreach ($formattedData as $item) {
                 $pdf->Cell(30, 8, $item['codigo'], 1, 0, 'C');
-                $pdf->Cell(40, 8, $item['descripcion'], 1, 0, 'C');
+                $pdf->Cell(40, 8, utf8_decode($item['descripcion']), 1, 0, 'C');
                 $pdf->Cell(20, 8, $item['precio1'], 1, 0, 'C');
                 $pdf->Cell(20, 8, $item['precio2'], 1, 0, 'C');
                 $pdf->Cell(20, 8, $item['precio3'], 1, 0, 'C');

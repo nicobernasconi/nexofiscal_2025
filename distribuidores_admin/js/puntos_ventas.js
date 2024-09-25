@@ -49,13 +49,9 @@ try {
         //searching: false,
         pageLength: 15, // Establecer la cantidad de productos por página predeterminada
     });
-    $('#btn-buscar-punto-venta').on('click', function() {
-        $('#tablaPuntosVenta').DataTable().search($('#buscar-punto-venta').val()).draw();
-        console.log($('#buscar-punto-venta').val());
-    });
 
-    //ocultar tablaEmpresas_filter
-    $('#tablaUsuarios_filter').hide();
+
+
 } catch (error) {
     console.error(error);
 }
@@ -123,11 +119,12 @@ $("#btn-guardar-punto-venta").on("click", function() {
 
 $("#tablaPuntosVenta").on("click", ".btn-seleccionar-punto-venta", function() {
     var id = $(this).data("id");
+    var empresa_id = $("#empresa_id").val();
     $("#puntoVentaForm #id").val(id);
     $.blockUI({ message: '<h1>Cargando punto-venta...</h1>' });
     $.ajax({
         type: "POST",
-        url: "ajax/puntos_venta/list.php?param=" + id,
+        url: "ajax/puntos_venta/list.php?param=" + id + "&empresa_id=" + empresa_id,
         data: { id: id },
         success: function(response) {
             var data = response[0];
@@ -192,5 +189,48 @@ $("#btn-editar-punto-venta").on("click", function() {
             $.unblockUI();
         },
 
+    });
+});
+$("#tablaPuntosVenta").on("click", ".btn-eliminar-punto-venta", function() {
+    var id = $(this).data("id");
+    var empresa_id = $("#empresa_id").val();
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.blockUI({ message: '<h1>Eliminando punto-venta...</h1>' });
+            $.ajax({
+                type: "POST",
+                url: "ajax/puntos_venta/delete.php",
+                data: { id: id, empresa_id: empresa_id },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    if (data.status == "201") {
+                        new PNotify({
+                            title: 'Exito',
+                            text: 'punto-venta eliminado correctamente',
+                            type: 'success',
+                            styling: 'bootstrap3'
+                        });
+                        $("#tablaPuntosVenta").DataTable().ajax.reload();
+                    } else {
+                        new PNotify({
+                            title: 'Error',
+                            text: 'Error al eliminar el punto-venta',
+                            type: 'error',
+                            styling: 'bootstrap3'
+                        });
+                    }
+                    $.unblockUI();
+                },
+            });
+        }
     });
 });

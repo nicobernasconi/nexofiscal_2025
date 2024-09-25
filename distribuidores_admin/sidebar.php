@@ -6,8 +6,7 @@
                   <li><a><i class="fa fa-dashboard"></i> Paneles de control <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="index.php">Empresas</a></li>
-                      <li><a href="#">Usuarios</a></li>
-                      <li><a href="#">Ventas</a></li>
+        
                     </ul>
                   </li>
                   <li><a><i class="fa fa-building"></i> Empresas <span class="fa fa-chevron-down"></span></a>

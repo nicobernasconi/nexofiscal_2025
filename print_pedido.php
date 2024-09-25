@@ -322,7 +322,26 @@ $unique_tasa_iva = array_unique(array_column($productos, 'tasa_iva'));
 		);
 	}
 
+// Enviar la solicitud POST
+$url = $ruta . 'api/comprobantes/' . $id;
 
+// Crear una instancia del cliente Guzzle
+$client = new Client();
+
+$response = $client->request('GET', $url, [
+    'headers' => [
+        'Content-Type' => 'application/json',
+        // Obtener el token de seguridad de las variables de sesión
+        'Authorization' => 'Bearer ' . $_SESSION['token']
+    ],
+    'query' => [
+        'sucursal_id' => $_SESSION['sucursal_id']
+    ]
+]);
+
+$bodyContents = $response->getBody()->getContents();
+$comprobante = json_decode($bodyContents, true)[0] ?? [];
+$numero= $comprobante['numero'] ?? 0;
 
 $template_data = array(
     'razon_social' => $nombre_tienda,
@@ -332,10 +351,10 @@ $template_data = array(
     'iibb' => $iibb,
     'inicio_actividad' => $inicio_actividades,
     'tipo_factura_nombre' => 'PEDIDO',
-    'tipo_factura' => 'PEDIDO',
+    'tipo_factura' => '1',
     'punto_venta' => $punto_de_venta,
     'destinaatario' => $destinatario,
-    'numero' => $id,
+    'numero' => $numero,
     'fecha' => $fecha,
     'concepto' => '9999',
     'productos' => $productos,

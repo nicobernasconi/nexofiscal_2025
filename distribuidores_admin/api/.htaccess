@@ -62,9 +62,8 @@ RewriteRule ^informes_resumen_general/([^/]*)/?$ informes_resumen_general.php?pa
 RewriteRule ^preparar_importar_productos/([^/]*)/?$ preparar_importar_productos.php?param=$1 [NC,QSA,L]
 RewriteRule ^importar_productos/([^/]*)/?$ importar_productos.php?param=$1 [NC,QSA,L]
 RewriteRule ^actualizar_precios/([^/]*)/?$ actualizar_precios.php?param=$1 [NC,QSA,L]
-
-
-
+RewriteRule ^sessions/([^/]*)/?$ sessions.php?param=$1 [NC,QSA,L]
+RewriteRule ^licencias/([^/]*)/?$ licencias.php?param=$1 [NC,QSA,L]
 
 
 

@@ -71,9 +71,9 @@
               <div class="x_panel">
 
                 <div class="x_content">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-proveedor-editar-modal-lg" id="btn-agregar-proveedor">Agregar proveedor</button>
+                  
                   <div class="table-responsive">
-                    <table class="table table-striped jambo_table bulk_action" id="tablaProvvedores">
+                    <table class="table table-striped jambo_table bulk_action" id="tablaProveedores">
                       <thead>
                         <tr class="headings">
                           <th class="column-title"> </th>
@@ -83,7 +83,7 @@
                           <th class="column-title"></th>
                           <th class="column-title"> </th>
                           <th class="column-title"></th>
-                          
+                          <th class="column-title"></th>
                         </tr>
                       </thead>
 
@@ -99,7 +99,7 @@
             </div>
           </div>
         </div>
-        <?php include 'modals/empresas.php'; ?>
+        <?php include 'modals/proveedores.php'; ?>
       </div>
       <!-- /page content -->
 

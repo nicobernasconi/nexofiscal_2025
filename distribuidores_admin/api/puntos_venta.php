@@ -34,9 +34,6 @@ if (isset($_GET['sort_order'])) {
     //quitar todos parametros GET que tienen valor vacio
     $_GET = array_filter($_GET);
 
-
-
-
     //recibir todos los posibles parametros por GET
     if (isset($_GET['param'])) {
         $id = sanitizeInput($_GET['param']);
@@ -55,13 +52,13 @@ if (isset($_GET['sort_order'])) {
 
     if (isset($_GET['empresa_id'])) {
         $empresa_id = sanitizeInput($_GET['empresa_id']);
-        array_push($query_param, "puntos_venta.empresa_id=$empresa_id");
+
     }
 
     if (count($query_param) > 0) {
-        $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ") ";
+        $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ") AND  puntos_venta.empresa_id = $empresa_id ";
     }else{
-        $query_product = $query_product . "";
+        $query_product = $query_product . " WHERE puntos_venta.empresa_id = $empresa_id";
     }
 
     //obtener el total de registros

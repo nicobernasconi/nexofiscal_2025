@@ -126,6 +126,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -415,8 +416,9 @@
                     { data: "nro_factura", title: "N° Factura" },
                     { data: "fecha", title: "Fecha" },
                     { data: "codigo", title: "Producto" },
-                    { data: "costo", title: "Costo" },
-                    { data: "cantidad", title: "Cantidad" },
+                    { data: "costo_sin_iva", title: "Costo sin IVA" },
+                    { data: "iva", title: "IVA" },
+                    { data: "costo", title: "Total" },
                     { data: "proveedor_id", title: "Proveedor" },
                     { data: "sucursal_id", title: "Sucursal" },
                 ],

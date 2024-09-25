@@ -9,8 +9,7 @@ try {
         },
         columns: [
             { data: "razon_social", "title": "Razón Social" },
-            { data: "saldo_actual", "title": "Saldo Actual" },
-            { data: "acciones", "title": "Acciones" },
+            { data: "saldo_actual", "title": "Saldo Actual" }
         ],
 
         language: {

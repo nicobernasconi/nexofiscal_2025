@@ -1,5 +1,5 @@
 try {
-    $("#tablaProvvedores").DataTable({
+    $("#tablaProveedores").DataTable({
         processing: true,
         serverSide: true,
         searching: true,
@@ -14,6 +14,7 @@ try {
             { data: "email", "title": "Email" },
             { data: "cuit", "title": "CUIT" },
             { data: "saldo_actual", "title": "Saldo Actual" },
+            { data: "empresa_id", "title": "Empresa" },
             { data: "acciones", "title": "Acciones" },
         ],
 
@@ -54,7 +55,7 @@ try {
     // Configurar el evento de búsqueda para el nuevo cuadro de búsqueda
     //buscar en la tabla cuando hago clic en el boton btn-buscar-proveedor
     $('#btn-buscar-proveedor').on('click', function() {
-        $('#tablaProvvedores').DataTable().search($('#buscar-proveedor').val()).draw();
+        $('#tablaProveedores').DataTable().search($('#buscar-proveedor').val()).draw();
         console.log($('#buscar-proveedor').val());
     });
 
@@ -63,154 +64,25 @@ try {
 
 } catch (error) {}
 
-$('#btn-agregar-proveedor').on('click', function() {
-    $('#empresaForm')[0].reset();
-    $('#empresaForm #id').val('');
-    $('#empresaForm #btn-guardar-proveedor').show();
-    $("#empresaForm #panel-agragar-sucursal").show();
-    $("#empresaForm #panel-password").show();
-    $('#empresaForm #btn-editar-proveedor').hide();
-    $("#panel-agragar-sucursal").show();
-    //cargar select de tipo_iva_id
-    $.ajax({
-        type: "POST",
-        url: "ajax/tipos_iva_empresa/list.php",
-
-        success: function(response) {
-            var tipos_iva = JSON.parse(response);
-            let select = $('#empresaForm #tipo_iva_id');
-            //vaciar el select
-            select.innerHTML = "";
-            //agregar la opcion todos
-            let option = document.createElement('option');
-            option.value = "";
-            option.text = "Todos";
-            select.appendChild(option);
-            tipos_iva.forEach(vendedor => {
-                let option = document.createElement('option');
-                option.value = vendedor.id;
-                option.text = vendedor.nombre;
-                select.appendChild(option);
-            });
-
-        },
-    });
 
 
-});
 
-$("#btn-guardar-proveedor").on("click", function() {
-    //validar campos
+$("#tablaProveedores").on("click", ".btn-seleccionar-proveedor", function() {
 
-    let camposVacios = $('#empresaForm input[required], #empresaForm textarea[required], #empresaForm select[required]').filter(function() {
-        return this.value === '';
-    });
-
-    if (camposVacios.length) {
-        new PNotify({
-            title: 'Error',
-            text: 'Por favor, rellene todos los campos obligatorios.',
-            type: 'error',
-            styling: 'bootstrap3'
-        });
-        return;
-    }
-
-    $.blockUI({
-        message: '<h1>Guardando proveedor...</h1>',
-    });
-    $.ajax({
-        type: "POST",
-        url: "ajax/empresas/add.php",
-        data: $("#empresaForm").serialize(),
-        success: function(response) {
-            var data = JSON.parse(response);
-
-            if (data.status == "201") {
-                new PNotify({
-                    title: 'Exito',
-                    text: 'proveedor guardada correctamente',
-                    type: 'success',
-                    styling: 'bootstrap3'
-                });
-                $("#tablaProvvedores").DataTable().ajax.reload();
-                $("#empresaForm")[0].reset();
-            } else {
-                new PNotify({
-                    title: 'Error',
-                    text: 'Error al guardar la proveedor',
-                    type: 'error',
-                    styling: 'bootstrap3'
-                });
-            }
-            $.unblockUI();
-        },
-    });
-});
-
-
-$("#tablaProvvedores").on("click", ".btn-seleccionar-proveedor", function() {
-    //bloquear todos los elementos del formulario
-    $('#empresaForm input').prop('disabled', true);
-    $('#empresaForm input').prop('disabled', false);
-    $("#empresaForm #panel-agragar-sucursal").hide();
-    $("#empresaForm #panel-password").hide();
-    $("#empresaForm #btn-guardar-proveedor").hide();
-    $("#empresaForm #btn-editar-proveedor").show();
     var id = $(this).data('id');
     $.ajax({
         type: "POST",
-        url: "ajax/empresas/list.php?param=" + id,
+        url: "ajax/proveedores/list.php?param=" + id,
         success: function(response) {
             var proveedor = response[0];
             console.log(proveedor);
-            $.ajax({
-                type: "POST",
-                url: "ajax/tipos_iva_empresa/list.php",
-                data: { proveedor: proveedor },
-                success: function(response) {
-                    var tipos_iva = response;
-                    let select = document.getElementById('tipo_iva_id');
-                    //vaciar el select
-                    select.innerHTML = "";
-                    //agregar la opcion proveedor.tipo_iva y proveedor.tipo_iva_nombre
-                    let option = document.createElement('option');
-                    option.value = proveedor.tipo_iva;
-                    option.text = proveedor.tipo_iva_nombre;
-                    select.appendChild(option);
-                    tipos_iva.forEach(tipo_iva => {
-                        let option = document.createElement('option');
-                        option.value = tipo_iva.id;
-                        option.text = tipo_iva.nombre;
-
-                        select.appendChild(option);
-                    });
-
-
-                },
-                //desbloquer el formulario cuando termina de cargar
-                complete: function() {
-                    //bloquear todos los elementos del formulario
-                    $('#empresaForm input').prop('disabled', false);
-                }
-
-
-
-
-            });
-
-            $("#empresaForm #id").val(proveedor.id);
-            $("#empresaForm #nombre_empresa").val(proveedor.nombre);
-            $("#empresaForm #email_empresa").val(proveedor.email);
-            $("#empresaForm #cuit").val(proveedor.cuit);
-            $("#empresaForm #telefono_empresa").val(proveedor.telefono);
-            $("#empresaForm #fecha_inicio_actividades").val(proveedor.fecha_inicio_actividades);
-            $("#empresaForm #iibb").val(proveedor.iibb);
-            $("#empresaForm #razon_social").val(proveedor.razon_social);
-            $("#empresaForm #direccion_empresa").val(proveedor.direccion);
-            $("#empresaForm #descripcion_empresa").val(proveedor.descripcion);
-            $("#empresaForm #responsable_empresa").val(proveedor.responsable);
-
+            $("#proveedorForm #id").val(proveedor.id);
+            $("#proveedorForm #razon_social").val(proveedor.razon_social);
+            $("#proveedorForm #email").val(proveedor.email);
+            $("#proveedorForm #telefono").val(proveedor.telefono);
+            $("#proveedorForm #direccion").val(proveedor.direccion);
+            $("#proveedorForm #cuit").val(proveedor.cuit);
+            $("#modal-proveedor").modal("show");
 
         },
     });
@@ -223,7 +95,7 @@ $("#tablaProvvedores").on("click", ".btn-seleccionar-proveedor", function() {
 $("#btn-editar-proveedor").on("click", function() {
     //validar campos
 
-    let camposVacios = $('#empresaForm #nombre_empresa, #empresaForm #distribuidor_id, #empresaForm #razon_social, #empresaForm #email_empresa, #empresaForm #direccion_empresa, #empresaForm #telefono_empresa, #empresaForm #descripcion_empresa, #empresaForm #responsable_empresa, #empresaForm #fecha_inicio_actividades, #empresaForm #cuit, #empresaForm #iibb, #empresaForm #tipo_iva_id').filter(function() {
+    let camposVacios = $('#proveedorForm input[required], #proveedorForm textarea[required], #proveedorForm select[required]').filter(function() {
         return this.value === '';
     });
 
@@ -239,123 +111,87 @@ $("#btn-editar-proveedor").on("click", function() {
     $.blockUI({
         message: '<h1>Guardando proveedor...</h1>',
     });
-    $.ajax({
-        type: "POST",
-        url: "ajax/empresas/edit.php",
-        data: $("#empresaForm").serialize(),
-        success: function(response) {
-            var data = JSON.parse(response);
-            if (data.status == "201") {
-                new PNotify({
-                    title: 'Exito',
-                    text: 'proveedor guardada correctamente',
-                    type: 'success',
-                    styling: 'bootstrap3'
-                });
-                $("#tablaProvvedores").DataTable().ajax.reload();
-                $("#empresaForm")[0].reset();
-                //cerras modal
-                $('#modal-proveedor').modal('hide');
-            } else {
-                new PNotify({
-                    title: 'Error',
-                    text: 'Error al guardar la proveedor',
-                    type: 'error',
-                    styling: 'bootstrap3'
-                });
-            }
-            $.unblockUI();
-        },
-    });
-});
+    try {
 
-$("#tablaProvvedores").on("click", ".btn-editar-proveedor-certificado", function() {
-    var empresa_id = $(this).data('id');
-    $("#empresaCertificadoForm #empresa_id").val(empresa_id);
-});
-$("#btn-guardar-certificado-proveedor").on("click", function() {
 
-    let camposVacios = $('#empresaCertificadoForm #certificado_afip, #empresaCertificadoForm #clave_privada_afip').filter(function() {
-        return this.value === '';
-    });
-    if (camposVacios.length) {
+        $.ajax({
+            type: "POST",
+            url: "ajax/proveedores/edit.php",
+            data: $("#proveedorForm").serialize(),
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.status == "201") {
+                    new PNotify({
+                        title: 'Exito',
+                        text: 'proveedor guardada correctamente',
+                        type: 'success',
+                        styling: 'bootstrap3'
+                    });
+                    $("#tablaProveedores").DataTable().ajax.reload();
+                    $("#proveedorForm")[0].reset();
+                    //cerras modal
+                    $('#modal-proveedor').modal('hide');
+                } else {
+                    new PNotify({
+                        title: 'Error',
+                        text: 'Error al guardar la proveedor',
+                        type: 'error',
+                        styling: 'bootstrap3'
+                    });
+                }
+                $.unblockUI();
+            },
+        });
+    } catch (error) {
+        $.unblockUI();
         new PNotify({
             title: 'Error',
-            text: 'Por favor, rellene todos los campos obligatorios.',
+            text: 'Error al guardar la proveedor',
             type: 'error',
             styling: 'bootstrap3'
         });
-        return;
+
+
     }
-    // validar si certificado_afip tiene una extecion crt y clave_privada_afip tiene una extencion key
-    var certificado_afip = document.getElementById('certificado_afip').files[0];
-    var clave_privada_afip = document.getElementById('clave_privada_afip').files[0];
+});
 
-    if (certificado_afip.name.split('.').pop() != 'crt' || clave_privada_afip.name.split('.').pop() != 'key') {
-        new PNotify({
-            title: 'Error',
-            text: 'Por favor, seleccione un certificado y una clave privada con extensiones correctas.',
-            type: 'error',
-            styling: 'bootstrap3'
-        });
-        return;
-    }
-
-    let clave_afip = '';
-    let cert_afip = '';
-    //obtener contenido de los archivos
-    var reader1 = new FileReader();
-    reader1.readAsText(certificado_afip);
-    reader1.onload = function() {
-        var cert_b64 = btoa(reader1.result);
-        cert_afip = cert_b64;
-
-        // Envía los datos al servidor después de leer el certificado
-        enviarDatosAlServidor();
-    };
-
-    var reader = new FileReader();
-    reader.readAsText(clave_privada_afip);
-    reader.onload = function() {
-        var clave_b64 = btoa(reader.result);
-        clave_afip = clave_b64;
-
-        // Envía los datos al servidor después de leer la clave privada
-        enviarDatosAlServidor();
-    };
-
-    function enviarDatosAlServidor() {
-
-        // Verifica si ambos archivos han sido leídos antes de enviar los datos al servidor
-        if (cert_afip && clave_afip) {
+$("#tablaProveedores").on("click", ".btn-eliminar-proveedor", function() {
+    var id = $(this).data('id');
+    var razon_social = $(this).data('razon_social');
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Desea eliminar el proveedor " + razon_social + "?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
             $.blockUI({
-                message: '<h1>Guardando certificado...</h1>',
+                message: '<h1>Eliminando proveedor...</h1>',
             });
             $.ajax({
                 type: "POST",
-                url: "ajax/empresas/editCert.php",
+                url: "ajax/proveedores/delete.php",
                 data: {
-                    empresa_id: $("#empresaCertificadoForm #empresa_id").val(),
-                    cert: cert_afip,
-                    key: clave_afip
+                    id: id
                 },
                 success: function(response) {
                     var data = JSON.parse(response);
                     if (data.status == "201") {
                         new PNotify({
                             title: 'Exito',
-                            text: 'Certificado guardado correctamente',
+                            text: 'proveedor eliminado correctamente',
                             type: 'success',
                             styling: 'bootstrap3'
                         });
-                        $("#tablaProvvedores").DataTable().ajax.reload();
-                        $("#empresaCertificadoForm")[0].reset();
-                        //cerrar modal
-                        $('#modal-certificado-proveedor').modal('hide');
+                        $("#tablaProveedores").DataTable().ajax.reload();
                     } else {
                         new PNotify({
                             title: 'Error',
-                            text: 'Error al guardar el certificado',
+                            text: 'Error al eliminar la proveedor',
                             type: 'error',
                             styling: 'bootstrap3'
                         });
@@ -364,13 +200,5 @@ $("#btn-guardar-certificado-proveedor").on("click", function() {
                 },
             });
         }
-    }
-});
-
-
-
-
-$(".btn-editar-proveedor-certificado").on("click", function() {
-    var empresa_id = $(this).data('id');
-    $("#empresaCertificadoForm #empresa_id").val(empresa_id);
+    });
 });

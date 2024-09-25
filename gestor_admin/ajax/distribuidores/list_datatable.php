@@ -6,7 +6,7 @@ include("../../includes/session_parameters.php");
 // Iniciar la sesión si no está iniciada
 if (session_status() == PHP_SESSION_NONE) {
     session_name('sesion_gestor');
-session_start();
+    session_start();
 }
 
 $draw = $_POST['draw'];

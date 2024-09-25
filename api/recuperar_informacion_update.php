@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'tipo_documento',
                 'tipo_iva',
                 'vendedores',
-                'clientes',
+                'clientes',      // Insert con ON DUPLICATE KEY UPDATE
                 'codigos_barras',
                 'tasa_iva',
                 'familias',
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'subfamilias',
                 'tipo',
                 'unidad',
-                'productos',
+                'productos',     // Insert con ON DUPLICATE KEY UPDATE
                 'condicion_venta',
                 'forma_pago',
                 'configuraciones',
@@ -58,17 +58,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Exportar datos filtrados
             $archivoDatos = fopen($archivoDatosFiltrados, 'w');
 
+            // Deshabilitar las claves foráneas
+            fwrite($archivoDatos, "SET foreign_key_checks = 0;\n");
+
+            // Fecha límite para los últimos 2 días
+            $fechaLimite = date('Y-m-d H:i:s', strtotime('-2 days'));
+
             foreach ($tablas as $tabla) {
                 try {
-                    // Obtener todas las filas de la tabla correspondiente
-                    $resultado = $con->query("SELECT * FROM $tabla WHERE empresa_id = $empresa_id");
+                    // Si es la tabla 'clientes' o 'productos', solo considerar los registros modificados en los últimos 2 días
+                    if ($tabla == 'productos' || $tabla == 'clientes') {
+                        $query = "SELECT * FROM $tabla WHERE empresa_id = $empresa_id AND fecha_actualizacion >= '$fechaLimite'";
+                    } else {
+                        // Para las demás tablas, obtener todos los registros
+                        $query = "SELECT * FROM $tabla WHERE empresa_id = $empresa_id";
+                    }
+
+                    $resultado = $con->query($query);
 
                     if ($resultado != false) {
                         // Procesar todas las filas de la tabla
                         while ($fila = $resultado->fetch(PDO::FETCH_ASSOC)) {
                             $campos = array_keys($fila);
 
-                            // Remover todos los campos que contienen '_id' , 'id' o fecha
+                            // Remover todos los campos que contienen '_id', 'id' o fecha
                             $campos = array_filter($campos, function($campo) {
                                 return !str_contains($campo, '_id') && $campo !== 'id' && !str_contains($campo, 'fecha');
                             });
@@ -80,28 +93,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $campos[] = 'id_remoto';  // Añadir 'id_remoto' al listado de campos
                             }
 
-                            // Generar la parte de SET para el UPDATE
-                            $camposUpdate = array_map(function($campo) use ($fila) {
-                                return "`$campo` = " . escapeValue($fila[$campo]);
-                            }, $campos);
+                            // Para las tablas 'productos' y 'clientes', generar sentencias INSERT con ON DUPLICATE KEY UPDATE
+                            if ($tabla == 'productos' || $tabla == 'clientes') {
+                                $camposInsert = implode('`, `', $campos);
+                                $valoresInsert = implode(', ', array_map('escapeValue', array_intersect_key($fila, array_flip($campos))));
 
-                            $updateList = implode(", ", $camposUpdate);
+                                // Generar la parte de SET para el ON DUPLICATE KEY UPDATE
+                                $camposUpdate = array_map(function($campo) use ($fila) {
+                                    return "`$campo` = " . escapeValue($fila[$campo]);
+                                }, $campos);
+                                //agreha el campo empresa_id
+                                $camposUpdate[] = "`empresa_id` = " . escapeValue($empresa_id);
 
-                            // Generar la sentencia UPDATE utilizando 'id_remoto' en el WHERE
-                            if (isset($fila['id_remoto'])) {
-                                $updateQuery = "UPDATE $tabla SET $updateList WHERE `id_remoto` = " . escapeValue($fila['id_remoto']) . ";\n";
-                                //reemplazar '' por NULL
-                                $updateQuery = str_replace("''", "NULL", $updateQuery);
-                                
+                                $updateList = implode(", ", $camposUpdate);
+
+                                // Generar la sentencia INSERT ON DUPLICATE KEY UPDATE
+                                $insertQuery = "INSERT INTO $tabla (`$camposInsert`) VALUES ($valoresInsert) ON DUPLICATE KEY UPDATE $updateList;\n";
+                                // Reemplazar '' por NULL
+                                $insertQuery = str_replace("''", "NULL", $insertQuery);
+
                                 // Escribir la sentencia en el archivo
-                                fwrite($archivoDatos, $updateQuery);
+                                fwrite($archivoDatos, $insertQuery);
+                            } else {
+                                // Para las demás tablas, generar sentencias UPDATE
+                                $camposUpdate = array_map(function($campo) use ($fila) {
+                                    return "`$campo` = " . escapeValue($fila[$campo]);
+                                }, $campos);
+
+                                $updateList = implode(", ", $camposUpdate);
+
+                                // Generar la sentencia UPDATE utilizando 'id_remoto' en el WHERE
+                                if (isset($fila['id_remoto'])) {
+                                    $updateQuery = "UPDATE $tabla SET $updateList WHERE `id_remoto` = " . escapeValue($fila['id_remoto']) . ";\n";
+                                    // Reemplazar '' por NULL
+                                    $updateQuery = str_replace("''", "NULL", $updateQuery);
+                                    
+                                    // Escribir la sentencia en el archivo
+                                    fwrite($archivoDatos, $updateQuery);
+                                }
                             }
                         }
                     }
                 } catch (Exception $e) {
                     // Manejar errores por tabla
+                    echo "Error en la tabla $tabla: " . $e->getMessage();
                 }
             }
+
+            // Habilitar las claves foráneas
+            fwrite($archivoDatos, "SET foreign_key_checks = 1;\n");
 
             fclose($archivoDatos);
 

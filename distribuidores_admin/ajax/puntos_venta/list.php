@@ -25,6 +25,7 @@ $params = [
         'Authorization' => 'Bearer ' . $_SESSION['token']
     ], "query" => [
         'param' => isset($_GET['param']) ? $_GET['param'] :null,
+        'empresa_id' => $_GET['empresa_id'],
         
     ],
 

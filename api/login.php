@@ -144,12 +144,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         GROUP_CONCAT(
     CONCAT(
         '{\"', funciones.nombre, '\":[',
-        IF(permite_ver = 1, '\"ver\"', NULL),
-        IF(permite_crear = 1, IF(permite_ver = 1, ',\"crear\"', '\"crear\"'), NULL),
-        IF(permite_modificar = 1, IF(permite_ver = 1 OR permite_crear = 1, ',\"modificar\"', '\"modificar\"'), NULL),
-        IF(permite_eliminar = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1, ',\"eliminar\"', '\"eliminar\"'), NULL),
-        IF(permite_imprimir = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1 OR permite_eliminar = 1, ',\"imprimir\"', '\"imprimir\"'), NULL),
-        IF(permite_listar = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1 OR permite_eliminar = 1 OR permite_imprimir = 1, ',\"listar\"', '\"listar\"'), NULL),
+        IF(permite_ver = 1, '\"ver\"', ''),
+        IF(permite_crear = 1, IF(permite_ver = 1, ',\"crear\"', '\"crear\"'), ''),
+        IF(permite_modificar = 1, IF(permite_ver = 1 OR permite_crear = 1, ',\"modificar\"', '\"modificar\"'), ''),
+        IF(permite_eliminar = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1, ',\"eliminar\"', '\"eliminar\"'), ''),
+        IF(permite_imprimir = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1 OR permite_eliminar = 1, ',\"imprimir\"', '\"imprimir\"'), ''),
+        IF(permite_listar = 1, IF(permite_ver = 1 OR permite_crear = 1 OR permite_modificar = 1 OR permite_eliminar = 1 OR permite_imprimir = 1, ',\"listar\"', '\"listar\"'), ''),
         ']',
         '}'
     )

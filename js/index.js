@@ -820,6 +820,19 @@ $(document).ready(function() {
         $("#clientedc").text("1 / Ocacional");
         $("#cuitdc").text("CUIT: / Ocacional");
         $("#domiciliodc").text("Domicilio: / Ocacional");
+        $("#concepto").val('1');
+        $("#tipo_de_documento").val('96');
+        $("#numero_de_documento").val('111111');
+        $("#cliente_id").val('1');
+        if (tipo_iva == 1) {
+            tipo_de_factura = 6;
+        } else {
+            tipo_de_factura = 11;
+        }
+        destinatario = "CONSUMIDOR FINAL";
+
+
+
 
         // Limpiar los inputs
         $("input[type='text']").val("");
@@ -6393,6 +6406,9 @@ $(document).ready(function() {
                     { data: "cantidad", title: "Cantidad" },
                     { data: "proveedor_id", title: "Proveedor" },
                     { data: "sucursal_id", title: "Sucursal" },
+                    { data: "precio_costo_sin_iva", title: "Total Sin IVA" },
+                    { data: "iva", title: "IVA" },
+
                 ],
                 language: {
                     search: "", // Eliminar el texto de búsqueda predeterminado

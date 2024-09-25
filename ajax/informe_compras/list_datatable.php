@@ -84,6 +84,9 @@ try {
             "sucursal_id" => $item['sucursal']['nombre'],
             "proveedor_id" => $item['proveedor']['razon_social'],
             "codigo" => $item['producto'],
+            'precio_costo_sin_iva' => $item['costo_sin_iva'],
+            'iva' => $item['iva'],
+
             
         ];
         $formattedData[] = $formattedItem;

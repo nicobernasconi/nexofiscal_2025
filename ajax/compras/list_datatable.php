@@ -78,6 +78,9 @@ try {
             'nro_factura' => $item['nro_factura'],
             'cantidad' => $item['cantidad'],
             'precio_costo' => $item['precio_costo'],
+            'proveedor_id' => $item['proveedor_id'],
+            'precio_costo_sin_iva' => $item['precio_costo_sin_iva'],
+            'iva' => $item['iva'],
         ];
         $formattedData[] = $formattedItem;
     }

@@ -16,6 +16,7 @@ try {
                             proveedores.razon_social,
                             proveedores.direccion,
                             proveedores.localidad_id,
+                            empresas.id AS empresa_id,
                             proveedores.telefono,
                             proveedores.email,
                             proveedores.tipo_iva_id,
@@ -33,13 +34,15 @@ try {
                             subcategoria.nombre,
                             subcategoria.se_imprime,
                             localidad.codigo_postal,
-                            categoria.se_imprime 
+                            categoria.se_imprime ,
+                            empresas.nombre AS empresa
                         FROM
                             proveedores
                             LEFT JOIN localidad ON proveedores.localidad_id = localidad.id
                             LEFT JOIN tipo_iva ON proveedores.tipo_iva_id = tipo_iva.id
                             LEFT JOIN categoria ON proveedores.categoria_id = categoria.id
                             LEFT JOIN subcategoria ON proveedores.subcategoria_id = subcategoria.id
+                            LEFT JOIN empresas ON proveedores.empresa_id = empresas.id
                             LEFT JOIN distribuidores_empresas ON proveedores.empresa_id = distribuidores_empresas.empresa_id";
 
         $query_param = array();
@@ -56,6 +59,8 @@ if (isset($_GET['sort_order'])) {
 
     //quitar todos parametros GET que tienen valor vacio
     $_GET = array_filter($_GET);
+
+
 
 
 
@@ -135,6 +140,8 @@ if (isset($_GET['sort_order'])) {
             $query_product = $query_product . " WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id";
         }
 
+
+
         //obtener el total de registros
         $query_total = "SELECT COUNT(*) AS total FROM proveedores LEFT JOIN distribuidores_empresas ON proveedores.empresa_id = distribuidores_empresas.empresa_id WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id";
         $result_total = $con->query($query_total);
@@ -192,6 +199,11 @@ if (isset($_GET['sort_order'])) {
                 "nombre" => $row['nombre'],
                 "se_imprime" => $row['se_imprime']
             );
+            $empresa = array(
+                "id" => $row['empresa_id'],
+                "nombre" => $row['empresa']
+            );
+               
 
             $proveedores = array(
                 "id" => $row['id'],
@@ -206,7 +218,8 @@ if (isset($_GET['sort_order'])) {
                 "subcategoria" => $subcategoria,
                 "fecha_ultima_compra" => $row['fecha_ultima_compra'],
                 "fecha_ultimo_pago" => $row['fecha_ultimo_pago'],
-                "saldo_actual" => $row['saldo_actual']
+                "saldo_actual" => $row['saldo_actual'],
+                "empresa" => $empresa
             );
 
             array_push($response, $proveedores);
