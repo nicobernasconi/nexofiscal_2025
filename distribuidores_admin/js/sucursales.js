@@ -10,15 +10,7 @@ try {
             url: "ajax/sucursales/list_datatable.php?id=" + empresa_id,
             type: "POST",
         },
-        columns: [{
-                //checkbox id="check-all" class="flat"
-
-                data: null,
-                render: function(data, type, row) {
-                    return `<input type="checkbox" name="chkEmpresa" id="check-all" class="flat" value="${row.id}">`;
-                }
-            },
-
+        columns: [
             { data: "nombre" },
             { data: "direccion" },
             { data: "telefono" },
@@ -63,8 +55,7 @@ try {
         console.log($('#buscar-sucursal').val());
     });
 
-    //ocultar tablaEmpresas_filter
-    $('#tablaSucursal_filter').hide();
+    
 } catch (error) {
     console.error(error);
 }
@@ -187,5 +178,48 @@ $("#btn-editar-sucursal").on("click", function() {
             }
             $.unblockUI();
         },
+    });
+});
+
+$("#tablaSucursal").on("click", ".btn-eliminar-sucursal", function() {
+    var id = $(this).data("id");
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.blockUI({ message: '<h1>Eliminando sucursal...</h1>' });
+            $.ajax({
+                type: "POST",
+                url: "ajax/sucursales/delete.php",
+                data: { id: id },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    if (data.status == "201") {
+                        new PNotify({
+                            title: 'Éxito',
+                            text: 'Sucursal eliminada correctamente',
+                            type: 'success',
+                            styling: 'bootstrap3'
+                        });
+                        $("#tablaSucursal").DataTable().ajax.reload();
+                    } else {
+                        new PNotify({
+                            title: 'Error',
+                            text: 'Error al eliminar la sucursal',
+                            type: 'error',
+                            styling: 'bootstrap3'
+                        });
+                    }
+                    $.unblockUI();
+                },
+            });
+        }
     });
 });

@@ -36,6 +36,8 @@ $params = [
         'empresa_id' => $empresa_id,
         'nombre' => isset($searchValue) ? $searchValue :null,
         'distribuidor_id' => $_SESSION['distribuidor_id'],
+        'order_by' => $columnName,
+        'sort_order' => $columnSortOrder,
 'limit'=>$rowperpage,
         'offset'=>$row 
 
@@ -45,7 +47,9 @@ $params = [
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET
@@ -69,7 +73,7 @@ try {
         $boton_modificar='';
   
         $boton_modificar_datos  = '<button class="btn btn-success btn-seleccionar-sucursal  data-toggle="modal" data-target=".bs-sucursal-crear-modal-lg" data-id="'.$item['id'].'" ><i class="fa fa-pencil"></i></button>';
-        $boton_borrar = '<button class="btn btn-danger" data-id="'.$item['id'].'" ><i class="fa fa-trash"></i></button>';
+        $boton_borrar = '<button class="btn btn-danger btn-eliminar-sucursal" data-id="'.$item['id'].'" ><i class="fa fa-trash"></i></button>';
         $boto_usuario = '<a href="usuarios.php?id='.$item['id'].'&empresa_id='.$item['empresa_id'].'" class="btn btn-info" data-id="'.$item['id'].'" ><i class="fa fa-users"></i></a>';
         $formattedItem = [
             'id' => $item['id'],

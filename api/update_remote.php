@@ -121,7 +121,7 @@ while ($row =  $result->fetch(PDO::FETCH_ASSOC)) {
         if ($e->hasResponse()) {
             echo "Error: " . $e->getResponse()->getBody()->getContents();
         } else {
-            echo "Error: " . $e->getMessage();
+            echo "Error: ";
         }
     }
 }

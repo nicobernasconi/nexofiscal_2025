@@ -24,7 +24,9 @@ $url = $ruta . 'api/comprobantes/' . $comprobante_id;
 
 use GuzzleHttp\Client;
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 
 

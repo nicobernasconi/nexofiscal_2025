@@ -517,14 +517,18 @@ try {
             $formattedItem = [
                 'codigo' => $item['codigo'],
                 'descripcion' => $item['descripcion'],
-                'precio1' => ($item['precio1'] != '') ? '$' . $item['precio1'] : '$0',
-                'precio2' => ($item['precio2'] != '') ? '$' . $item['precio2'] : '$0',
-                'precio3' => ($item['precio3'] != '') ? '$' . $item['precio3'] : '$0',
+                'precio_costo' => ($item['precio_costo'] != '') ?  $item['precio_costo'] : '$0',
+                'precio1' => ($item['precio1'] != '') ?  $item['precio1'] : '$0',
+                'precio2' => ($item['precio2'] != '') ?  $item['precio2'] : '$0',
+                'precio3' => ($item['precio3'] != '') ?  $item['precio3'] : '$0',
                 'producto_balanza' => ($item['producto_balanza'] == 1) ? 'Si' : 'No',
                 'tasa_iva' => $item['tasa_iva']['nombre'],
                 'stock' => $stock_actual,
                 'stock_minimo' => $item['stock_minimo'] ?? 0,
                 'stock_pedido' => $item['stock_pedido'] ?? 0,
+                'familia' => $item['familia']['numero'],
+                'pesable' => ($item['unidad']['nombre'] === 'KILOGRAMO') ? 'P' : 'N',
+
             ];
             $formattedData[] = $formattedItem;
         }
@@ -535,37 +539,39 @@ try {
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setCellValue('A1', 'Codigo');
             $sheet->setCellValue('B1', 'Descripcion');
-            $sheet->setCellValue('C1', 'Precio1');
-            $sheet->setCellValue('D1', 'Precio2');
-            $sheet->setCellValue('E1', 'Precio3');
-            $sheet->setCellValue('F1', 'Producto Balanza');
-            $sheet->setCellValue('G1', 'Tasa IVA');
-            $sheet->setCellValue('H1', 'Stock');
-            $sheet->setCellValue('I1', 'Stock Minimo');
-            $sheet->setCellValue('J1', 'Stock Pedido');
+            $sheet->setCellValue('C1', 'Precio Costo');
+            $sheet->setCellValue('D1', 'Precio1');
+            $sheet->setCellValue('E1', 'Precio2');
+            $sheet->setCellValue('F1', 'Precio3');
+            $sheet->setCellValue('G1', 'Producto Balanza');
+            $sheet->setCellValue('H1', 'Tasa IVA');
+            $sheet->setCellValue('I1', 'Stock');
+            $sheet->setCellValue('J1', 'Stock Minimo');
+            $sheet->setCellValue('K1', 'Stock Pedido');
             $row = 2;
             foreach ($formattedData as $item) {
                 $sheet->setCellValue('A' . $row, $item['codigo']);
                 $sheet->setCellValue('B' . $row, $item['descripcion']);
-                $sheet->setCellValue('C' . $row, $item['precio1']);
-                $sheet->setCellValue('D' . $row, $item['precio2']);
-                $sheet->setCellValue('E' . $row, $item['precio3']);
-                $sheet->setCellValue('F' . $row, $item['producto_balanza']);
-                $sheet->setCellValue('G' . $row, $item['tasa_iva']);
-                $sheet->setCellValue('H' . $row, $item['stock']);
-                $sheet->setCellValue('I' . $row, $item['stock_minimo']);
-                $sheet->setCellValue('J' . $row, $item['stock_pedido']);
+                $sheet->setCellValue('C' . $row, $item['precio_costo']);
+                $sheet->setCellValue('D' . $row, $item['precio1']);
+                $sheet->setCellValue('E' . $row, $item['precio2']);
+                $sheet->setCellValue('F' . $row, $item['precio3']);
+                $sheet->setCellValue('G' . $row, $item['producto_balanza']);
+                $sheet->setCellValue('H' . $row, $item['tasa_iva']);
+                $sheet->setCellValue('I' . $row, $item['stock']);
+                $sheet->setCellValue('J' . $row, $item['stock_minimo']);
+                $sheet->setCellValue('K' . $row, $item['stock_pedido']);
                 $row++;
             }
             //formatear tabla
-            $sheet->getStyle('A1:J1')->getFont()->setBold(true);
-            $sheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFA0A0A0');
-            $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            $sheet->getStyle('A1:J1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('A1:K1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFA0A0A0');
+            $sheet->getStyle('A1:K1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('A1:K1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
             //asignar bordes
-            $sheet->getStyle('A1:J' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('A1:K' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             //autodimensionar columnas
-            foreach (range('A', 'J') as $columnID) {
+            foreach (range('A', 'K') as $columnID) {
                 $sheet->getColumnDimension($columnID)->setAutoSize(true);
             }
 
@@ -589,6 +595,7 @@ try {
             $pdf->SetFontSize(10);
             $pdf->Cell(30, 8, 'Codigo', 1, 0, 'C');
             $pdf->Cell(40, 8, 'Descripcion', 1, 0, 'C');
+            $pdf->Cell(20, 8, 'Precio Costo', 1, 0, 'C');
             $pdf->Cell(20, 8, 'Precio1', 1, 0, 'C');
             $pdf->Cell(20, 8, 'Precio2', 1, 0, 'C');
             $pdf->Cell(20, 8, 'Precio3', 1, 0, 'C');
@@ -601,6 +608,7 @@ try {
             foreach ($formattedData as $item) {
                 $pdf->Cell(30, 8, $item['codigo'], 1, 0, 'C');
                 $pdf->Cell(40, 8, utf8_decode($item['descripcion']), 1, 0, 'C');
+                $pdf->Cell(20, 8, $item['precio_costo'], 1, 0, 'C');
                 $pdf->Cell(20, 8, $item['precio1'], 1, 0, 'C');
                 $pdf->Cell(20, 8, $item['precio2'], 1, 0, 'C');
                 $pdf->Cell(20, 8, $item['precio3'], 1, 0, 'C');
@@ -615,6 +623,17 @@ try {
             $response = array("status" => 200, "status_message" => "Archivo generado", "url" => './comprobantes/'.$filename);
 
 
+        }
+        if($type=='csv'){
+            $filename = 'productos' . $empresa_id . '.csv';
+            $filepath = './../comprobantes/'.$filename;
+            $fp = fopen($filepath, 'w');
+            fputcsv($fp, ['NUMERO','CODIGO','NOMBRE','DEPTO','PRECIO','TIPO','ETIQUETA']);
+            foreach ($formattedData as $item) {
+                fputcsv($fp, [$item['codigo'],$item['codigo'], $item['descripcion'], $item['familia'], $item['precio1'], $item['pesable'],'1'], ';');
+            }
+            fclose($fp);
+            $response = array("status" => 200, "status_message" => "Archivo generado", "url" => './comprobantes/'.$filename);
         }
     }
 

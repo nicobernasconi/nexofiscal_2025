@@ -18,6 +18,11 @@ $(document).ready(function() {
         });
     }
 
+    //deshabilitar el enter en todos los formularios
+    $(document).on("keypress", "form", function(event) {
+        return event.keyCode != 13;
+    });
+
     window.closeModal = function() {
         $(".custom-modal").fadeOut();
     };

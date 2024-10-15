@@ -45,7 +45,9 @@ $params = [
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET
@@ -67,7 +69,7 @@ try {
     $formattedData = [];
     foreach ($data as $item) {
         $boton_borrar = '<button class="btn btn-danger btn-eliminar-cliente" data-id="' . $item['id'] . '"><i class="fa fa-trash"></i></button>';
-        $boton_modificar = '<button class="btn btn-success btn-seleccionar-cliente" data-id="' . $item['id'] . '" ><i class="fa fa-pencil"></i></button>';
+        $boton_modificar  = '<button class="btn btn-success btn-seleccionar-cliente" data-toggle="modal" data-target=".bs-cliente-editar-modal-lg" data-id="' . $item['id'] . '" ><i class="fa fa-pencil"></i></button>';
         $formattedItem = [
             'id' => $item['id'],
             'nro_cliente' => $item['nro_cliente'],

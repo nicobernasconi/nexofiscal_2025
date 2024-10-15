@@ -4,7 +4,7 @@ include("../includes/security.php");
 include("../includes/sesion.php");
 try {
 
-
+ 
 
     $headers = apache_request_headers();
     //GET PRODUCTOS

@@ -6,7 +6,7 @@ include("../../includes/session_parameters.php");
 // Iniciar la sesión si no está iniciada
 if (session_status() == PHP_SESSION_NONE) {
     session_name('sesion_distribuidor');
-session_start();
+    session_start();
 }
 
 $draw = $_POST['draw'];
@@ -24,8 +24,8 @@ use GuzzleHttp\Client;
 
 // URL de la API
 $url = $ruta . 'distribuidores_admin/api/usuarios/';
-$empresa_id=$_GET['empresa_id'];
-$sucursal_id=$_GET['sucursal_id'];
+$empresa_id = $_GET['empresa_id'];
+$sucursal_id = $_GET['sucursal_id'];
 
 // Parámetros de la solicitud
 $params = [
@@ -33,13 +33,17 @@ $params = [
         'Content-Type' => 'application/json',
         // Obtener el token de seguridad de las variables de sesión
         'Authorization' => 'Bearer ' . $_SESSION['token']
-    ], "query" => [
+    ],
+    "query" => [
         'empresa_id' => $empresa_id,
         'sucursal_id' => $sucursal_id,
-        'nombre' => isset($searchValue) ? $searchValue :null,
+        'nombre_usuario' => isset($searchValue) ? $searchValue : null,
+        'email' => isset($searchValue) ? $searchValue : null,
+        'oreder_by' => $columnName,
+        'order_sort' => $columnSortOrder,
         'distribuidor_id' => $_SESSION['distribuidor_id'],
-'limit'=>$rowperpage,
-        'offset'=>$row 
+        'limit' => $rowperpage,
+        'offset' => $row
 
     ],
 
@@ -47,20 +51,23 @@ $params = [
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET
     $response = $client->request('GET', $url, $params);
-     // Obtener los headers de respuesta
- 
-    $xTotalCount = $response->getHeaderLine('X-Total-Count')??0;
-    $XPerPage= $response->getHeaderLine('X-Per-Page')??0;
+    // Obtener los headers de respuesta
+
+    $xTotalCount = $response->getHeaderLine('X-Total-Count') ?? 0;
+    $XPerPage = $response->getHeaderLine('X-Per-Page') ?? 0;
 
 
 
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
+
 
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
@@ -68,34 +75,34 @@ try {
     // Transformar los datos según el nuevo formato requerido
     $formattedData = [];
     foreach ($data as $item) {
-        $boton_borrar='';
-        $boton_modificar='';
-     
-        $boton_borrar = '<button class="btn btn-danger btn-eliminar-usuario" data-id="'.$item['id'].'"><i class="fa fa-trash"></i></button>';
-       
-        $boton_modificar = '<button class="btn btn-success btn-seleccionar-usuario" data-toggle="modal" data-target=".bs-usuario-crear-modal-lg" data-id="'.$item['id'].'" ><i class="fa fa-pencil"></i></button>';
-      
+        $boton_borrar = '';
+        $boton_modificar = '';
+
+        $boton_borrar = '<button class="btn btn-danger btn-eliminar-usuario" data-id="' . $item['id'] . '"><i class="fa fa-trash"></i></button>';
+
+        $boton_modificar = '<button class="btn btn-success btn-seleccionar-usuario" data-toggle="modal" data-target=".bs-usuario-crear-modal-lg" data-id="' . $item['id'] . '" ><i class="fa fa-pencil"></i></button>';
+
         $formattedItem = [
             'id' => $item['id'],
             'nombre_usuario' => $item['nombre_usuario'],
             'nombre_completo' => $item['nombre_completo'],
-            'rol' => $item['rol']['descripcion'], 
-            'activo'=>($item['activo']==1)?'SI':'NO',    
-            'acciones' => $boton_modificar.$boton_borrar
+            'rol' => $item['rol']['descripcion'],
+            'activo' => ($item['activo'] == 1) ? 'SI' : 'NO',
+            'acciones' => $boton_modificar . $boton_borrar
         ];
         $formattedData[] = $formattedItem;
     }
 
 
     $response = array(
-    "draw" => intval($draw),
-    "iTotalRecords" => $XPerPage,
-    "iTotalDisplayRecords" => $xTotalCount,
-    "aaData" => $formattedData,
-    "url"=>$url
+        "draw" => intval($draw),
+        "iTotalRecords" => $XPerPage,
+        "iTotalDisplayRecords" => $xTotalCount,
+        "aaData" => $formattedData,
+        "url" => $url
 
 
-);
+    );
     // Establecer la cabecera de respuesta como JSON
     header('Content-Type: application/json');
 
@@ -105,5 +112,3 @@ try {
 
     echo json_encode($response);
 }
-
-

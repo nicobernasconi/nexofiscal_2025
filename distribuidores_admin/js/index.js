@@ -12,7 +12,7 @@ $.ajax({
     },
 });
 
-
+ 
 $.ajax({
     type: "GET",
     url: "ajax/informes_ranking_productos_ventas/list.php",

@@ -23,7 +23,9 @@ try {
 
 	// Importar la clase GuzzleHTTP\Client
 
-	$client = new Client();
+	$client = new Client([
+    'verify' => false,
+]);
 
 
 
@@ -56,7 +58,9 @@ try {
 	// Obtener el array de productos enviado por POST
 
 	$url_renglones = $ruta . 'api/renglones_comprobantes/' . $id . '/';
-	$client = new Client();
+	$client = new Client([
+    'verify' => false,
+]);
 	// Enviar la solicitud POST
 	$response = $client->request('GET', $url_renglones, [
 		'headers' => [
@@ -190,7 +194,6 @@ try {
 		$fecha_servicio_hasta = null;
 		$fecha_vencimiento_pago = null;
 	}
-
 	$data = array(
 		'CantReg' 	=> 1, // Cantidad de Notas de Crédito a registrar
 		'PtoVta' 	=> $punto_de_venta,
@@ -221,7 +224,38 @@ try {
 		),
 		'Iva' 	=> $iva,
 	);
-
+	if( $comprobante['tipo_factura']==11){
+	$data = array(
+		'CantReg' 	=> 1, // Cantidad de Notas de Crédito a registrar
+		'PtoVta' 	=> $punto_de_venta,
+		'CbteTipo' 	=> $tipo_de_nota,
+		'Concepto' 	=> $concepto,
+		'DocTipo' 	=> $tipo_de_documento,
+		'DocNro' 	=> $numero_de_documento,
+		'CbteDesde' => $numero_de_nota,
+		'CbteHasta' => $numero_de_nota,
+		'CbteFch' 	=> intval(str_replace('-', '', $fecha)),
+		'FchServDesde'  => $fecha_servicio_desde,
+		'FchServHasta'  => $fecha_servicio_hasta,
+		'FchVtoPago'    => $fecha_vencimiento_pago,
+		'ImpTotal' 	=> round($importe_gravado + $importe_iva + $importe_exento_iva, 2),
+		'ImpTotConc' => 0, // Importe neto no gravado
+		'ImpNeto' 	=> round($importe_gravado + $importe_iva + $importe_exento_iva, 2),
+		'ImpOpEx' 	=> 0,
+		'ImpIVA' 	=> 0,
+		'ImpTrib' 	=> 0, //Importe total de tributos
+		'MonId' 	=> 'PES', //Tipo de moneda usada en la Nota de Crédito ('PES' = pesos argentinos) 
+		'MonCotiz' 	=> 1, // Cotización de la moneda usada (1 para pesos argentinos)
+		'CbtesAsoc' => array( //Factura asociada
+			array(
+				'Tipo' 		=> $tipo_factura_asociada,
+				'PtoVta' 	=> $punto_factura_asociada,
+				'Nro' 		=> $numero_factura_asociada,
+			)
+		),
+		
+	);
+	}
 
 
 	$res = $afip->ElectronicBilling->CreateVoucher($data);
@@ -304,7 +338,9 @@ try {
 
 
 	// Realiza la solicitud POST al template
-	$client = new GuzzleHttp\Client();
+	$client = new GuzzleHttp\Client([
+		'verify' => false,
+	]);
 	$response = $client->request('POST', $template_url, [
 		'form_params' => $template_data
 	]);
@@ -373,8 +409,12 @@ try {
 
 	);
 
-	$client = new Client();
-	$client = new Client();
+	$client = new Client([
+    'verify' => false,
+]);
+	$client = new Client([
+    'verify' => false,
+]);
 
 	// Convertir los datos a formato JSON
 	$post_json = json_encode($comprobantes_data);
@@ -440,5 +480,6 @@ try {
 
 	echo json_encode(['status' => 201, 'pdfUrl' =>  $res['file']]);
 } catch (Exception $e) {
+	print_r( $tipo_de_nota);
 	echo json_encode(['status' => 500, 'mensaje' => 'Error al obtener el template: ' . $e->getMessage().' linea:'.$e->getLine()]);
 }

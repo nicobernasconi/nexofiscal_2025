@@ -282,7 +282,7 @@ if (isset($_GET['sort_order'])) {
     echo json_encode($response);
     exit();
 } catch (PDOException $th) {
-    $response = array("status" => 500, "status_message" => "Error en el servidor.", "descripcion" => "Codigo de error {$th->getCode()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

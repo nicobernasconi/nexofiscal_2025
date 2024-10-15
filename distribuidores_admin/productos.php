@@ -55,9 +55,9 @@
             <div class="title_right">
               <div class="col-md-5 col-sm-5   form-group pull-right top_search">
                 <div class="input-group">
-                  <input id="buscar-sucursal" type="text" class="form-control" placeholder="buscar...">
+
                   <span class="input-group-btn">
-                    <button id="btn-buscar-sucursal" class="btn btn-default" type="button">ir!</button>
+
                   </span>
                 </div>
               </div>
@@ -108,6 +108,7 @@
                         <button id="btn-buscar" class="btn btn-dark">Mostrar</button>
                         <button id="btn-exportar-excel" class="btn btn-info"><i class="fa fa-file-excel-o"></i> Exportar Excel</button>
                         <button id="btn-exportar-pdf" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> Exportar PDF</button>
+                        <button id="btn-exportar-csv" class="btn btn-warning"><i class="fa fa-file-text-o"></i> Exportar a CSV</button>
                       </div>
                     </div>
                 </form>
@@ -120,6 +121,7 @@
               <table id="tablaProductos" class="table table-striped jambo_table bulk_action display" style="width:100%">
                 <thead>
                   <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -310,6 +312,10 @@
             title: "Descripción"
           },
           {
+            data: "precio_costo",
+            title: "Precio Costo"
+          },
+          {
             data: "precio1",
             title: "Precio 1"
           },
@@ -487,6 +493,81 @@
         }
 
       });
+    });
+
+
+
+    $("#btn-exportar-csv").click(function(event) {
+      event.preventDefault();
+      $.blockUI({
+        message: '<h1>Exportando productos a CSV. <br>Espere por favor...</h1>',
+        css: {
+          border: 'none',
+          padding: '15px',
+          backgroundColor: '#000',
+          '-webkit-border-radius': '10px',
+          '-moz-border-radius': '10px',
+          opacity: .5,
+          color: '#fff'
+        }
+      });
+
+      var empresa_id = $("#empresa").val();
+      var sucursal_id = $("#sucursal").val();
+      //crear un string para la consulta get
+
+      var data_get = "";
+      if (empresa_id != "") {
+        data_get += "empresa_id=" + empresa_id;
+      }
+      if (sucursal_id != "") {
+        data_get += "&sucursal_id=" + sucursal_id;
+      }
+
+      data_get += "&type=csv";
+      //comprobar si los campos estan vacios
+      if (empresa_id == "") {
+        $.unblockUI();
+        new PNotify({
+          title: 'Error!',
+          text: 'Debe seleccionar una empresa y sucursal para exportar el archivo',
+          type: 'error'
+        });
+        return;
+      }
+      if (empresa_id == "") {
+        $.unblockUI();
+        new PNotify({
+          title: 'Error!',
+          text: 'Debe seleccionar una empresa y sucursal para exportar el archivo',
+          type: 'error'
+        });
+        return;
+      }
+
+      // Mostrar cuadro de diálogo de confirmación
+      if (confirm("El código de las etiquetas es igual a 1, por lo que debe controlar que coincida con el sistema de gestión de balanzas. Además, debe configurar el número de familia coincidente con el número de departamento del sistema de gestión de balanzas. ¿Desea continuar?")) {
+        $.ajax({
+          url: "./ajax/productos/export.php?" + data_get,
+          type: "GET",
+          success: function(response) {
+            $.unblockUI();
+            var data = JSON.parse(response);
+            if (data.status == 200) {
+              // Descargar archivo en una pantalla nueva
+              var url = data.url;
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = url.split('/').pop();
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+          }
+        });
+      } else {
+        $.unblockUI();
+      }
     });
   </script>
 </body>

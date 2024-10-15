@@ -6,7 +6,9 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\Psr7\Request;
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 $headers = [
   'Authorization' => 'Apisecret YkbBEmLp1YGa5VubWIHfx7B7BLOpd9qYu3G5CWm2jstpN6CwMz20bTc5dsItkXCV'
 ];

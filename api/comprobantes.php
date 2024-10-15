@@ -151,7 +151,7 @@ try {
         if (isset($_GET['order_by'])) {
             $order_by = sanitizeInput($_GET['order_by']);
         } else {
-            $order_by = 'id';
+            $order_by = 'comprobantes.id';
         }
         if (isset($_GET['sort_order'])) {
             $sort_order = sanitizeInput($_GET['sort_order']);
@@ -162,7 +162,9 @@ try {
         //recibir todos los posibles parametros por GET
         if (isset($_GET['param'])) {
             $id = sanitizeInput($_GET['param']);
+            if ($id!=''){
             array_push($query_param, "comprobantes.id=$id");
+            }
         }
 
         if (isset($_GET['numero_factura'])) {
@@ -512,7 +514,7 @@ try {
     echo json_encode($response);
     exit();
 } catch (PDOException $th) {
-    $response = array("status" => 500, "status_message" => "Error en el servidor.", "descripcion" => "Codigo de error {$th->getMessage()}");
+    $response = array("status" => 500, "status_message" => "Error en el servidor.", "descripcion" => "Codigo de error {$th->getMessage()} $query_product");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

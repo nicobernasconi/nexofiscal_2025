@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 session_start();
 }
 
-
+ 
 
 // Importar la clase GuzzleHttp\Client
 require '../../vendor/autoload.php';
@@ -27,12 +27,14 @@ $params = [
     "query" => [
         'distribuidor_id' => $_SESSION['distribuidor_id'],
     ],
-
+ 
 
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET

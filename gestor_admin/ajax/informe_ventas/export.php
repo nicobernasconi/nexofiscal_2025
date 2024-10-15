@@ -76,7 +76,9 @@ $params = [
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET

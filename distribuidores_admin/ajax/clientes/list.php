@@ -15,7 +15,7 @@ require '../../vendor/autoload.php';
 use GuzzleHttp\Client;
 
 // URL de la API
-$url = $ruta . 'distribuidores_admin/clientes';
+$url = $ruta . 'distribuidores_admin/api/clientes';
 
 // Parámetros de la solicitud
 $params = [
@@ -50,13 +50,16 @@ $params = [
         'percepcion_iibb' => isset($_GET['percepcion_iibb']) ? $_GET['percepcion_iibb'] : null,
         'desactivado' => isset($_GET['desactivado']) ? $_GET['desactivado'] : null,
         'categoria_iibb_id' => isset($_GET['categoria_iibb_id']) ? $_GET['categoria_iibb_id'] : null,
+        'distribuidor_id' => isset($_SESSION['distribuidor_id']) ? $_SESSION['distribuidor_id'] : null,
     ],
 
 
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET
@@ -67,6 +70,7 @@ try {
 
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
+
 
     // Transformar los datos según el nuevo formato requerido
     $formattedData = array_map(function ($item) {

@@ -492,7 +492,7 @@ try {
     echo json_encode($response);
     exit();
 } catch (Exception $e) {
-    $response = array("status" => 500, "status_message" => "Error en el servidor.{$e->getMessage()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

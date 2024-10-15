@@ -54,9 +54,9 @@
             <div class="title_right">
               <div class="col-md-5 col-sm-5   form-group pull-right top_search">
                 <div class="input-group">
-                  <input id="buscar-proveedor" type="text" class="form-control" placeholder="buscar...">
+                  <input id="buscar-cliente" type="text" class="form-control" placeholder="buscar...">
                   <span class="input-group-btn">
-                    <button id="btn-buscar-proveedor" class="btn btn-default" type="button">ir!</button>
+                    <button id="btn-buscar-cliente" class="btn btn-default" type="button">ir!</button>
                   </span>
                 </div>
               </div>
@@ -73,7 +73,7 @@
                 <div class="x_content">
                   
                   <div class="table-responsive">
-                    <table class="table table-striped jambo_table bulk_action" id="tablaProvvedores">
+                    <table class="table table-striped jambo_table bulk_action" id="tablaClientes">
                       <thead>
                         <tr class="headings">
                           <th class="column-title"> </th>
@@ -100,7 +100,7 @@
             </div>
           </div>
         </div>
-        <?php include 'modals/empresas.php'; ?>
+        <?php include 'modals/clientes.php'; ?>
       </div>
       <!-- /page content -->
 

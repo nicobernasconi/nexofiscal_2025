@@ -51,9 +51,9 @@
             <div class="title_right">
               <div class="col-md-5 col-sm-5 form-group pull-right top_search">
                 <div class="input-group">
-                  <input id="buscar-empresa" type="text" class="form-control" placeholder="buscar...">
+                  
                   <span class="input-group-btn">
-                    <button id="btn-buscar-empresa" class="btn btn-default" type="button">ir!</button>
+                    
                   </span>
                 </div>
               </div>

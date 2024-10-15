@@ -59,9 +59,7 @@ try {
         console.log($('#buscar-empresa').val());
     });
 
-    //ocultar tablaEmpresas_filter
-    $('#tablaEmpresas_filter').hide();
-
+    
 } catch (error) {}
 
 

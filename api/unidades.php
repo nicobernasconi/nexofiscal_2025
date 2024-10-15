@@ -19,16 +19,16 @@ try {
                         unidad";
 
         $query_param = array();
-if (isset($_GET['order_by'])) {
-        $order_by = sanitizeInput($_GET['order_by']);
-    }else{
-        $order_by ='id';
-    }
-if (isset($_GET['sort_order'])) {
-        $sort_order= sanitizeInput($_GET['sort_order']);
-    }else{
-        $sort_order=' ASC ';
-    }
+        if (isset($_GET['order_by'])) {
+            $order_by = sanitizeInput($_GET['order_by']);
+        } else {
+            $order_by = 'id';
+        }
+        if (isset($_GET['sort_order'])) {
+            $sort_order = sanitizeInput($_GET['sort_order']);
+        } else {
+            $sort_order = ' ASC ';
+        }
 
 
 
@@ -43,8 +43,8 @@ if (isset($_GET['sort_order'])) {
         }
 
         if (count($query_param) > 0) {
-            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param).") AND unidad.empresa_id = $empresa_id";
-        }else{
+            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ") AND unidad.empresa_id = $empresa_id";
+        } else {
             $query_product = $query_product . " WHERE unidad.empresa_id = $empresa_id";
         }
 
@@ -54,11 +54,11 @@ if (isset($_GET['sort_order'])) {
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;
         //limites de la paginacion
-        $limit =$_GET['limit'] ?? 255;
+        $limit = $_GET['limit'] ?? 255;
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
 
-        $query_product = $query_product . " ORDER BY unidad. ".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
+        $query_product = $query_product . " ORDER BY unidad. " . $order_by . "  " . $sort_order . " LIMIT $limit OFFSET $offset";
 
         //header con la informacion de la paginacion
         header("X-Total-Count: $total");
@@ -141,7 +141,7 @@ if (isset($_GET['sort_order'])) {
     }
     //DELETE PRODUCTOS
     if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-$id = sanitizeInput($_GET['param']);
+        $id = sanitizeInput($_GET['param']);
 
         // Utilizar una consulta preparada para evitar inyección SQL
         $query_delete = "DELETE FROM unidad WHERE unidad.id = :id";
@@ -164,7 +164,7 @@ $id = sanitizeInput($_GET['param']);
     echo json_encode($response);
     exit();
 } catch (PDOException $th) {
-   $error_msg=$errores_mysql[$th->getCode()]??"Error desconocido";
+    $error_msg = $errores_mysql[$th->getCode()] ?? "Error desconocido";
     $response = array("status" => 500, "status_message" => "{$error_msg}");
     header('Content-Type: application/json');
     echo json_encode($response);

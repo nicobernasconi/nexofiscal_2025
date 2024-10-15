@@ -88,10 +88,14 @@ if (isset($_GET['sort_order'])) {
         }
         if(isset($_GET['fecha_inicio'])){
             $fecha_inicio = sanitizeInput($_GET['fecha_inicio']);
+            //restar un dia a la fecha
+            $fecha_inicio = date('Y-m-d', strtotime($fecha_inicio . ' -1 day'));
             array_push($query_param, "fecha >= '$fecha_inicio'");
         }
         if(isset($_GET['fecha_fin'])){
             $fecha_fin = sanitizeInput($_GET['fecha_fin']);
+            //sumar un dia a la fecha
+            $fecha_fin = date('Y-m-d', strtotime($fecha_fin . ' +1 day'));
             array_push($query_param, "fecha <= '$fecha_fin'");
         }
 

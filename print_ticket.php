@@ -7,7 +7,9 @@ include("includes/session_parameters.php");
 
 use GuzzleHttp\Client;
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 // Si se reciben datos por POST, se asignan a variables
 $nombre_tienda = isset($_POST['nombre_tienda']) ? $_POST['nombre_tienda'] : '';
@@ -106,7 +108,9 @@ $comprobantes_data = array(
 );
 }
 
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 // Convertir los datos a formato JSON
 $post_json = json_encode($comprobantes_data);
@@ -141,7 +145,9 @@ try {
     $url = $ruta . 'api/renglones_comprobantes/' . $id . '/';
 
     // Crear una instancia del cliente Guzzle
-    $client = new Client();
+    $client = new Client([
+    'verify' => false,
+]);
 
     // Obtener el array de productos enviado por POST
     $productos = json_decode($_POST['productos'], true);

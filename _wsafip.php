@@ -425,7 +425,9 @@ $template_url = $ruta . '/templates/tickets/tickets.php';
 
 try {
 	// Realiza la solicitud POST al template
-	$client = new GuzzleHttp\Client();
+	$client = new GuzzleHttp\Client([
+		'verify' => false,
+	]);
 	$response = $client->request('POST', $template_url, [
 		'form_params' => $template_data
 	]);

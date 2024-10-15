@@ -385,10 +385,9 @@ try {
         
 
         $data = json_decode(file_get_contents('php://input'), true);
-        /*if (!isset($data['tipo_iva_id'])) {
-            $data['tipo_iva_id']=='';
-        }*/
-        if (($data['cuit'] == '' ||  $data['cuit'] == '0') &&  ($data['numero_documento'] == '' ||  $data['numero_documento'] == '0') ) {
+        if (!isset($data['tipo_iva_id'])) {
+            $response = array("status" => 400, "status_message" => "Error: Debe asignar una Condicion IVA");
+        } elseif (($data['cuit'] == '' ||  $data['cuit'] == '0') &&  ($data['numero_documento'] == '' ||  $data['numero_documento'] == '0') ) {
             $response = array("status" => 400, "status_message" => "Error: Debe completar el CUIT o el DNI.");
         } else if ($data['tipo_iva_id'] == ''  ) {
             $response = array("status" => 400, "status_message" => "Error: Debe asignar una Condicion IVA");

@@ -121,7 +121,7 @@ if (isset($_GET['sort_order'])) {
     $offset = $_GET['offset'] ?? 0;
 
     $query_product = $query_product . " ORDER BY empresas. ".$order_by."  ".$sort_order." LIMIT $limit OFFSET $offset";
-
+    
 
     //header con la informacion de la paginacion
     header("X-Total-Count: $total");

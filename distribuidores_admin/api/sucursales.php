@@ -124,7 +124,7 @@ try {
         $cont_pages = ceil($total / $limit);
         $offset = $_GET['offset'] ?? 0;
 
-        $query_product = $query_product . " ORDER BY sucursales. " . $order_by . "  " . $sort_order . " LIMIT $limit OFFSET $offset";
+        $query_product = $query_product . " ORDER BY  " . $order_by . "  " . $sort_order . " LIMIT $limit OFFSET $offset";
 
         //header con la informacion de la paginacion
         header("X-Total-Count: $total");

@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $response = array("status" => 200, "message" => "Datos exportados correctamente.", "archivo" => $url);
             } catch (Exception $e) {
-                echo "Error: " . $e->getMessage();
+                echo "Error: ";
             }
         } else {
             $response = array("status" => 401, "message" => "Nombre de usuario o contraseña incorrectos.");
@@ -257,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
    
     }catch(Exception $e){
-        $response = array("status" => 500, "message" => "Error en el servidor. {$e->getMessage()}");
+        $response = array("status" => 500, "status_message" => "{$error_msg}");
     }
 
     header('Content-Type: application/json');

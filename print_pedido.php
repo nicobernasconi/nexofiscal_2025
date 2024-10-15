@@ -12,7 +12,7 @@ include("includes/database.php");
 
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client( ['verify' => false,]);
 
 // Si se reciben datos por POST, se asignan a variables
 $nombre_tienda =  $_SESSION['empresa_razon_social'];
@@ -123,7 +123,7 @@ if ($tipo_comprobante == 'FACTURA') {
     );
 }
 
-$client = new Client();
+$client = new Client( ['verify' => false,]);
 
 // Convertir los datos a formato JSON
 $post_json = json_encode($comprobantes_data);
@@ -204,7 +204,7 @@ try {
 
 
         if ($status == 201) {
-            $client_stock = new Client();
+            $client_stock = new Client( ['verify' => false,]);
             $movimiento_data = array(
                 'producto_id' => $producto['id'],
                 'sucursal_id' => $sucursal_id,
@@ -232,11 +232,7 @@ try {
 }
 
 
-/*$lineas_articulos = explode("\n", $articulos);
-$alto_pagina = count($lineas_articulos) * 10 + 130;
-$pdf = new FPDF('P', 'mm', array(75, $alto_pagina));
-// Establecer los márgenes
-$pdf->SetMargins(5, 5, 5);*/
+
 
 $unique_tasa_iva = array_unique(array_column($productos, 'tasa_iva'));
 
@@ -326,7 +322,9 @@ $unique_tasa_iva = array_unique(array_column($productos, 'tasa_iva'));
 $url = $ruta . 'api/comprobantes/' . $id;
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client(
+    ['verify' => false,]
+);
 
 $response = $client->request('GET', $url, [
     'headers' => [
@@ -370,63 +368,6 @@ $template_data = array(
 );
 
 
-
-
-
-
-/*
-$pdf->AddPage();
-
-// Establecer estilos
-$pdf->SetFont('Courier', '', 8); // Fuente y tamaño de fuente
-// Contenido
-$pdf->MultiCell(0, 5, 'Razon social: ' . $template_data['razon_social'], 0, 1);
-$pdf->MultiCell(0, 5, 'Direccion: ' . $template_data['direccion'], 0, 1);
-$pdf->MultiCell(0, 5, 'C.U.I.T.: ' . $template_data['cuit'], 0, 1);
-$pdf->MultiCell(0, 5, 'Tipo de contribuyente: ' . $template_data['tipo_contribuyente'], 0, 1);
-$pdf->MultiCell(0, 5, 'IIBB: ' . $template_data['iibb'], 0, 1);
-$pdf->MultiCell(0, 5, 'Inicio de actividad: ' . $template_data['inicio_actividad'], 0, 1);
-
-$pdf->SetFont('Courier', 'B', 10);
-$pdf->Cell(0, 5, $template_data['tipo_factura'], 0, 1, 'C');
-
-$pdf->SetFont('Courier', '', 8);
-$pdf->Cell(0, 5, 'Codigo XXXX', 0, 1, 'C');
-$pdf->Cell(0, 5, 'P.V: ' . str_pad($template_data['punto_venta'], 5, '0', STR_PAD_LEFT), 0, 1);
-$pdf->Cell(0, 5, 'Nro: ' . str_pad($id, 5, '0', STR_PAD_LEFT), 0, 1);
-$pdf->Cell(0, 5, 'Fecha: ' . $template_data['fecha'], 0, 1);
-$pdf->Cell(0, 5, 'Concepto: ' . $template_data['concepto'], 0, 1);
-$pdf->Cell(0, 5, '--------------------------------', 0, 1);
-$pdf->Cell(0, 5, $template_data['destinatario'], 0, 1);
-$pdf->Cell(0, 5, '--------------------------------', 0, 1);
-
-$pdf->SetFont('Courier', '', 8); // Restablecer fuente normal para productos
-foreach ($template_data['productos'] as $producto) {
-    // Contenido de la tabla// Reducir el ancho de la primera celda
-    $pdf->Cell(45, 5, $producto['quantity'] . ' ' . $producto['name'], 0); // Utilizar MultiCell para ajustar el texto al ancho de la celda
-    $pdf->Cell(10, 5, ($producto['tasa_iva'] * 100) . '%', 0, 0); // Reducir el ancho de la tercera celda
-    $pdf->Cell(20, 5, '$' . $producto['price'], 0, 1); // Reducir el ancho de la cuarta celda y agregar salto de línea
-}
-
-$pdf->Ln(); // Salto de línea
-$pdf->Cell(0, 5, '--------------------------------', 0, 1);
-$pdf->SetFont('Courier', 'B', 8);
-$pdf->Cell(55, 5, 'TOTAL: $' . $template_data['total'], 0, 0); // Reducir el ancho de la celda
-
-$pdf->Ln();
-$pdf->Cell(0, 5, '--------------------------------', 0, 1);
-$pdf->Cell(0, 5, 'Comprobante sin validez fiscal', 0, 1, 'C');
-
-
-// Salida del PDF
-$pdfPath = "comprobantes/comprobante_{$id}.pdf";
-$pdf->Output($pdfPath, 'F');
-
-// Devolver la URL del PDF en la respuesta AJAX
-echo json_encode(['pdfUrl' => $ruta_https . $pdfPath]);
-*/
-
-// Tu CUIT
 $tax_id = $cuit;
 
 try {
@@ -454,7 +395,9 @@ try {
     }
 
     // Realiza la solicitud POST al template
-    $client = new GuzzleHttp\Client();
+    $client = new GuzzleHttp\Client([
+		'verify' => false,
+	]);
     $response = $client->request('POST', $template_url, [
         'form_params' => $template_data
     ]);
@@ -496,5 +439,5 @@ try {
     $url_pdf = $res['file'];
     echo json_encode(['pdfUrl' => $url_pdf]);
 } catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
+    echo 'Caught exception: ',  $e->getMessage(), "\n", $e->getLine();
 }

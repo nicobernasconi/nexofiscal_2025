@@ -1,4 +1,7 @@
 <?php
+
+use Spipu\Html2Pdf\Tag\Html\Em;
+
 include("../includes/database.php");
 include("../includes/security.php");
 include("../includes/sesion.php");
@@ -56,8 +59,8 @@ try {
             array_push($query_param, "usuarios.id=$id");
         }
         if (isset($_GET['nombre_usuario'])) {
-            $codigo = sanitizeInput($_GET['nombre_usuario']);
-            array_push($query_param, "nombre_usuario='$codigo'");
+            $nombre_usuario = sanitizeInput($_GET['nombre_usuario']);
+            array_push($query_param, "nombre_usuario like '%$nombre_usuario%'");
         }
 
         if (isset($_GET['nombre_completo'])) {
@@ -80,22 +83,23 @@ try {
         
         if (isset($_GET['sucursal_id'])) {
             $sucursal_id = sanitizeInput($_GET['sucursal_id']);
-            array_push($query_param, "sucursal_id = $sucursal_id");
+
         }
 
         if (isset($_GET['distribuidor_id'])) {
             $distribuidor_id = sanitizeInput($_GET['distribuidor_id']);
-            array_push($query_param, "distribuidores_empresas.distribuidor_id = $distribuidor_id");
+  
         }
 
         if (count($query_param) > 0) {
-            $query_product = $query_product . " WHERE (" . implode(" AND ", $query_param) . ") ";
+            $query_product = $query_product . " WHERE (" . implode(" OR ", $query_param) . ") and distribuidores_empresas.distribuidor_id = $distribuidor_id  and distribuidores_empresas.empresa_id = $empresa_id and sucursal_id = $sucursal_id ";
         } else {
-            $query_product = $query_product;
+            $query_product = $query_product . " WHERE  distribuidores_empresas.distribuidor_id = $distribuidor_id  and distribuidores_empresas.empresa_id = $empresa_id and sucursal_id = $sucursal_id ";;
         }
 
+
         //obtener el total de registros
-        $query_total = "SELECT COUNT(*) AS total FROM usuarios  LEFT JOIN distribuidores_empresas ON usuarios.empresa_id = distribuidores_empresas.empresa_id WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id ";
+        $query_total = "SELECT COUNT(*) AS total FROM usuarios  LEFT JOIN distribuidores_empresas ON usuarios.empresa_id = distribuidores_empresas.empresa_id WHERE distribuidores_empresas.distribuidor_id = $distribuidor_id  and distribuidores_empresas.empresa_id = $empresa_id and sucursal_id = $sucursal_id";
         $result_total = $con->query($query_total);
         $row_total = $result_total->fetch(PDO::FETCH_ASSOC);
         $total = $row_total['total'] ?? 0;

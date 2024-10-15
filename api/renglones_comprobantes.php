@@ -276,7 +276,7 @@ $comprobante_id = sanitizeInput($_GET['comprobante_id']);
         exit();
     }
 } catch (PDOException $th) {
-    $response = array("status" => 500, "status_message" => "Error en el servidor.", "descripcion" => "{$th->getCode()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

@@ -17,6 +17,8 @@ foreach ($post_data as $key => $value) {
         $post_data[$key] = (float)$value; // Convertir a número en formato float
     }
 }
+//remove key id
+unset($post_data['id']);
 
 // Convertir los datos a formato JSON
 $post_json = json_encode($post_data);
@@ -31,7 +33,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud POST
@@ -46,6 +50,9 @@ try {
 
     // Obtener el cuerpo de la respuesta
     $body = $response->getBody()->getContents();
+    print_r($body);
+    exit;
+    
     $id = json_decode($body)->id;
     //quito la ruta para generar la url de la api
     $url_remoto = str_replace($ruta,'',$url); 

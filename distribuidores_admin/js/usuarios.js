@@ -62,8 +62,7 @@ try {
         console.log($('#buscar-usuario').val());
     });
 
-    //ocultar tablaEmpresas_filter
-    $('#tablaUsuarios_filter').hide();
+
 } catch (error) {
     console.error(error);
 }

@@ -47,7 +47,9 @@ $params = [
 ];
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
     // Enviar la solicitud GET
@@ -80,6 +82,7 @@ try {
             'codigo_barra' => $item['codigo_barra'],
             'descripcion' => $item['descripcion'],
             'stock' => $stock_actual,
+            'precio_costo' => ($item['precio_costo'] != '') ? '$'.$item['precio_costo'] : 0,
             'precio1' => ($item['precio1'] != '') ? '$'.$item['precio1'] : 0,
             'precio2' => ($item['precio2'] != '') ? '$'.$item['precio2'] : 0,
             'precio3' => ($item['precio3'] != '') ? '$'.$item['precio3'] : 0,

@@ -608,7 +608,7 @@ $lista_precios=$row_usuario['lista_precios']??1;
     exit();
 } catch (Exception $e) {
     $error_msg = $errores_mysql[$e->getCode()] ?? "Error desconocido";
-    $response = array("status" => 500, "status_message" => "{$error_msg}{$e->getMessage()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

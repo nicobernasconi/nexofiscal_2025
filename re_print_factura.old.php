@@ -19,7 +19,9 @@ use GuzzleHttp\Client;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 try {
 
@@ -55,7 +57,9 @@ try {
 	}
 
 	$url_renglones = $ruta . 'api/renglones_comprobantes/' . $id . '/';
-	$client = new Client();
+	$client = new Client([
+    'verify' => false,
+]);
 	// Enviar la solicitud POST
 	$response = $client->request('GET', $url_renglones, [
 		'headers' => [
@@ -220,7 +224,9 @@ try {
 
 
 	// Realiza la solicitud POST al template
-	$client = new GuzzleHttp\Client();
+	$client = new GuzzleHttp\Client([
+		'verify' => false,
+	]);
 	$response = $client->request('POST', $template_url, [
 		'form_params' => $template_data
 	]);

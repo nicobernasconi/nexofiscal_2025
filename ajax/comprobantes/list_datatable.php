@@ -48,7 +48,9 @@ if (isset($searchValue) && !empty($searchValue)) {
 
 
 // Crear una instancia del cliente Guzzle
-$client = new Client();
+$client = new Client([
+    'verify' => false,
+]);
 
 
 try {
@@ -63,8 +65,6 @@ try {
 
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
-
-
 
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);

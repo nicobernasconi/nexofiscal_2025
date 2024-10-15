@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 } catch (Exception $e) {
                     // Manejar errores por tabla
-                    echo "Error en la tabla $tabla: " . $e->getMessage();
+                    echo "Error en la tabla $tabla: ";
                 }
             }
 
@@ -155,11 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $response = array("status" => 200, "message" => "Datos exportados correctamente.", "archivo" => $url);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            echo "Error: ";
         }
 
     } catch (Exception $e) {
-        $response = array("status" => 500, "message" => "Error en el servidor. {$e->getMessage()}");
+        $response = array("status" => 500, "status_message" => "{$error_msg}");
     }
 
     header('Content-Type: application/json');

@@ -35,7 +35,7 @@ try {
     exit();
 } catch (PDOException $th) {
     $error_msg = $errores_mysql[$th->getCode()] ?? "Error desconocido";
-    $response = array("status" => 500, "message" => "{$error_msg}{$th->getMessage()}");
+    $response = array("status" => 500, "status_message" => "{$error_msg}");
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();

@@ -55,9 +55,9 @@
             <div class="title_right">
               <div class="col-md-5 col-sm-5   form-group pull-right top_search">
                 <div class="input-group">
-                  <input id="buscar-sucursal" type="text" class="form-control" placeholder="buscar...">
+                  
                   <span class="input-group-btn">
-                    <button id="btn-buscar-sucursal" class="btn btn-default" type="button">ir!</button>
+                    
                   </span>
                 </div>
               </div>
@@ -101,6 +101,18 @@
                         <select id="familias" name="familias" class="select2_single form-control" tabindex="-1"></select>
                       </div>
                     </div>
+
+                    <div class="form-group row">
+                      <label class="control-label col-md-3 col-sm-3 ">Periodo</label>
+                      <div class="col-md-9 col-sm-9 ">
+                        <div class="input-prepend input-group">
+                          <span class="add-on input-group-addon"><i class="fa fa-calendar"></i></span>
+                          <input type="text" style="width: 200px" name="periodo" id="periodo" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <input type="hidden" name="fecha_inicio" id="fecha_inicio">
+                    <input type="hidden" name="fecha_fin" id="fecha_fin">
 
                     <div class="form-group">
                       <div class="col-md-9 col-sm-9  offset-md-3">
