@@ -86,12 +86,13 @@ try {
             $row = $result_id_remoto->fetch(PDO::FETCH_ASSOC);
             if ($row['id_remoto'] != '') {
                 $comprobante_id = $row['id_remoto'];
-                $url = $ruta_remota . 'api/renglones_comprobantes/' . $comprobante_id . '/';
+                $url =  'api/renglones_comprobantes/' . $comprobante_id . '/';
             } else {
                 $con_id_extreno = false;
             }
         }
         if ($con_id_extreno) {
+            $url = $ruta . $url;
             $response = $client->request($metodo, $url, [
                 'body' => json_encode($parametros),
                 'headers' => [

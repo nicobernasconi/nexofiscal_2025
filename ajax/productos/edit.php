@@ -13,7 +13,7 @@ $post_data = $_POST;
 
 // Eliminar comillas simples de los valores numéricos
 foreach ($post_data as $key => $value) {
-    if (is_numeric($value)) {
+    if (is_numeric($value) && $key != 'codigo' && $key != 'codigo_barras' && $key != 'codigo_barras2') {
         $post_data[$key] = (float)$value; // Convertir a número en formato float
     }
 }

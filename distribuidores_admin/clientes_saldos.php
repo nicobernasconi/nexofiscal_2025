@@ -48,15 +48,15 @@
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Proveedores <small>Gestionar todas los clientes del distibuidor</small></h3>
+              <h3>Clientes <small>Gestionar todas los clientes del distibuidor</small></h3>
             </div>
 
             <div class="title_right">
               <div class="col-md-5 col-sm-5   form-group pull-right top_search">
                 <div class="input-group">
-                  <input id="buscar-cliente" type="text" class="form-control" placeholder="buscar...">
+                 
                   <span class="input-group-btn">
-                    <button id="btn-buscar-cliente" class="btn btn-default" type="button">ir!</button>
+                    
                   </span>
                 </div>
               </div>

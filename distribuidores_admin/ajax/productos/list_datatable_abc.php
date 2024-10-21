@@ -36,6 +36,8 @@ $params = [
         'empresa_id' => $_GET['empresa_id'],
         'sucursal_id' => $_GET['sucursal_id'],
         'familia_id' => isset($_GET['familia_id']) ? $_GET['familia_id'] : null,
+        'fecha_inicio' => isset($_GET['fecha_inicio']) ? $_GET['fecha_inicio'] : null,
+        'fecha_fin' => isset($_GET['fecha_fin']) ? $_GET['fecha_fin'] : null,
         'order_by'=> $columnName,
         'sort_order'=> $columnSortOrder,
         'limit' => $rowperpage,
@@ -64,7 +66,8 @@ try {
     // Obtener el cuerpo de la respuesta en formato JSON
     $body = $response->getBody()->getContents();
 
-    
+    print_r($body);
+    exit();
     // Decodificar el JSON en un array asociativo
     $data = json_decode($body, true);
 

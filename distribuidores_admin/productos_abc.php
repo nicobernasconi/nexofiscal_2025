@@ -204,6 +204,58 @@
   <script src="./js/empresas_ventas.js"></script>
 
   <script>
+    //cargo el datepicker
+    var optionSet1 = {
+      startDate: moment().subtract(29, 'days'),
+      endDate: moment(),
+      minDate: '01/01/2012',
+      maxDate: '31/12/2050',
+      dateLimit: {
+        days: 366
+      },
+      showDropdowns: true,
+      showWeekNumbers: true,
+      timePicker: false,
+      timePickerIncrement: 1,
+      timePicker12Hour: true,
+      ranges: {
+        'Hoy': [moment(), moment()],
+        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+        'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
+        'Este mes': [moment().startOf('month'), moment().endOf('month')],
+        'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      },
+      opens: 'right',
+      buttonClasses: ['btn btn-default'],
+      applyClass: 'btn-small btn-primary',
+      cancelClass: 'btn-small',
+      format: 'DD/MM/YYYY',
+      separator: ' hasta ',
+      locale: {
+        format: 'DD/MM/YYYY',
+        applyLabel: 'Aceptar',
+        cancelLabel: 'Limpiar',
+        fromLabel: 'Desde',
+        toLabel: 'Hasta',
+        customRangeLabel: 'Rango',
+        daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        firstDay: 1
+      }
+    };
+    $('#periodo').daterangepicker(optionSet1, function(start, end, label) {});
+    $('#periodo').on('apply.daterangepicker', function(ev, picker) {
+      $('#fecha_inicio').val(picker.startDate.format('YYYY-MM-DD'));
+      $('#fecha_fin').val(picker.endDate.format('YYYY-MM-DD'));
+    });
+    $('#periodo').on('cancel.daterangepicker', function(ev, picker) {
+      $('#fecha_inicio').val('');
+      $('#fecha_fin').val('');
+    });
+    //inicializar fecha_inicio y fecha_fin
+    $('#fecha_inicio').val(moment().subtract(29, 'days').format('YYYY-MM-DD'));
+    $('#fecha_fin').val(moment().format('YYYY-MM-DD'));
     //cargar select2 de empresas
     $.ajax({
       url: './ajax/sucursales/list.php',
@@ -293,6 +345,12 @@
       if (familia != '') {
         data_string += '&familia_id=' + familia;
       }
+      var fecha_inicio = $('#fecha_inicio').val();
+      var fecha_fin = $('#fecha_fin').val();
+      if (fecha_inicio != '' && fecha_fin != '') {
+        data_string += '&fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin;
+      }
+      
 
       if ($.fn.DataTable.isDataTable("#tablaProductos")) {
         $("#tablaProductos").DataTable().destroy();

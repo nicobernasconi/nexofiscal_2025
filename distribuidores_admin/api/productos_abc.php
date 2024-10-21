@@ -25,6 +25,11 @@ try {
             $familia_id = sanitizeInput($_GET['familia_id']);
             array_push($query_param, "productos.familia_id=$familia_id");
         }
+        if (isset($_GET['fecha_inicio'])) {
+            $fecha_inicio = sanitizeInput($_GET['fecha_inicio']);
+            $fecha_fin = sanitizeInput($_GET['fecha_fin']);
+            array_push($query_param, "comrobantes.fecha BETWEEN $fecha_inicio AND $feche_fin");
+        }
 
         $where = "";
         if (count($query_param) > 0) {
@@ -63,6 +68,10 @@ try {
         } else {
             $sort_order = ' ASC ';
         }
+print_r($query_product);
+//imprimo los [parametros get
+        print_r($_GET);
+exit();
 
         
 

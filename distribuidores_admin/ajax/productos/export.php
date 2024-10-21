@@ -30,6 +30,8 @@ $params = [
         'distribuidor_id' => $_SESSION['distribuidor_id'],
         'empresa_id' => $_GET['empresa_id'],
         'sucursal_id' => $_GET['sucursal_id'],
+        'fecha_inicio' => isset($_GET['fecha_inicio']) ? $_GET['fecha_inicio'] : null,
+        'fecha_fin' => isset($_GET['fecha_fin']) ? $_GET['fecha_fin'] : null,
         'type' => $_GET['type'],
     ],
 

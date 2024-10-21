@@ -6,3 +6,10 @@ _wsafip_contribuyente.php
 _wsafip_contribuyente_dni.php
 _wsafip_contribuyente_dni_remoto.php
 _wsafip_contribuyente_remoto.php
+dompdf/lib/php-font-lib/
+dompdf/lib/php-svg-lib/
+vendor/dompdf/dompdf/
+vendor/dompdf/php-font-lib/
+vendor/dompdf/php-svg-lib/
+vendor/masterminds/html5/
+vendor/sabberworm/php-css-parser/
