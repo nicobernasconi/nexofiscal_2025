@@ -1,4 +1,6 @@
 
+############################################
+# Reglas existentes
 /distribuidores_admin/includes
 /includes
 nexofiscal_demo.rar
@@ -6,10 +8,71 @@ _wsafip_contribuyente.php
 _wsafip_contribuyente_dni.php
 _wsafip_contribuyente_dni_remoto.php
 _wsafip_contribuyente_remoto.php
-dompdf/lib/php-font-lib/
-dompdf/lib/php-svg-lib/
-vendor/dompdf/dompdf/
-vendor/dompdf/php-font-lib/
-vendor/dompdf/php-svg-lib/
-vendor/masterminds/html5/
-vendor/sabberworm/php-css-parser/
+
+############################################
+# Dependencias / Builds
+vendor/
+vendor.old/
+node_modules/
+
+############################################
+# Entornos / Config sensibles
+.env
+.env.*
+*.pem
+cert/*.pem
+cert/*.key
+
+############################################
+# Logs y temporales
+*.log
+*.cache
+*.tmp
+*.swp
+*.swo
+*.bak
+~$*
+
+############################################
+# IDE / Editor
+.idea/
+.vscode/
+*.code-workspace
+
+############################################
+# SO
+Thumbs.db
+Desktop.ini
+
+############################################
+# Exportaciones / backups
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+*.rar
+
+############################################
+# Datos locales que no deberían versionarse
+_gsdata_/
+peso.txt
+ultimo_valor.txt
+COM3
+
+############################################
+# Caché librerías front
+css/libs/**/package-lock.json
+gestor_admin/vendors/**/package-lock.json
+distribuidores_admin/vendors/**/package-lock.json
+
+############################################
+# PDFs/Generados (mantén solo plantillas)
+distribuidores_admin/comprobantes/*.pdf
+distribuidores_admin/comprobantes/*.xlsx
+
+############################################
+# Scripts de volcado grandes opcionalmente (descomenta si no quieres versionarlos)
+# api/install_scripts/*.sql
+# api/update_scripts/*.sql
+
